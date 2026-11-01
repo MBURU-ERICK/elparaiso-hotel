@@ -8,6 +8,7 @@ import {
   MapPin,
   Sparkles,
 } from "lucide-react";
+import SEO from "../components/SEO";
 
 const WHATSAPP = "https://wa.me/254708231994?text=";
 
@@ -75,6 +76,11 @@ function EnquiryButton({ message, children = "Make an Enquiry" }) {
 export default function Experiences() {
   return (
     <>
+              <SEO
+          title="Garden & Family Experiences"
+          description="Explore garden experiences, kids' activities and relaxing spaces at Elparaiso Hotel."
+          path="/experiences"
+        />
       <section className="experiences-hero">
         <div className="experiences-overlay" />
 

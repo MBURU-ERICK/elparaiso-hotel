@@ -1,4 +1,5 @@
 import { MessageCircle, ArrowRight, Utensils, Coffee, Wine, Clock } from "lucide-react";
+import SEO from "../components/SEO";
 
 const WHATSAPP = "https://wa.me/254708231994?text=";
 
@@ -46,6 +47,11 @@ function WhatsAppButton({ message, children }) {
 export default function Restaurant() {
   return (
     <>
+      <SEO
+    title="Restaurant & Dining"
+    description="Visit Elparaiso Hotel for restaurant dining, drinks and a welcoming atmosphere in Rumuruti."
+    path="/restaurant"
+  />
       <section className="restaurant-hero">
         <div className="restaurant-overlay" />
 

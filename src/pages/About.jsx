@@ -1,10 +1,16 @@
 
 import { Link } from "react-router-dom";
 import { MapPin, Utensils, BedDouble, Trees, Heart, Users } from "lucide-react";
+import SEO from "../components/SEO";
 
 export default function About() {
   return (
     <main>
+        <SEO
+    title="About Our Hotel in Rumuruti"
+    description="Learn about Elparaiso Hotel, our hospitality, facilities and location in Rumuruti, Laikipia."
+    path="/about"
+  />
       <section className="about-hero">
         <div className="about-overlay" />
         <div className="about-hero-content">

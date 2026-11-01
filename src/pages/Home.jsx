@@ -6,6 +6,7 @@ import {
   CalendarDays,
   Sparkles,
 } from "lucide-react";
+import SEO from "../components/SEO";
 
 const experiences = [
   {
@@ -37,6 +38,11 @@ const experiences = [
 export default function Home() {
   return (
     <>
+      <SEO
+    title="Hotel & Restaurant in Rumuruti"
+    description="Discover Elparaiso Hotel in Rumuruti, Laikipia. Enjoy accommodation, restaurant dining, garden experiences and family activities."
+    path="/"
+  />
       <section className="hero">
         <div className="hero-overlay"></div>
 

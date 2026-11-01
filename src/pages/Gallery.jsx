@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import SEO from "../components/SEO";
 
 const photos = [
   {
@@ -47,6 +48,11 @@ export default function Gallery() {
 
   return (
     <main>
+        <SEO
+    title="About Our Hotel in Rumuruti"
+    description="Learn about Elparaiso Hotel, our hospitality, facilities and location in Rumuruti, Laikipia."
+    path="/about"
+  />
       <section className="gallery-hero">
         <div className="gallery-overlay" />
         <div className="gallery-hero-content">

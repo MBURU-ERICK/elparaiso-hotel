@@ -8,6 +8,7 @@ import {
   Home,
   Sparkles,
 } from "lucide-react";
+import SEO from "../components/SEO";
 
 const WHATSAPP =
   "https://wa.me/254708231994?text=" +
@@ -43,6 +44,11 @@ const accommodation = [
 export default function Rooms() {
   return (
     <>
+      <SEO
+    title="Rooms & Accommodation"
+    description="Enquire about accommodation and Airbnb stays at Elparaiso Hotel in Rumuruti, Laikipia County."
+    path="/rooms"
+  />
       <section className="rooms-hero">
         <div className="rooms-hero-overlay" />
 
