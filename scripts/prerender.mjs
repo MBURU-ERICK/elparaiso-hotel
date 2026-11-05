@@ -5,6 +5,8 @@ const server = await createServer({ mode: 'production', server: { middlewareMode
 try {
   const { renderPage } = await server.ssrLoadModule('/src/prerender.jsx');
   const template = await readFile('dist/index.html', 'utf8');
+  // Private and unknown routes get an empty app shell, not homepage markup.
+  await writeFile('dist/app.html', template);
   for (const route of routes) {
     const rendered = await renderPage(route);
     // React 19 emits document metadata ahead of the component fragment. Place
