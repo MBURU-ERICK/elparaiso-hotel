@@ -49,6 +49,6 @@ export default function GalleryManager() {
         <button disabled={busy} onClick={() => mutate(() => galleryApi.update(image.id, { published: !image.published }), 'Publication updated.')}>{image.published ? 'Unpublish' : 'Publish'}</button>
         <button disabled={busy} onClick={() => setDeleting(image)}>Delete</button></div></div>)}</div>}
     {deleting && <div role="alertdialog" aria-modal="false" aria-labelledby="delete-title" className="gallery-confirm"><h2 id="delete-title">Delete “{deleting.title}”?</h2><p>This removes the photograph from the gallery.</p><button disabled={busy} onClick={() => mutate(async () => { await galleryApi.remove(deleting.id); setDeleting(null); }, 'Photograph deleted.')}>Confirm delete</button><button disabled={busy} onClick={() => setDeleting(null)}>Keep photograph</button></div>}
-    {count > 24 && <nav className="gallery-pagination" aria-label="Staff gallery pages"><button disabled={page === 1 || loading} onClick={() => setPage(p => p - 1)}>Previous</button><span>Page {page}</span><button disabled={page * 24 >= count || loading} onClick={() => setPage(p => p + 1)}>Next</button></nav>}
+    {count > 24 && <nav className="gallery-pagination" aria-label="Staff gallery pages"><button disabled={page === 1 || loading} onClick={() => { setLoading(true); setPage(p => p - 1); }}>Previous</button><span>Page {page}</span><button disabled={page * 24 >= count || loading} onClick={() => { setLoading(true); setPage(p => p + 1); }}>Next</button></nav>}
   </section>;
 }

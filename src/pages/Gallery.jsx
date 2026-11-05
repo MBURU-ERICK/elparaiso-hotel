@@ -7,9 +7,9 @@ import { galleryCategories } from '../services/galleryApi';
 function GalleryResults({ category }) {
   const [page, setPage] = useState(1);
   const state = useGallery({ category, page });
-  return <><GalleryGrid {...state} />{state.count > 24 && <nav className="gallery-pagination" aria-label="Gallery pages">
-    <button disabled={page === 1} onClick={() => setPage(p => p - 1)}>Previous</button><span>Page {page}</span>
-    <button disabled={page * 24 >= state.count} onClick={() => setPage(p => p + 1)}>Next</button></nav>}</>;
+  return <><GalleryGrid {...state} />{(page > 1 || state.count > 24) && <nav className="gallery-pagination" aria-label="Gallery pages">
+    <button disabled={page === 1 || state.loading} onClick={() => setPage(p => p - 1)}>Previous</button><span>Page {page}</span>
+    <button disabled={state.loading || page * 24 >= state.count} onClick={() => setPage(p => p + 1)}>Next</button></nav>}</>;
 }
 export default function Gallery() {
   const [category, setCategory] = useState('');
