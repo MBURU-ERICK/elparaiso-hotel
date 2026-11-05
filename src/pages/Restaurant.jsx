@@ -1,3 +1,4 @@
+import GalleryPhoto from "../components/GalleryPhoto";
 import { MessageCircle, ArrowRight, Utensils, Coffee, Wine, Clock } from "lucide-react";
 import SEO from "../components/SEO";
 
@@ -95,10 +96,7 @@ export default function Restaurant() {
 
       <section className="dining-section" id="dining">
         <div className="dining-image">
-          <img
-            src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1400"
-            alt="Restaurant dining environment"
-          />
+          <GalleryPhoto category="restaurant" />
         </div>
 
         <div className="dining-content">
@@ -149,10 +147,7 @@ export default function Restaurant() {
 
       <section className="drinks-section">
         <div className="drinks-image">
-          <img
-            src="https://images.unsplash.com/photo-1513558161293-cdaf765edfd4?w=1200"
-            alt="Refreshing drinks"
-          />
+          <GalleryPhoto category="restaurant" />
         </div>
 
         <div className="drinks-content">

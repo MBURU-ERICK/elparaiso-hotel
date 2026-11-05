@@ -299,7 +299,7 @@ h2 em {
   position: relative;
   color: white;
   background:
-    url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=2000')
+    linear-gradient(120deg, #173d32, #305d4b)
     center 55% / cover no-repeat;
 }
 
@@ -436,7 +436,7 @@ h2 em {
   color: white;
   background:
     linear-gradient(rgba(23,23,20,.87),rgba(23,23,20,.87)),
-    url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1600')
+    linear-gradient(120deg, #173d32, #305d4b)
     center / cover;
 }
 
@@ -476,7 +476,7 @@ h2 em {
 
 .rooms-hero {
   background-image:
-    url('https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=2000');
+    linear-gradient(120deg, #173d32, #305d4b);
 }
 
 .rooms-hero-content,
@@ -678,7 +678,7 @@ h2 em {
 
 .restaurant-hero {
   background-image:
-    url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=2000');
+    linear-gradient(120deg, #173d32, #305d4b);
 }
 
 .restaurant-overlay {
@@ -793,7 +793,7 @@ h2 em {
 
 .experiences-hero {
   background-image:
-    url('https://images.unsplash.com/photo-1449158743715-0a90ebb6d2d8?w=2000');
+    linear-gradient(120deg, #173d32, #305d4b);
 }
 
 .activities-section {
@@ -911,7 +911,7 @@ h2 em {
 
 .about-hero {
   background-image:
-    url('https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=2000');
+    linear-gradient(120deg, #173d32, #305d4b);
 }
 
 .about-story {
@@ -989,7 +989,7 @@ h2 em {
   color: white;
   background:
     linear-gradient(rgba(17,28,21,.87),rgba(17,28,21,.87)),
-    url('https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=1600')
+    linear-gradient(120deg, #173d32, #305d4b)
     center / cover;
 }
 
@@ -1022,7 +1022,7 @@ h2 em {
 
 .gallery-hero {
   background-image:
-    url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=2000');
+    linear-gradient(120deg, #173d32, #305d4b);
 }
 
 .gallery-section {
@@ -1138,7 +1138,7 @@ h2 em {
 .contact-hero {
   min-height: 500px;
   background-image:
-    url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1800');
+    linear-gradient(120deg, #173d32, #305d4b);
 }
 
 .contact-section {

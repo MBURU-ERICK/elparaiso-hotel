@@ -1,3 +1,4 @@
+import GalleryPhoto from "../components/GalleryPhoto";
 
 import { Link } from "react-router-dom";
 import { MapPin, Utensils, BedDouble, Trees, Heart, Users } from "lucide-react";
@@ -28,10 +29,7 @@ export default function About() {
 
       <section className="about-story section">
         <div className="about-story-image">
-          <img
-            src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4"
-            alt="Welcoming restaurant atmosphere"
-          />
+          <GalleryPhoto category="general" />
         </div>
 
         <div className="about-story-content">

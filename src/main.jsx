@@ -14,3 +14,4 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     </HelmetProvider>
   </React.StrictMode>
 );
+import "./styles/upgrade.css";

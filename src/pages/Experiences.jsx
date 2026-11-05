@@ -1,3 +1,4 @@
+import GalleryPhoto from "../components/GalleryPhoto";
 import {
   ArrowRight,
   MessageCircle,
@@ -18,8 +19,6 @@ const activities = [
     category: "RELAXATION & OUTDOOR EXPERIENCES",
     description:
       "Enjoy the outdoors, relax in a welcoming environment and spend quality time surrounded by the garden atmosphere.",
-    image:
-      "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=1200",
     icon: <Trees />,
     message:
       "Hello Elparaiso Hotel, I would like to enquire about visiting the garden.",
@@ -29,8 +28,6 @@ const activities = [
     category: "FAMILY & CHILDREN",
     description:
       "Bring the family together and let the little ones enjoy the kids' games and family-friendly experiences at Elparaiso.",
-    image:
-      "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=1200",
     icon: <Baby />,
     message:
       "Hello Elparaiso Hotel, I would like to enquire about your kids' games and family activities.",
@@ -40,8 +37,6 @@ const activities = [
     category: "FRIENDS & SOCIAL EXPERIENCES",
     description:
       "Create memorable moments with friends and loved ones in a welcoming outdoor setting.",
-    image:
-      "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=1200",
     icon: <Users />,
     message:
       "Hello Elparaiso Hotel, I would like to enquire about your outdoor spaces.",
@@ -51,8 +46,6 @@ const activities = [
     category: "EVENTS & GATHERINGS",
     description:
       "Planning a special occasion? Speak to our team about your event requirements and available arrangements.",
-    image:
-      "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1200",
     icon: <PartyPopper />,
     message:
       "Hello Elparaiso Hotel, I would like to enquire about hosting a celebration or event.",
@@ -146,11 +139,7 @@ export default function Experiences() {
           {activities.map((activity, index) => (
             <article className="activity-card" key={activity.title}>
               <div className="activity-image">
-                <img
-                  src={activity.image}
-                  alt={activity.title}
-                  loading="lazy"
-                />
+                <GalleryPhoto category="experiences" />
 
                 <span className="activity-number">
                   0{index + 1}
@@ -181,11 +170,7 @@ export default function Experiences() {
 
       <section className="garden-highlight">
         <div className="garden-highlight-image">
-          <img
-            src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1400"
-            alt="Green outdoor garden environment"
-            loading="lazy"
-          />
+          <GalleryPhoto category="garden" />
         </div>
 
         <div className="garden-highlight-content">

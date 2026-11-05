@@ -1,0 +1,71 @@
+/* Extend the existing green/gold brand and responsive page layouts. */
+:root { --muted: #595c53; --gold-readable: #82602a; }
+:focus-visible { outline: 3px solid #92691c; outline-offset: 4px; }
+button, input, select, textarea { font: inherit; }
+button { cursor: pointer; }
+button:disabled { cursor: wait; opacity: .65; }
+.skip-link { position: fixed; top: -100px; left: 16px; z-index: 9999; padding: 16px; background: #fff; color: #173d32; }
+.skip-link:focus { top: 12px; }
+[hidden] { display: none !important; }
+.gallery-carousel { position: absolute; inset: 0; overflow: hidden; touch-action: pan-y; background: #173d32; }
+.carousel-slide, .carousel-slide img { width: 100%; height: 100%; }
+.carousel-slide img { object-fit: cover; }
+.hero-overlay { pointer-events: none; }
+.hero-content { pointer-events: none; }
+.hero-content a { pointer-events: auto; }
+.carousel-controls { position: absolute; right: 5%; bottom: 65px; z-index: 3; display: flex; align-items: center; gap: 8px; color: #fff; }
+.carousel-controls button, .carousel-message button { min-width: 44px; min-height: 44px; padding: 10px 16px; border: 1px solid #ffffff80; color: white; background: #173d32e8; border-radius: 4px; }
+.carousel-message { position: absolute; bottom: 125px; right: 5%; max-width: 280px; color: #fff; padding: 12px; background: #173d32; z-index: 2; }
+.dynamic-photo { width: 100%; height: 100%; min-height: 260px; }
+.dynamic-photo img { width: 100%; height: 100%; object-fit: cover; }
+.photo-placeholder { width: 100%; height: 100%; min-height: 260px; display: grid; place-items: center; padding: 32px; background: linear-gradient(130deg,#173d32,#3c624c); color: #fff; text-align: center; }
+.photo-placeholder button { color: #fff; background: #173d32; padding: 12px; border: 1px solid #fff; }
+.intro-image .dynamic-photo { height: 440px; }
+.gallery-state { padding: 40px; text-align: center; }
+.gallery-pagination, .gallery-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 20px 0; }
+.gallery-filters button { text-transform: capitalize; min-height: 44px; }
+.gallery-item { border-radius: 8px; overflow: hidden; }
+.gallery-item-overlay { background: linear-gradient(transparent, #10271fee); }
+.gallery-item-overlay p { color: white; font-size: .9rem; }
+.staff-workspace { display: grid; grid-template-columns: 250px minmax(0, 1fr); min-height: 80vh; background: #f8f5ed; }
+.staff-sidebar { padding: 30px 22px; background: #173d32; color: #fff; display: flex; flex-direction: column; gap: 25px; }
+.staff-sidebar h2 { font-size: 1.5rem; }
+.staff-sidebar nav { display: grid; gap: 8px; }
+.staff-sidebar nav a { display: block; padding: 12px; border-radius: 6px; color: #fff; }
+.staff-sidebar nav a.active { background: #ffffff20; box-shadow: inset 3px 0 #d5b97d; }
+.staff-profile { margin-top: auto; }
+.staff-profile button { margin-top: 12px; }
+.staff-menu { display: none; }
+.staff-content { min-width: 0; padding: clamp(16px, 3vw, 40px); }
+.staff-content .staff-dashboard { padding: 0; }
+.staff-content h1 { font-size: clamp(2rem,4vw,3rem); margin-bottom: 16px; }
+.staff-content button, .gallery-state button, .gallery-pagination button { background: #254c3b; color: #fff; border: 1px solid #254c3b; border-radius: 5px; padding: 11px 16px; min-height: 44px; }
+.staff-sidebar button { background: transparent; border: 1px solid #b9cabe; color: #fff; padding: 12px; border-radius: 5px; }
+.staff-content input:not([type=checkbox]), .staff-content select, .staff-content textarea { width: 100%; min-height: 44px; padding: 12px; color: #202521; background: #fff; border: 1px solid #83897e; border-radius: 5px; }
+.gallery-upload { padding: 24px; margin: 28px 0; background: #fff; border: 1px solid #e1ded4; border-radius: 10px; display: grid; gap: 16px; max-width: 800px; }
+.gallery-upload label { display: grid; gap: 8px; font-size: .95rem; font-weight: 600; }
+.gallery-upload label.checkbox-label { display: flex; align-items: center; gap: 12px; }
+.gallery-upload input[type=checkbox] { width: 22px; height: 22px; }
+.gallery-manager .gallery-grid { grid-template-columns: repeat(auto-fit, minmax(min(250px,100%), 1fr)); }
+.gallery-confirm { padding: 24px; margin: 20px 0; border: 2px solid #82602a; background: #fff7e9; border-radius: 8px; }
+.gallery-confirm button { margin: 8px 12px 0 0; }
+.staff-table-scroll { overflow-x: auto; }
+.staff-rooms table { width: 100%; border-collapse: collapse; background: #fff; margin: 24px 0; }
+.staff-rooms th, .staff-rooms td { padding: 16px; text-align: left; border-bottom: 1px solid #deded6; }
+@media (max-width: 900px) {
+  .staff-workspace { grid-template-columns: 1fr; }
+  .staff-sidebar { padding: 20px; gap: 16px; }
+  .staff-sidebar nav { display: none; }
+  .staff-sidebar nav.is-open { display: grid; }
+  .staff-menu { display: block; }
+  .staff-profile { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .staff-profile button { margin: 0; }
+  .staff-stats { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}
+@media (max-width: 600px) {
+  .carousel-controls { left: 7%; right: auto; bottom: 55px; }
+  .carousel-message { display: none; }
+  .hero-content { padding-bottom: 80px; }
+  .gallery-upload { padding: 18px; }
+  .intro-image .dynamic-photo { height: 330px; }
+}

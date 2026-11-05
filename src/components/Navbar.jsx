@@ -72,11 +72,11 @@ export default function Navbar() {
         ))}
 
         <NavLink
-          to="/contact"
+          to="/booking"
           className="nav-book"
           onClick={() => setOpen(false)}
         >
-          Enquire Now
+          Book Your Stay
           <ChevronRight size={15} />
         </NavLink>
       </nav>

@@ -1,3 +1,4 @@
+import GalleryPhoto from "../components/GalleryPhoto";
 import {
   ArrowRight,
   BedDouble,
@@ -22,8 +23,6 @@ const accommodation = [
     subtitle: "Comfort & Hospitality",
     description:
       "Enjoy a welcoming hotel experience at Elparaiso. Contact our team to enquire about available rooms, rates and your preferred dates.",
-    image:
-      "/images/hotel-room.jpg",
     icon: <BedDouble size={23} />,
     features: ["Comfortable stays", "Personalised assistance", "Direct reservations"],
   },
@@ -33,8 +32,6 @@ const accommodation = [
     subtitle: "Your Space Away From Home",
     description:
       "Discover our Airbnb accommodation options for guests looking for a comfortable and convenient stay in Rumuruti.",
-    image:
-      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1200",
     icon: <Home size={23} />,
     features: ["Private accommodation", "Flexible enquiries", "Comfortable living"],
   },
@@ -96,7 +93,7 @@ export default function Rooms() {
                 index % 2 !== 0 ? "image-right" : ""
               }`}
             >
-              <img src={item.image} alt={item.name} />
+              <GalleryPhoto category={item.id === 2 ? "airbnb" : "rooms"} />
               <span className="image-number">
                 0{item.id}
               </span>
