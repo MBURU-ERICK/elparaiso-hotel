@@ -1,3 +1,4 @@
+import { customerRequest } from "../customer/customerApi";
 
 const API_URL =
   import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
@@ -50,7 +51,7 @@ export const shortstayApi = {
   },
 
   createBooking: (payload) =>
-    request("/api/shortstays/bookings/", {
+    customerRequest("/api/shortstays/bookings/", {
       method: "POST",
       body: JSON.stringify(payload),
     }),

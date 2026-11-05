@@ -1,3 +1,5 @@
+import SEO from "../components/SEO";
+import { Link } from "react-router-dom";
 
 import { useEffect, useState } from "react";
 import {
@@ -115,6 +117,7 @@ export default function Booking() {
       <main className="booking-page">
         <section className="booking-container">
           <h1>Booking Request Received</h1>
+          <Link to="/account">Track your booking in your portal →</Link>
           <p>
             Thank you, {booking.guest_name}.
             Your reservation request has been received.
@@ -143,6 +146,7 @@ export default function Booking() {
   return (
     <main className="booking-page">
       <section className="booking-container">
+        <SEO title="Reserve Your Stay" description="Request a stay at Elparaiso Hotel." path="/booking" noindex />
         <h1>Reserve Your Stay</h1>
         <p>
           Experience comfort and hospitality at Elparaiso Hotel,

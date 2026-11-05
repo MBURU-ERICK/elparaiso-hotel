@@ -1,5 +1,6 @@
+import { customerRequest } from "../customer/customerApi";
 
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
 
 async function apiRequest(endpoint, options = {}) {
   const response = await fetch(`${API_URL}${endpoint}`, {
@@ -37,7 +38,7 @@ export function checkAvailability(checkIn, checkOut) {
 }
 
 export function createReservation(reservation) {
-  return apiRequest("/api/reservations/", {
+  return customerRequest("/api/reservations/", {
     method: "POST",
     body: JSON.stringify(reservation),
   });

@@ -1,0 +1,8 @@
+import { useState } from 'react';
+import { useCustomer } from './context';
+import { customerApi } from './customerApi';
+export default function CustomerProfileForm() {
+  const { user, refresh } = useCustomer(); const [busy, setBusy] = useState(false); const [error, setError] = useState(''); const [message, setMessage] = useState('');
+  async function submit(event) { event.preventDefault(); setBusy(true); setError(''); try { await customerApi.auth('profile', Object.fromEntries(new FormData(event.currentTarget))); await refresh(); setMessage('Your details have been updated.'); } catch (err) { setError(err.message); } finally { setBusy(false); } }
+  return <><header className="portal-heading"><p className="eyebrow">YOUR DETAILS</p><h1>Account profile</h1><p>Keep your contact and company details current for future requests.</p></header><form className="portal-form portal-panel" onSubmit={submit}>{error && <p role="alert">{error}</p>}{message && <p role="status">{message}</p>}<label>Full name<input name="name" defaultValue={user.name} maxLength={150} autoComplete="name" required /></label><label>Company / organisation<input name="company" defaultValue={user.company} maxLength={180} autoComplete="organization" /></label><label>Phone number<input name="phone" defaultValue={user.phone} minLength={7} maxLength={30} type="tel" autoComplete="tel" required /></label><p>Account email: {user.email}</p><button className="portal-button" disabled={busy}>{busy ? 'Saving…' : 'Save profile'}</button></form></>;
+}
