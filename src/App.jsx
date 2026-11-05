@@ -17,6 +17,7 @@ import StaffDashboard from "./pages/StaffDashboard";
 import StaffReservations from "./pages/StaffReservations";
 import Airbnb from "./pages/Airbnb";
 import StaffAirbnb from "./pages/StaffAirbnb";
+import StaffReconciliation from "./pages/StaffReconciliation";
 
 function NotFound() {
   return (
@@ -44,6 +45,7 @@ export default function App() {
         <Route  path="/staff/reservations" element={<StaffReservations />}/>
         <Route path="/airbnb" element={<Airbnb />} />
         <Route path="/staff/airbnb" element={<StaffAirbnb />} />
+        <Route path="/staff/reconciliation"element={<StaffReconciliation />}/>
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="*" element={<NotFound />} />

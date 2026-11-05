@@ -84,6 +84,9 @@ export default function StaffDashboard() {
 <Link to="/staff/airbnb">
   Manage Airbnb
 </Link>
+<Link to="/staff/reconciliation">
+  M-Pesa Reconciliation
+</Link>
         <button onClick={handleLogout}>Sign out</button>
       </header>
 

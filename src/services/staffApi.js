@@ -205,5 +205,26 @@ export const staffApi = {
       { method: "POST" }
     );
   },
+  reconciliation: (facilityId) =>
+  request(
+    `/api/payments/facilities/${facilityId}/reconciliation/`
+  ),
+
+reconciliationRows: (facilityId, status = "pending") =>
+  request(
+    `/api/payments/facilities/${facilityId}/reconciliation/rows/?status=${encodeURIComponent(status)}`
+  ),
+
+reviewStatementRow: async (facilityId, rowId, decision, notes) => {
+  await initializeCsrf();
+
+  return request(
+    `/api/payments/facilities/${facilityId}/reconciliation/rows/${rowId}/review/`,
+    {
+      method: "POST",
+      body: JSON.stringify({ decision, notes }),
+    }
+  );
+},
 
 };
