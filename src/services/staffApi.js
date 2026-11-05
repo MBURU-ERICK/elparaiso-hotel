@@ -17,14 +17,14 @@ function getCookie(name) {
   return null;
 }
 
-async function request(path, options = {}) {
+export async function staffRequest(path, options = {}) {
   const method = (options.method || "GET").toUpperCase();
 
   const headers = {
     ...(options.headers || {}),
   };
 
-  if (options.body !== undefined) {
+  if (options.body !== undefined && !(options.body instanceof FormData)) {
     headers["Content-Type"] = "application/json";
   }
 
@@ -50,7 +50,7 @@ if (!["GET", "HEAD", "OPTIONS"].includes(method)) {
   const data = await response.json().catch(() => ({}));
 
   if (!response.ok) {
-    const detail = data.detail;
+    const detail = data.detail || (Object.keys(data).length ? Object.entries(data).map(([field, errors]) => `${field}: ${Array.isArray(errors) ? errors.join(' ') : String(errors)}`).join(' · ') : null);
 
     const message =
       typeof detail === "string"
@@ -69,7 +69,7 @@ if (!["GET", "HEAD", "OPTIONS"].includes(method)) {
 }
 
 async function initializeCsrf() {
-  const data = await request("/api/staff/csrf/");
+  const data = await staffRequest("/api/staff/csrf/");
 
   csrfToken = data.csrfToken || getCookie("csrftoken");
 
@@ -88,7 +88,7 @@ export const staffApi = {
   login: async (username, password) => {
     await initializeCsrf();
 
-    const data = await request("/api/staff/login/", {
+    const data = await staffRequest("/api/staff/login/", {
       method: "POST",
       body: JSON.stringify({ username, password }),
     });
@@ -100,12 +100,12 @@ export const staffApi = {
     return data;
   },
 
-  me: () => request("/api/staff/me/"),
+  me: () => staffRequest("/api/staff/me/"),
 
   logout: async () => {
     await initializeCsrf();
 
-    const data = await request("/api/staff/logout/", {
+    const data = await staffRequest("/api/staff/logout/", {
       method: "POST",
     });
 
@@ -115,7 +115,7 @@ export const staffApi = {
 
   // Dashboard
   dashboard: () =>
-    request("/api/reservations/dashboard/"),
+    staffRequest("/api/reservations/dashboard/"),
 
   // Reservation list
   reservations: (search = "", status = "") => {
@@ -126,14 +126,14 @@ export const staffApi = {
 
     const query = params.toString();
 
-    return request(
+    return staffRequest(
       `/api/staff/reservations/${query ? `?${query}` : ""}`
     );
   },
 
   // Room availability
   availableRooms: (id) =>
-    request(
+    staffRequest(
       `/api/staff/reservations/${id}/available-rooms/`
     ),
 
@@ -141,7 +141,7 @@ export const staffApi = {
   confirmReservation: async (id, roomId) => {
     await initializeCsrf();
 
-    return request(
+    return staffRequest(
       `/api/staff/reservations/${id}/confirm/`,
       {
         method: "POST",
@@ -166,7 +166,7 @@ export const staffApi = {
 
     await initializeCsrf();
 
-    return request(
+    return staffRequest(
       `/api/staff/reservations/${id}/${action}/`,
       {
         method: "POST",
@@ -181,7 +181,7 @@ export const staffApi = {
 
     const query = params.toString();
 
-    return request(
+    return staffRequest(
       `/api/shortstays/staff/bookings/${query ? `?${query}` : ""}`
     );
   },
@@ -200,25 +200,25 @@ export const staffApi = {
 
     await initializeCsrf();
 
-    return request(
+    return staffRequest(
       `/api/shortstays/staff/bookings/${id}/${action}/`,
       { method: "POST" }
     );
   },
   reconciliation: (facilityId) =>
-  request(
+  staffRequest(
     `/api/payments/facilities/${facilityId}/reconciliation/`
   ),
 
 reconciliationRows: (facilityId, status = "pending") =>
-  request(
+  staffRequest(
     `/api/payments/facilities/${facilityId}/reconciliation/rows/?status=${encodeURIComponent(status)}`
   ),
 
 reviewStatementRow: async (facilityId, rowId, decision, notes) => {
   await initializeCsrf();
 
-  return request(
+  return staffRequest(
     `/api/payments/facilities/${facilityId}/reconciliation/rows/${rowId}/review/`,
     {
       method: "POST",
