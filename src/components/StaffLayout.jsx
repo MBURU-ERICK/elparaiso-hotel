@@ -25,7 +25,7 @@ export default function StaffLayout() {
     <div><p className="eyebrow">ELPARAISO HOTEL</p><h2>Staff workspace</h2></div>
     <button className="staff-menu" aria-expanded={open} aria-controls="staff-navigation" onClick={() => setOpen(v => !v)}>Workspace menu</button>
     <nav id="staff-navigation" className={open ? 'is-open' : ''} aria-label="Staff navigation">
-      {[['/staff/dashboard', 'Overview', true], ['/staff/reservations', 'Reservations', permits('view')], ['/staff/rooms', 'Rooms', permits('view')], ['/staff/airbnb', 'Airbnb bookings', permits('view')], ['/staff/gallery', 'Gallery', permits('manage')], ['/staff/reconciliation', 'M-Pesa & accountant reviews', permits('payments_view')]].filter(([, , visible]) => visible).map(([to, title]) => <NavLink key={to} to={to} onClick={() => setOpen(false)}>{title}</NavLink>)}
+      {[['/staff/dashboard', 'Overview', true], ['/staff/reservations', 'Reservations', permits('view')], ['/staff/rooms', 'Rooms', permits('view')], ['/staff/airbnb', 'Airbnb bookings', permits('view')], ['/staff/gallery', 'Gallery', permits('manage')], ['/staff/reconciliation', 'M-Pesa & accountant reviews', permits('payments_manage')]].filter(([, , visible]) => visible).map(([to, title]) => <NavLink key={to} to={to} onClick={() => setOpen(false)}>{title}</NavLink>)}
     </nav><div className="staff-profile"><p>Signed in as <strong>{user.first_name || user.username}</strong></p><button onClick={logout}>Sign out</button></div>
     {error && <p role="alert">{error}</p>}
   </aside><div className="staff-content"><Outlet context={{ user }} /></div></div>;

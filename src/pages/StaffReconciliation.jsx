@@ -1,10 +1,9 @@
 
 import { useCallback, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useOutletContext } from "react-router-dom";
 import { staffApi } from "../services/staffApi";
 import "../styles/staff.css";
 
-const FACILITY_ID = 1; // Temporary development facility
 
 const DECISIONS = [
   { value: "investigate", label: "Investigate" },
@@ -25,6 +24,9 @@ function formatAmount(value) {
 
 export default function StaffReconciliation() {
   const navigate = useNavigate();
+  const { user } = useOutletContext();
+  const facilities = user.facilities.filter(f => f.actions.includes("payments_manage"));
+  const [facilityId, setFacilityId] = useState(() => facilities[0]?.id || "");
 
   const [report, setReport] = useState(null);
   const [rows, setRows] = useState([]);
@@ -40,6 +42,7 @@ export default function StaffReconciliation() {
   const [notice, setNotice] = useState("");
 
   const loadData = useCallback(async () => {
+    if (!facilityId) return;
     setLoading(true);
     setError("");
 
@@ -47,8 +50,8 @@ export default function StaffReconciliation() {
       await staffApi.me();
 
       const [dashboard, queue] = await Promise.all([
-        staffApi.reconciliation(FACILITY_ID),
-        staffApi.reconciliationRows(FACILITY_ID, filter),
+        staffApi.reconciliation(facilityId),
+        staffApi.reconciliationRows(facilityId, filter),
       ]);
 
       setReport(dashboard);
@@ -62,12 +65,13 @@ export default function StaffReconciliation() {
     } finally {
       setLoading(false);
     }
-  }, [filter, navigate]);
+  }, [filter, navigate, facilityId]);
 
   useEffect(() => {
     let active = true;
 
     async function initialize() {
+      if (!facilityId) { setLoading(false); return; }
       setLoading(true);
       setError("");
 
@@ -75,8 +79,8 @@ export default function StaffReconciliation() {
         await staffApi.me();
 
         const [dashboard, queue] = await Promise.all([
-          staffApi.reconciliation(FACILITY_ID),
-          staffApi.reconciliationRows(FACILITY_ID, filter),
+          staffApi.reconciliation(facilityId),
+          staffApi.reconciliationRows(facilityId, filter),
         ]);
 
         if (!active) return;
@@ -101,7 +105,7 @@ export default function StaffReconciliation() {
     return () => {
       active = false;
     };
-  }, [filter, navigate]);
+  }, [filter, navigate, facilityId]);
 
   function openReview(row) {
     if (row.review) return;
@@ -149,7 +153,7 @@ export default function StaffReconciliation() {
 
     try {
       await staffApi.reviewStatementRow(
-        FACILITY_ID,
+        facilityId,
         selected.id,
         decision,
         cleanNotes
@@ -196,6 +200,11 @@ export default function StaffReconciliation() {
         </Link>
       </header>
 
+      <label htmlFor="reconciliation-facility">Facility</label>
+      <select id="reconciliation-facility" value={facilityId} disabled={saving} onChange={event => {
+        setSelected(null); setReport(null); setRows([]); setLoading(true); setFacilityId(Number(event.target.value));
+      }}>{facilities.map(f => <option value={f.id} key={f.id}>{f.name}</option>)}</select>
+      {!facilities.length && <p>No facilities are available for your reconciliation permissions.</p>}
       <section className="staff-table-section">
         <strong>Sandbox reconciliation</strong>
         <p>
