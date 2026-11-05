@@ -1,3 +1,5 @@
+import GalleryCarousel from "../components/GalleryCarousel";
+import GalleryPhoto from "../components/GalleryPhoto";
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
@@ -44,6 +46,7 @@ export default function Home() {
     path="/"
   />
       <section className="hero">
+        <GalleryCarousel />
         <div className="hero-overlay"></div>
 
         <div className="hero-content">
@@ -81,10 +84,7 @@ export default function Home() {
 
       <section className="intro section">
         <div className="intro-image">
-          <img
-            src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1000"
-            alt="Beautiful hotel swimming pool and surroundings"
-          />
+          <GalleryPhoto category="general" />
         </div>
 
         <div className="intro-content">
