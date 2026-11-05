@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { staffApi } from "../services/staffApi";
 import "../styles/staff.css";
-import { Link } from "react-router-dom";
+
 
 export default function StaffDashboard() {
   const navigate = useNavigate();
@@ -25,8 +25,7 @@ export default function StaffDashboard() {
         if (!active) return;
 
         if (
-          err.message.includes("401") ||
-          err.message.includes("403")
+          [401, 403].includes(err.status)
         ) {
           navigate("/staff/login", { replace: true });
         } else {
@@ -43,15 +42,6 @@ export default function StaffDashboard() {
       active = false;
     };
   }, [navigate]);
-
-  async function handleLogout() {
-    try {
-      await staffApi.logout();
-      navigate("/staff/login", { replace: true });
-    } catch (err) {
-      setError(err.message);
-    }
-  }
 
   if (loading) return <p>Loading staff dashboard...</p>;
 
@@ -78,16 +68,6 @@ export default function StaffDashboard() {
           <h1>Hotel Operations</h1>
           <p>Operational date: {dashboard.date}</p>
         </div>
-        <Link to="/staff/reservations">
-  Manage Reservations
-</Link>
-<Link to="/staff/airbnb">
-  Manage Airbnb
-</Link>
-<Link to="/staff/reconciliation">
-  M-Pesa Reconciliation
-</Link>
-        <button onClick={handleLogout}>Sign out</button>
       </header>
 
       <section className="staff-stats">

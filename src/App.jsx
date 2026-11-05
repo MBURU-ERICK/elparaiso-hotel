@@ -1,3 +1,6 @@
+import StaffLayout from "./components/StaffLayout";
+import GalleryManager from "./components/GalleryManager";
+import StaffRooms from "./pages/StaffRooms";
 import { Routes, Route } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
@@ -31,7 +34,9 @@ function NotFound() {
 export default function App() {
   return (
     <>
+      <a className="skip-link" href="#page-content">Skip to content</a>
       <Navbar />
+      <div id="page-content" tabIndex={-1}>
 
       <Routes>
         <Route path="/" element={<Home />} />
@@ -41,15 +46,20 @@ export default function App() {
         <Route path="/booking" element={<Booking />} />
         <Route path="/about" element={<About />} />
         <Route path="/staff/login" element={<StaffLogin />} />
-        <Route path="/staff/dashboard" element={<StaffDashboard />} />
-        <Route  path="/staff/reservations" element={<StaffReservations />}/>
         <Route path="/airbnb" element={<Airbnb />} />
-        <Route path="/staff/airbnb" element={<StaffAirbnb />} />
-        <Route path="/staff/reconciliation"element={<StaffReconciliation />}/>
+        <Route element={<StaffLayout />}>
+          <Route path="/staff/dashboard" element={<StaffDashboard />} />
+          <Route path="/staff/reservations" element={<StaffReservations />} />
+          <Route path="/staff/rooms" element={<StaffRooms />} />
+          <Route path="/staff/airbnb" element={<StaffAirbnb />} />
+          <Route path="/staff/reconciliation" element={<StaffReconciliation />} />
+          <Route path="/staff/gallery" element={<GalleryManager />} />
+        </Route>
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
+      </div>
 
       <Footer />
       <WhatsAppButton />
