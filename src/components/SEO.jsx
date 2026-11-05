@@ -5,17 +5,23 @@ export default function SEO({
   title,
   description,
   path = "",
+  noindex = false,
 }) {
   const siteName = "Elparaiso Hotel";
-  const baseUrl = "https://elparaiso-hotel.vercel.app";
+  const baseUrl = (import.meta.env.VITE_SITE_URL || "https://elparaiso-hotel.vercel.app").replace(/\/$/, "");
   const pageUrl = `${baseUrl}${path}`;
 
   return (
     <Helmet>
-      <title>{title} | {siteName}</title>
+      <title>{`${title} | ${siteName}`}</title>
       <meta name="description" content={description} />
+      <meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow"} />
+      <meta property="og:image" content={`${baseUrl}/images/Logo%20elparaiso.png`} />
+      <meta property="og:image:alt" content="Elparaiso Hotel — Simply Amazing" />
+      <meta name="twitter:image" content={`${baseUrl}/images/Logo%20elparaiso.png`} />
       <link rel="canonical" href={pageUrl} />
 
+      {(path === "/" || path === "") && <script type="application/ld+json">{JSON.stringify({ "@context": "https://schema.org", "@type": "Hotel", name: siteName, url: baseUrl, image: `${baseUrl}/images/Logo%20elparaiso.png`, telephone: "+254708231994", address: { "@type": "PostalAddress", addressLocality: "Rumuruti", addressRegion: "Laikipia", addressCountry: "KE" } }).replace(/</g, "\\u003c")}</script>}
       <meta property="og:type" content="website" />
       <meta property="og:site_name" content={siteName} />
       <meta property="og:title" content={`${title} | ${siteName}`} />

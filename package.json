@@ -5,10 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && node scripts/prerender.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "node tests/gallery.test.mjs"
+    "test": "node tests/gallery.test.mjs",
+    "check:seo": "node scripts/check-public-pages.mjs"
   },
   "dependencies": {
     "lucide-react": "^1.66.0",
