@@ -11,6 +11,12 @@ import About from "./pages/About";
 import Gallery from "./pages/Gallery";
 import Contact from "./pages/Contact";
 import WhatsAppButton from "./components/WhatsAppButton";
+import Booking from "./pages/Booking";
+import StaffLogin from "./pages/StaffLogin";
+import StaffDashboard from "./pages/StaffDashboard";
+import StaffReservations from "./pages/StaffReservations";
+import Airbnb from "./pages/Airbnb";
+import StaffAirbnb from "./pages/StaffAirbnb";
 
 function NotFound() {
   return (
@@ -31,7 +37,13 @@ export default function App() {
         <Route path="/rooms" element={<Rooms />} />
         <Route path="/restaurant" element={<Restaurant />} />
         <Route path="/experiences" element={<Experiences />} />
+        <Route path="/booking" element={<Booking />} />
         <Route path="/about" element={<About />} />
+        <Route path="/staff/login" element={<StaffLogin />} />
+        <Route path="/staff/dashboard" element={<StaffDashboard />} />
+        <Route  path="/staff/reservations" element={<StaffReservations />}/>
+        <Route path="/airbnb" element={<Airbnb />} />
+        <Route path="/staff/airbnb" element={<StaffAirbnb />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="*" element={<NotFound />} />

@@ -1,0 +1,174 @@
+
+.staff-reservations .staff-back-link {
+  color: #304b3d;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.staff-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.staff-filters input {
+  flex: 2;
+  min-width: 220px;
+}
+
+.staff-filters select {
+  flex: 1;
+  min-width: 150px;
+}
+
+.staff-filters input,
+.staff-filters select,
+.staff-modal select {
+  padding: 12px;
+  border: 1px solid #d5d5d5;
+  border-radius: 7px;
+  background: white;
+  color: #202521;
+}
+
+.staff-filters button,
+.staff-action-buttons button,
+.staff-modal-actions button {
+  background: #304b3d;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 14px;
+  cursor: pointer;
+}
+
+.staff-action-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.staff-action-buttons button {
+  white-space: nowrap;
+  font-size: 13px;
+}
+
+.staff-action-buttons .staff-danger {
+  background: #a23c3c;
+}
+
+.staff-muted {
+  color: #777;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.staff-status {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.staff-status-pending {
+  background: #fff2d5;
+  color: #805800;
+}
+
+.staff-status-confirmed {
+  background: #e3f0e7;
+  color: #245a36;
+}
+
+.staff-status-checked_in {
+  background: #dcebf9;
+  color: #235b87;
+}
+
+.staff-status-checked_out {
+  background: #eeeeee;
+  color: #555;
+}
+
+.staff-status-cancelled {
+  background: #f8e2e2;
+  color: #913535;
+}
+
+.staff-alert {
+  padding: 14px 18px;
+  border-radius: 7px;
+  margin-bottom: 18px;
+}
+
+.staff-alert-error {
+  background: #f8e2e2;
+  color: #913535;
+}
+
+.staff-alert-success {
+  background: #e3f0e7;
+  color: #245a36;
+}
+
+.staff-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: grid;
+  place-items: center;
+  z-index: 1000;
+  padding: 16px;
+}
+
+.staff-modal {
+  width: 100%;
+  max-width: 520px;
+  background: #fff;
+  color: #202521;
+  border-radius: 12px;
+  padding: 28px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.staff-modal form {
+  display: grid;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.staff-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.staff-modal-actions .staff-secondary {
+  background: #777;
+}
+
+.staff-action-buttons button:disabled,
+.staff-modal-actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+  .staff-filters {
+    flex-direction: column;
+  }
+
+  .staff-filters input,
+  .staff-filters select {
+    width: 100%;
+  }
+
+  .staff-modal {
+    padding: 20px;
+  }
+}

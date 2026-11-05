@@ -85,7 +85,7 @@ export default function Gallery() {
         </div>
 
         <div className="gallery-grid">
-          {filteredPhotos.map((photo, index) => (
+          {filteredPhotos.map((photo) => (
             <article className="gallery-item" key={photo.title}>
               <img
                 src={`${photo.image}?auto=format&fit=crop&w=1000&q=85`}

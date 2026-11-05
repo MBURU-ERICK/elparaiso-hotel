@@ -1,0 +1,124 @@
+
+.staff-login,
+.staff-dashboard {
+  --staff-gold: #c5a46d;
+  --staff-dark: #202521;
+  --staff-cream: #f8f5ed;
+  --staff-green: #304b3d;
+  font-family: inherit;
+}
+
+.staff-login {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: var(--staff-dark);
+  padding: 24px;
+}
+
+.staff-login-card {
+  background: var(--staff-cream);
+  padding: 40px;
+  border-radius: 14px;
+  width: 100%;
+  max-width: 420px;
+  display: grid;
+  gap: 14px;
+}
+
+.staff-eyebrow {
+  color: var(--staff-gold);
+  letter-spacing: 3px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.staff-login input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #b7b7b7;
+  border-radius: 6px;
+}
+
+.staff-login button,
+.staff-header button {
+  background: var(--staff-green);
+  color: white;
+  border: 0;
+  padding: 13px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.staff-dashboard {
+  background: var(--staff-cream);
+  min-height: 100vh;
+  padding: 32px;
+  color: var(--staff-dark);
+}
+
+.staff-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.staff-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.staff-stat,
+.staff-revenue,
+.staff-table-section {
+  background: white;
+  padding: 22px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.04);
+}
+
+.staff-stat h2 {
+  font-size: 32px;
+  margin: 8px 0;
+}
+
+.staff-revenue > p {
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--staff-green);
+}
+
+.staff-table-scroll {
+  overflow-x: auto;
+}
+
+.staff-table-section table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.staff-table-section th,
+.staff-table-section td {
+  padding: 12px;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+@media (max-width: 600px) {
+  .staff-dashboard {
+    padding: 16px;
+  }
+
+  .staff-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .staff-login-card {
+    padding: 24px;
+  }
+}
