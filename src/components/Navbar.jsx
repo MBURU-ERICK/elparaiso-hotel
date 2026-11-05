@@ -4,12 +4,11 @@ import { NavLink, Link } from "react-router-dom";
 import { Menu, X, ChevronRight } from "lucide-react";
 
 const links = [
-  { name: "Home", path: "/" },
   { name: "Accommodation", path: "/rooms" },
   { name: "Restaurant", path: "/restaurant" },
-  { name: "Experiences", path: "/experiences" },
+  { name: "Groups & conferences", path: "/business" },
   { name: "Gallery", path: "/gallery" },
-  { name: "About", path: "/about" },
+  { name: "My portal", path: "/account" },
   { name: "Contact", path: "/contact" },
 ];
 
@@ -36,10 +35,7 @@ export default function Navbar() {
         onClick={() => setOpen(false)}
         aria-label="Elparaiso Hotel homepage"
       >
-        <span className="brand-name">ELPARAISO</span>
-        <span className="brand-subtitle">
-          HOTEL & HOSPITALITY
-        </span>
+        <img className="brand-logo" src="/images/Logo%20elparaiso.png" alt="Elparaiso Hotel — Simply Amazing" width="1970" height="800" fetchPriority="high" />
       </Link>
 
       <button

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import GalleryPhoto from "../components/GalleryPhoto";
 import {
   ArrowRight,
@@ -11,7 +12,6 @@ import {
 } from "lucide-react";
 import SEO from "../components/SEO";
 
-const WHATSAPP = "https://wa.me/254708231994?text=";
 
 const activities = [
   {
@@ -52,17 +52,15 @@ const activities = [
   },
 ];
 
-function EnquiryButton({ message, children = "Make an Enquiry" }) {
+function EnquiryButton({ children = "Make an Enquiry" }) {
   return (
-    <a
-      href={`${WHATSAPP}${encodeURIComponent(message)}`}
-      target="_blank"
-      rel="noopener noreferrer"
+    <Link
+      to="/account/requests/new?service=general"
       className="btn btn-gold"
     >
       <MessageCircle size={17} />
       {children}
-    </a>
+    </Link>
   );
 }
 

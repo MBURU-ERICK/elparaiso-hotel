@@ -130,6 +130,10 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="section business-home">
+        <div><span className="eyebrow">BRING YOUR TEAM TOGETHER</span><h2>Big plans.<br /><em>A personal welcome.</em></h2><p>Planning a company stay, conference or group visit? Share your brief and keep quotations, conversations and invoices in your own workspace.</p></div>
+        <div><Link to="/business" className="btn btn-gold">Explore group & conference enquiries →</Link><Link to="/account" className="text-link">Open your customer portal</Link></div>
+      </section>
       <section className="cta-section">
         <div>
           <span className="eyebrow">YOUR NEXT EXPERIENCE AWAITS</span>

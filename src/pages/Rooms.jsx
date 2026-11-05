@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import GalleryPhoto from "../components/GalleryPhoto";
 import {
   ArrowRight,
@@ -9,12 +10,6 @@ import {
   Sparkles,
 } from "lucide-react";
 import SEO from "../components/SEO";
-
-const WHATSAPP =
-  "https://wa.me/254708231994?text=" +
-  encodeURIComponent(
-    "Hello Elparaiso Hotel, I would like to enquire about accommodation."
-  );
 
 const accommodation = [
   {
@@ -119,15 +114,13 @@ export default function Rooms() {
                 ))}
               </ul>
 
-              <a
-                href={WHATSAPP}
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                to={item.id === 2 ? "/airbnb" : "/booking"}
                 className="btn btn-gold"
               >
                 <MessageCircle size={17} />
-                Enquire on WhatsApp
-              </a>
+                Book your stay
+              </Link>
             </div>
           </article>
         ))}
@@ -148,15 +141,13 @@ export default function Rooms() {
             accommodation options and reservations.
           </p>
 
-          <a
-            href={WHATSAPP}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            to="/account/requests/new"
             className="btn btn-gold"
           >
             <MessageCircle size={17} />
-            Chat With Our Team
-          </a>
+            Request a quotation
+          </Link>
         </div>
 
         <div className="stay-contact">

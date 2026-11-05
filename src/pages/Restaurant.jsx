@@ -1,8 +1,8 @@
+import { Link } from "react-router-dom";
 import GalleryPhoto from "../components/GalleryPhoto";
 import { MessageCircle, ArrowRight, Utensils, Coffee, Wine, Clock } from "lucide-react";
 import SEO from "../components/SEO";
 
-const WHATSAPP = "https://wa.me/254708231994?text=";
 
 const enquiries = {
   food: "Hello Elparaiso Hotel, I would like to enquire about your restaurant menu and meals.",
@@ -31,17 +31,15 @@ const diningExperiences = [
   },
 ];
 
-function WhatsAppButton({ message, children }) {
+function WhatsAppButton({ children }) {
   return (
-    <a
-      href={`${WHATSAPP}${encodeURIComponent(message)}`}
-      target="_blank"
-      rel="noopener noreferrer"
+    <Link
+      to="/account/requests/new?service=dining"
       className="btn btn-gold"
     >
       <MessageCircle size={17} />
       {children}
-    </a>
+    </Link>
   );
 }
 
@@ -185,7 +183,7 @@ export default function Restaurant() {
 
         <WhatsAppButton message={enquiries.order}>
           <MessageCircle size={17} />
-          Order or Enquire on WhatsApp
+          Order or Send a service request
         </WhatsAppButton>
 
         <div className="restaurant-details">

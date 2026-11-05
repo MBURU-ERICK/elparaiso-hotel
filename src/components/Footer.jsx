@@ -7,8 +7,7 @@ export default function Footer() {
       <div className="footer-main">
         <div>
           <Link to="/" className="brand footer-brand">
-            <span className="brand-name">ELPARAISO</span>
-            <span className="brand-subtitle">HOTEL & HOSPITALITY</span>
+            <img className="brand-logo" src="/images/Logo%20elparaiso.png" alt="Elparaiso Hotel" width="1970" height="800" loading="lazy" />
           </Link>
 
           <p>
@@ -21,6 +20,8 @@ export default function Footer() {
         <div>
           <h3>Explore</h3>
           <Link to="/rooms">Accommodation</Link>
+          <Link to="/business">Groups & conferences</Link>
+          <Link to="/account">Customer portal</Link>
           <Link to="/restaurant">Restaurant</Link>
           <Link to="/experiences">Experiences</Link>
           <Link to="/gallery">Gallery</Link>
