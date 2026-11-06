@@ -240,7 +240,63 @@ export default function StaffReconciliation() {
 
           <section className="staff-table-section">
             <h2>Statement review queue</h2>
+<section className="staff-table-section">
+  <h2>Accountant Review History</h2>
 
+  <p>
+    Read-only audit records of completed statement reviews.
+    These decisions do not verify or settle payments.
+  </p>
+
+  <button
+    type="button"
+    onClick={() => setFilter("reviewed")}
+  >
+    View reviewed transactions
+  </button>
+
+  {filter === "reviewed" && (
+    <div className="staff-table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Receipt</th>
+            <th>Amount</th>
+            <th>Decision</th>
+            <th>Reviewer ID</th>
+            <th>Reviewed at</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {rows.filter((row) => row.review).map((row) => (
+            <tr key={row.id}>
+              <td>{row.receipt}</td>
+              <td>KSh {formatAmount(row.amount)}</td>
+              <td>{formatLabel(row.review.decision)}</td>
+              <td>{row.review.reviewer_id}</td>
+              <td>
+                {new Date(
+                  row.review.reviewed_at
+                ).toLocaleString("en-KE", {
+                  timeZone: "Africa/Nairobi",
+                  dateStyle: "medium",
+                  timeStyle: "short",
+                })}
+              </td>
+              <td>{row.review.notes}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {rows.filter((row) => row.review).length === 0 && (
+        <p>No completed reviews found.</p>
+      )}
+    </div>
+  )}
+</section>
             <div className="staff-filters">
               <label htmlFor="review-filter">
                 Review status
