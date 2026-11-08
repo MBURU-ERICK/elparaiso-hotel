@@ -58,3 +58,58 @@
 .guest-experience .guest-navigation { top:88px; }
 @media(max-width:600px) { .guest-experience .guest-navigation { top:73px; }.guest-experience :is(.restaurant-hero,.experiences-hero,.about-hero,.gallery-hero,.contact-hero) { padding:36px 7%; min-height:250px; border-radius:18px; margin-top:20px; } }
 .guest-experience .navbar .nav-links .nav-link { color:#505853; font-size:13px; font-weight:600; }.guest-experience .navbar .nav-links .nav-link:hover,.guest-experience .navbar .nav-links .nav-link.active-link { color:#1f614c; }.guest-experience .navbar .nav-links .nav-book { background:#1f614c; border:0; color:white; font-size:12px; }.guest-experience .navbar .nav-links .nav-book:hover { background:#2c755b; color:white; }.guest-experience .footer .footer-main p,.guest-experience .footer .footer-main a:not(.brand),.guest-experience .footer .footer-main h3 { color:#64765b; }
+
+/* Warm linen, soft sage and sand bring depth to the guest experience. */
+.guest-experience {
+  --stay-paper:#fbf7ee;
+  --stay-sand:#eee4d2;
+  --stay-sage:#dde5d3;
+  --stay-line:#dfd8c8;
+  --stay-muted:#626b5d;
+  background-color:#f3eddf;
+  background-image:radial-gradient(ellipse at 5% 0%,#e0e7d67a,transparent 48%),radial-gradient(ellipse at 95% 30%,#e8d5b448,transparent 55%),radial-gradient(#7770520a .65px,transparent .65px);
+  background-size:auto,auto,5px 5px;
+}
+.guest-experience .navbar { background:#f6f0e4; border-bottom-color:#ddd5c3; }
+.guest-experience .brand-logo { background:transparent; }
+.guest-experience .guest-navigation { background:#e9eddf; border-bottom-color:#d3dcc7; }
+.guest-experience .guest-navigation a.active { background:#d5dfc7; color:#244b32; }
+.guest-experience .guest-navigation a:hover { background:#dfe7d4; }
+.guest-experience .guest-navigation > button { background:#f9f5e9; border-color:#cbd6be; }
+.guest-experience .stay-search { background:#fcf8ee; border-color:#dbd1bd; box-shadow:0 8px 26px #6354380c; }
+.guest-experience .stay-search > label { border-left-color:#ddd5c3; }
+.guest-experience .explore-note { background:#dce5cc; color:#3e583c; }
+.guest-experience .explore-categories,.guest-experience .explore-assurance { border-color:#d9d3c2; }
+.guest-experience .stay-listing { padding:10px 10px 14px; background:#fbf7ed; border:1px solid #e1d9c8; border-radius:24px; box-shadow:0 5px 18px #65533c06; }
+.guest-experience .stay-listing-photo { background:#e1e6d5; }
+.guest-experience .stay-listing > p,.guest-experience .stay-card-heading { margin-left:5px; margin-right:5px; }
+.guest-experience .stay-photo-label,.guest-experience .stay-photo-arrow { background:#fff9eb; }
+.guest-experience .stay-listing > p,.guest-experience .explore-intro p,.guest-experience .listing-heading > span,.guest-experience .explore-assurance p { color:#626b5c; }
+.guest-experience .stay-card-rate { color:#2f4433; }
+.guest-experience .explore-collection { background:#e1e7d4; border:1px solid #d1dbc0; }
+.guest-experience .collection-copy p { color:#59684d; }
+.guest-experience .stay-skeleton { background:#e8e4d5; color:#65725b; }
+.guest-experience .explorer-state { background:#f8f3e8; border-color:#cfc8b5; }
+.guest-experience .customer-workspace { background:transparent; }
+.guest-experience .customer-sidebar { background:#e6ebdb; border-color:#d1dac2; }
+.guest-experience .customer-sidebar nav a.active { background:#d5dfc6; }
+.guest-experience :is(.portal-panel,.portal-action-card,.auth-card) { background:#fbf7ee; border-color:#ded6c4; }
+.guest-experience .portal-action-card:nth-child(2n) { background:#e8eddd; }
+.guest-experience .portal-action-card:nth-child(3n) { background:#eee2ce; }
+.guest-experience .portal-notice,.guest-experience .package-estimate { background:#dde7d0; border-color:#c8d5ba; }
+.guest-experience .portal-form input,.guest-experience .portal-form select,.guest-experience .portal-form textarea { background:#fffdf6; border-color:#cfcbb9; }
+.guest-experience .customer-auth { background:transparent; }
+.guest-experience .auth-story { background:#dfe7d3; }
+.guest-experience .booking-page { background:transparent; }
+.guest-experience .booking-form { background:#fbf7ee; border-color:#dcd2bd; }
+.guest-experience .booking-room-card,.guest-experience .package-card { background:#faf5e8; border-color:#ded4bf; }
+.guest-experience .booking-room-card[aria-pressed="true"],.guest-experience .package-card:has(input:checked) { background:#e4ebd7; border-color:#42664b; }
+.guest-experience .booking-profile-note,.guest-experience .booking-price { background:#e2e9d4; }
+.guest-experience .booking-form input,.guest-experience .booking-form select,.guest-experience .booking-form textarea { background:#fffdf6; border-color:#cecbb7; }
+.guest-experience :is(.restaurant-hero,.experiences-hero,.about-hero,.gallery-hero,.contact-hero,.business-hero) { background:linear-gradient(115deg,#e0e7d2,#ece1ca); }
+.guest-experience :is(.dining-card,.experience-card,.about-value-card,.contact-card,.gallery-card,.business-note) { background:#fbf7ec; border-color:#ded5c0; }
+.guest-experience :is(.gallery-cta,.about-cta,.restaurant-menu-cta,.experiences-cta,.stay-cta) { background:#dce5ce; }
+.guest-experience .footer { background:#e3e8d5; border-color:#cfd8bf; }
+.guest-experience .footer-bottom { border-color:#c9d2ba; }
+@media(max-width:1200px) { .guest-experience .navbar .nav-links { background:#f6f0e4; border-color:#ddd5c3; } }
+@media(max-width:600px) { .guest-experience .stay-listing { padding:7px 7px 12px; border-radius:19px; } }
