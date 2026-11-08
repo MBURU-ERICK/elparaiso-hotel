@@ -1,4 +1,5 @@
 import "./styles/hospitality.css";
+import "./styles/staff-refresh.css";
 import CustomerNav from "./customer/CustomerNav";
 import { Helmet } from "react-helmet-async";
 import { lazy, Suspense } from "react";
@@ -56,7 +57,7 @@ export default function App() {
       {privatePage && <Helmet><meta name="robots" content="noindex, nofollow" /></Helmet>}
       <a className="skip-link" href="#page-content">Skip to content</a>
       <CustomerProvider>
-      <Navbar />
+      {!pathname.startsWith("/staff") && <Navbar />}
       <CustomerNav />
       <div id="page-content" tabIndex={-1}>
 
@@ -97,8 +98,8 @@ export default function App() {
       </Suspense>
       </div>
 
-      <Footer />
-      <WhatsAppButton />
+      {!pathname.startsWith("/staff") && <Footer />}
+      {!pathname.startsWith("/staff") && <WhatsAppButton />}
       </CustomerProvider>
     </div>
   );
