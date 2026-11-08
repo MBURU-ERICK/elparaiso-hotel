@@ -27,6 +27,9 @@ export async function customerRequest(path, options = {}) {
 }
 const post = (path, data) => customerRequest(`/api/customers/${path}/`, { method: 'POST', body: JSON.stringify(data) });
 export const customerApi = {
+  reviewOptions: () => customerRequest('/api/customers/reviews/eligible/'),
+  submitReview: data => post('reviews', data),
+  completeService: id => post(`staff/requests/${id}/complete`, {}),
   favourites: () => customerRequest('/api/customers/favourite-rooms/'),
   favourite: (room, saved) => customerRequest('/api/customers/favourite-rooms/', { method: saved ? 'POST' : 'DELETE', body: JSON.stringify({ room }) }),
   catalogue: () => customerRequest('/api/customers/catalogue/'),

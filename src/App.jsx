@@ -3,6 +3,7 @@ import "./styles/staff-refresh.css";
 import CustomerNav from "./customer/CustomerNav";
 import { Helmet } from "react-helmet-async";
 import { lazy, Suspense } from "react";
+const Reviews = lazy(() => import("./customer/Reviews"));
 const Business = lazy(() => import("./pages/Business"));
 const StaffCustomers = lazy(() => import("./customer/StaffCustomers"));
 const InvoiceDetail = lazy(() => import("./customer/InvoiceDetail"));
@@ -72,6 +73,7 @@ export default function App() {
         {['login', 'register', 'forgot', 'reset', 'verify'].map(mode => <Route key={mode} path={`/account/${mode}`} element={<CustomerAuth key={mode} mode={mode} />} />)}
         <Route path="/account" element={<CustomerGate verified={false}><CustomerLayout /></CustomerGate>}>
           <Route index element={<CustomerOverview />} />
+          <Route path="reviews" element={<CustomerGate><Reviews /></CustomerGate>} />
           <Route path="profile" element={<CustomerProfileForm />} />
           <Route path="requests" element={<CustomerGate><RequestList /></CustomerGate>} />
           <Route path="requests/new" element={<CustomerGate><RequestForm /></CustomerGate>} />

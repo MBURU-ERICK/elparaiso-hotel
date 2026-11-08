@@ -1,3 +1,4 @@
+import Reviews from './Reviews';
 import StaffPackages from './StaffPackages';
 import { useState } from 'react';
 import RequestList from './RequestList';
@@ -12,8 +13,9 @@ export default function StaffCustomers() {
   async function saveQuote(event) { event.preventDefault(); setBusy(true); setError(''); try { const data = Object.fromEntries(new FormData(event.currentTarget)); if (!data.quotation_amount) delete data.quotation_amount; await customerApi.update(requestId, data); setNotice('Request updated. Notification queued.'); setRevision(n => n + 1); } catch (err) { setError(err.message); } finally { setBusy(false); } }
   async function issue(event) { event.preventDefault(); setBusy(true); setError(''); const data = Object.fromEntries(new FormData(event.currentTarget)); try { const invoice = await customerApi.issue(requestId, { ...data, line_items: lines }); setInvoiceId(invoice.id); setTab('invoices'); setNotice('Invoice issued. Customer notification queued.'); } catch (err) { setError(err.message); } finally { setBusy(false); } }
   function updateLine(index, field, value) { setLines(rows => rows.map((line, n) => n === index ? { ...line, [field]: value } : line)); }
-  return <section><div className="portal-toolbar"><button onClick={() => setTab('packages')}>Conference packages</button><button onClick={() => { setTab('requests'); setRequestId(null); }}>Customer requests</button><button onClick={() => { setTab('invoices'); setInvoiceId(null); }}>Invoices</button></div>
+  return <section><div className="portal-toolbar"><button onClick={() => setTab('reviews')}>Guest reviews</button><button onClick={() => setTab('packages')}>Conference packages</button><button onClick={() => { setTab('requests'); setRequestId(null); }}>Customer requests</button><button onClick={() => { setTab('invoices'); setInvoiceId(null); }}>Invoices</button></div>
     {error && <p role="alert" className="portal-alert">{error}</p>}{notice && <p role="status" className="portal-notice">{notice}</p>}
+    {tab === 'reviews' && <Reviews staff />}
     {tab === 'packages' && <StaffPackages />}
     {tab === 'requests' && (requestId ? <><button onClick={() => setRequestId(null)}>← All requests</button><RequestDetail key={`${requestId}:${revision}`} staff requestId={requestId} />
       <div className="portal-detail-grid"><form className="portal-form portal-panel" onSubmit={saveQuote}><h2>Prepare a quotation</h2><label>Status<select name="status"><option value="reviewing">Under review</option><option value="quoted">Quotation ready</option><option value="closed">Closed</option></select></label><label>Quotation amount (KES)<input name="quotation_amount" type="number" min="0.01" step="0.01" /></label><label>Scope and terms<textarea name="quotation_notes" rows="5" maxLength={5000} /></label><button disabled={busy}>Save update & notify</button></form>
