@@ -1,3 +1,4 @@
+import { useCustomer } from "../customer/context";
 import SEO from "../components/SEO";
 import { Link } from "react-router-dom";
 
@@ -11,6 +12,7 @@ import {
 import "./Booking.css";
 
 export default function Booking() {
+  const { user } = useCustomer();
   const [rooms, setRooms] = useState([]);
   const [availability, setAvailability] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -18,9 +20,9 @@ export default function Booking() {
   const [booking, setBooking] = useState(null);
 
   const [form, setForm] = useState({
-    guest_name: "",
-    email: "",
-    phone: "",
+    guest_name: user?.name || "",
+    email: user?.email || "",
+    phone: user?.phone || "",
     room_type: "",
     check_in: "",
     check_out: "",
@@ -54,7 +56,7 @@ export default function Booking() {
   const rate = selectedRoom
     ? Number(
         form.adults === 2 && form.children === 0
-          ? selectedRoom.double_occupancy_rate
+          ? (selectedRoom.double_occupancy_rate ?? selectedRoom.nightly_rate)
           : selectedRoom.nightly_rate
       )
     : 0;
@@ -136,6 +138,8 @@ export default function Booking() {
   );
 
   const canSubmit =
+    availability?.check_in === form.check_in &&
+    availability?.check_out === form.check_out &&
     availableCategory?.available_rooms > 0 &&
     nights > 0 &&
     selectedRoom &&
@@ -153,6 +157,18 @@ export default function Booking() {
           Rumuruti.
         </p>
 
+        <fieldset className="booking-room-picker">
+          <legend>Find your room</legend>
+          <p>Select a room category, then choose your dates to check availability.</p>
+          <div className="booking-room-cards">
+            {rooms.map(room => <button type="button" key={room.id} className="booking-room-card" aria-pressed={Number(form.room_type) === room.id} onClick={() => { setForm(previous => ({ ...previous, room_type: room.id, adults: Math.min(previous.adults, room.max_occupancy), guest_name: previous.guest_name || user?.name || '', email: previous.email || user?.email || '', phone: previous.phone || user?.phone || '' })); setAvailability(null); setMessage(''); }}>
+              {room.image_url ? <img src={room.image_url} alt={room.name} loading="lazy" onError={event => { event.currentTarget.hidden = true; }} /> : <span className="booking-room-placeholder">Your stay at Elparaiso</span>}
+              <span className="booking-room-copy"><strong>{room.name}</strong><span>{room.description}</span><span>Up to {room.max_occupancy} guests</span><strong>From KSh {Number(room.nightly_rate).toLocaleString()} / night</strong><span>{Number(form.room_type) === room.id ? 'Selected ✓' : 'Choose this room'}</span></span>
+            </button>)}
+          </div>
+          {!rooms.length && <p role="status">{message || 'Loading rooms…'}</p>}
+        </fieldset>
+        {user && <p className="booking-profile-note">Booking as {user.name}. Your contact details are filled in below; you can update your name and phone for this stay.</p>}
         <form onSubmit={handleSubmit} className="booking-form">
           <label>
             Room Category
@@ -272,6 +288,7 @@ export default function Booking() {
               type="email"
               name="email"
               value={form.email}
+              readOnly={Boolean(user)}
               onChange={updateField}
             />
           </label>

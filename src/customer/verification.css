@@ -1,0 +1,3 @@
+.verification-card { border-top: 5px solid #b59655; }
+.verification-emblem { display: grid; place-items: center; width: 88px; height: 88px; margin: 26px 0; border-radius: 50%; background: #e8efe7; color: #244a3b; box-shadow: 0 0 0 10px #f6f7ef; }
+.verification-continue { display: inline-flex; align-items: center; justify-content: center; gap: 14px; margin-top: 20px; text-decoration: none; }

@@ -1,5 +1,5 @@
 import { staffApi, staffRequest } from './staffApi';
-const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
+const API_URL = (import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000').trim().replace(/\/+$/, '');
 export const galleryCategories = ['rooms', 'restaurant', 'garden', 'airbnb', 'experiences', 'general'];
 export const galleryApi = {
   async list({ category = '', featured = false, page = 1, signal } = {}) {

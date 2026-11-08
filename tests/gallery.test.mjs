@@ -44,7 +44,7 @@ test('upload form labels metadata, defaults to private and limits accepted files
   const html = render(Upload, { facilities: [{ id: 1, name: 'Hotel' }] });
   assert.match(html, /Image description for accessibility/);
   assert.match(html, /accept="image\/jpeg,image\/png,image\/webp"/);
-  assert.match(html, /name="facility" required/);
+  assert.match(html, /name="facility"[^>]*required/);
   assert.doesNotMatch(html, /checked/);
   assert.match(html, /maxLength="300" required="" name="alt_text"/);
 });
@@ -111,7 +111,7 @@ test('customer registration form labels company and secure account fields', () =
 });
 test('conference request form collects capacity dates facility and requirements', () => {
   const html = portalRender(RequestForm, {}, undefined, '/account/requests/new?service=conference');
-  assert.match(html, /Conference \/ meeting/); assert.match(html, /Number of guests/); assert.match(html, /name="requirements"/); assert.match(html, /name="facility" required/); assert.match(html, /does not reserve rooms/);
+  assert.match(html, /Conference \/ meeting/); assert.match(html, /Number of guests/); assert.match(html, /name="requirements"/); assert.match(html, /name="facility"[^>]*required/); assert.match(html, /does not reserve rooms/);
 });
 test('portal error and empty states are explicit and navigation uses the supplied logo', () => {
   assert.match(render(PortalState, { error: 'Offline' }), /role="alert"/);

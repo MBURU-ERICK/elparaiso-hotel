@@ -1,0 +1,8 @@
+.package-picker { border: 1px solid #ddd8c9; border-radius: 14px; padding: 20px; min-width: 0; }
+.package-picker legend { font-size: 1.2rem; font-weight: 700; }
+.package-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,220px),1fr)); gap: 16px; }
+.package-card { display: grid; gap: 12px; padding: 18px; border: 2px solid #e4dfd1; border-radius: 12px; background: white; cursor: pointer; }
+.package-card:has(input:checked) { border-color: #244a3b; background: #f0f5ed; }
+.package-card img { width: 100%; height: 180px; object-fit: cover; border-radius: 8px; }
+.package-card input[type=radio] { width: 20px; height: 20px; accent-color: #244a3b; }
+.package-estimate { padding: 22px; background: #e8efe6; border-radius: 12px; }

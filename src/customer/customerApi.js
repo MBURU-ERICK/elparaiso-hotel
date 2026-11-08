@@ -1,4 +1,4 @@
-const BASE = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
+const BASE = (import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000').trim().replace(/\/+$/, '');
 let csrf = null;
 export function safeNext(value) {
   if (typeof value !== 'string' || !value.startsWith('/') || value.startsWith('//') || /[\\\r\n]/.test(value)) return '/account';
@@ -27,6 +27,9 @@ export async function customerRequest(path, options = {}) {
 }
 const post = (path, data) => customerRequest(`/api/customers/${path}/`, { method: 'POST', body: JSON.stringify(data) });
 export const customerApi = {
+  catalogue: () => customerRequest('/api/customers/catalogue/'),
+  packages: () => customerRequest('/api/customers/staff/packages/'),
+  savePackage: (id, data) => customerRequest(`/api/customers/staff/packages/${id}/`, { method: 'PATCH', body: JSON.stringify(data) }),
   me: () => customerRequest('/api/customers/auth/me/'),
   auth: (action, data = {}) => post(`auth/${action}`, data),
   facilities: () => customerRequest('/api/customers/facilities/'),

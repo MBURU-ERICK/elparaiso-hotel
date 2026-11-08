@@ -1,6 +1,6 @@
 import { customerRequest } from "../customer/customerApi";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
+const API_URL = (import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000').trim().replace(/\/+$/, '');
 
 async function apiRequest(endpoint, options = {}) {
   const response = await fetch(`${API_URL}${endpoint}`, {
