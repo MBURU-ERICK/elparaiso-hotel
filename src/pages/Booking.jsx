@@ -1,5 +1,6 @@
 import { useCustomer } from "../customer/context";
 import SEO from "../components/SEO";
+import { useSearchParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 import { useEffect, useState } from "react";
@@ -12,6 +13,7 @@ import {
 import "./Booking.css";
 
 export default function Booking() {
+  const [search] = useSearchParams();
   const { user } = useCustomer();
   const [rooms, setRooms] = useState([]);
   const [availability, setAvailability] = useState(null);
@@ -23,10 +25,10 @@ export default function Booking() {
     guest_name: user?.name || "",
     email: user?.email || "",
     phone: user?.phone || "",
-    room_type: "",
-    check_in: "",
-    check_out: "",
-    adults: 1,
+    room_type: search.get("room_type") || "",
+    check_in: search.get("check_in") || "",
+    check_out: search.get("check_out") || "",
+    adults: search.get("adults") === "2" ? 2 : 1,
     children: 0,
     special_requests: "",
   });
@@ -151,7 +153,9 @@ export default function Booking() {
     <main className="booking-page">
       <section className="booking-container">
         <SEO title="Reserve Your Stay" description="Request a stay at Elparaiso Hotel." path="/booking" noindex />
-        <h1>Reserve Your Stay</h1>
+        <Link className="booking-back" to="/rooms">← Explore all stays</Link>
+        <span className="section-kicker">YOUR NEXT ELPARAISO STAY</span>
+        <h1>Make yourself at home.</h1>
         <p>
           Experience comfort and hospitality at Elparaiso Hotel,
           Rumuruti.

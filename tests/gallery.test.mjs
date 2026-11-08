@@ -6,11 +6,13 @@ import { createServer } from 'vite';
 import { MemoryRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 let server;
-let Card, Grid, Upload, Carousel, api, staffApi, CustomerContext, Gate, Auth, RequestForm, safeNext, PortalState, Navbar;
+let Card, Grid, Upload, Carousel, api, staffApi, CustomerContext, Gate, Auth, RequestForm, safeNext, PortalState, Navbar, CustomerNav, Booking;
 const photo = { id: 1, image_url: '/full', thumbnail_url: '/small', title: 'Garden', alt_text: 'A shaded garden path', category: 'garden', description: 'Relax outside' };
 const render = (Component, props) => renderToStaticMarkup(React.createElement(Component, props));
 before(async () => {
   server = await createServer({ server: { middlewareMode: true, hmr: false, watch: null, ws: false } });
+  CustomerNav = (await server.ssrLoadModule('/src/customer/CustomerNav.jsx')).default;
+  Booking = (await server.ssrLoadModule('/src/pages/Booking.jsx')).default;
   Card = (await server.ssrLoadModule('/src/components/GalleryCard.jsx')).default;
   Grid = (await server.ssrLoadModule('/src/components/GalleryGrid.jsx')).default;
   Upload = (await server.ssrLoadModule('/src/components/GalleryUploadForm.jsx')).default;
@@ -118,4 +120,17 @@ test('portal error and empty states are explicit and navigation uses the supplie
   assert.match(render(PortalState, { empty: true }), /Nothing here yet/);
   const html = portalRender(Navbar);
   assert.match(html, /Logo%20elparaiso.png/); assert.match(html, /Groups &amp; conferences/); assert.match(html, /My portal/);
+});
+
+test('guest navigation stays available on booking and private-stay routes', () => {
+  for (const path of ['/booking', '/airbnb', '/account/requests']) {
+    const html = portalRender(CustomerNav, {}, undefined, path);
+    for (const label of ['Overview', 'Book a room', 'Requests', 'Invoices', 'Profile', 'Sign out']) assert.ok(html.includes(label));
+    assert.match(html, /aria-label="Your guest account"/);
+  }
+});
+test('booking preserves dates and guest count selected while browsing', () => {
+  const html = portalRender(Booking, {}, undefined, '/booking?check_in=2026-12-10&check_out=2026-12-12&adults=2');
+  assert.match(html, /value="2026-12-10"/); assert.match(html, /value="2026-12-12"/);
+  assert.match(html, /value="2" selected=""/); assert.match(html, /Explore all stays/);
 });

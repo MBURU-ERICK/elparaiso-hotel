@@ -1,3 +1,5 @@
+import "./styles/hospitality.css";
+import CustomerNav from "./customer/CustomerNav";
 import { Helmet } from "react-helmet-async";
 import { lazy, Suspense } from "react";
 const Business = lazy(() => import("./pages/Business"));
@@ -50,11 +52,12 @@ export default function App() {
   const { pathname } = useLocation();
   const privatePage = /^\/(account|staff|booking|airbnb)(\/|$)/.test(pathname);
   return (
-    <>
+    <div className={pathname.startsWith("/staff") ? "staff-experience" : "guest-experience"}>
       {privatePage && <Helmet><meta name="robots" content="noindex, nofollow" /></Helmet>}
       <a className="skip-link" href="#page-content">Skip to content</a>
       <CustomerProvider>
       <Navbar />
+      <CustomerNav />
       <div id="page-content" tabIndex={-1}>
 
       <Suspense fallback={<p className="portal-state" role="status">Loading…</p>}>
@@ -97,6 +100,6 @@ export default function App() {
       <Footer />
       <WhatsAppButton />
       </CustomerProvider>
-    </>
+    </div>
   );
 }
