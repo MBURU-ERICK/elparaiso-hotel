@@ -1,0 +1,12 @@
+.room-preferences { display:flex; flex-wrap:wrap; align-items:end; gap:16px; padding:16px 0 24px; }
+.room-preferences label { display:grid; gap:8px; font-size:12px; font-weight:600; color:#4f6745; }
+.room-preferences select { min-height:44px; padding:10px 16px; background:#fbf7eb; color:#344e30; border:1px solid #ccd4bf; border-radius:22px; font:inherit; min-width:200px; }
+.room-favourites-filter { min-height:44px; padding:10px 18px; border:1px solid #ccd4bf; border-radius:22px; background:#fbf7eb; color:#4c6442; display:flex; align-items:center; gap:9px; font:inherit; font-size:12px; cursor:pointer; }
+.room-favourites-filter[aria-pressed=true] { background:#dce6ce; border-color:#7b9464; }
+.stay-listing-shell,.booking-room-choice { position:relative; min-width:0; }
+.room-favourite { position:absolute; z-index:2; top:24px; right:24px; width:37px; height:37px; display:grid; place-items:center; padding:0; border:1px solid #e0ddcb; border-radius:50%; background:#fff9edf0; color:#536c47; cursor:pointer; box-shadow:0 2px 8px #35422310; }
+.room-favourite[aria-pressed=true] { color:#a64f45; }
+.room-favourite:disabled { opacity:.55; cursor:wait; }
+.booking-room-choice > .booking-room-card { width:100%; height:100%; }
+.booking-room-choice .room-favourite { top:14px; right:14px; }
+@media(max-width:600px) { .room-favourite { top:16px; right:16px; width:32px; height:32px; }.room-preferences { gap:12px; } }

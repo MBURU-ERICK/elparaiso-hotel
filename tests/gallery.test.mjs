@@ -6,11 +6,13 @@ import { createServer } from 'vite';
 import { MemoryRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 let server;
-let Card, Grid, Upload, Carousel, api, staffApi, CustomerContext, Gate, Auth, RequestForm, safeNext, PortalState, Navbar, CustomerNav, Booking;
+let Card, Grid, Upload, Carousel, api, staffApi, CustomerContext, Gate, Auth, RequestForm, safeNext, PortalState, Navbar, CustomerNav, Booking, RoomFilters, FavouriteRoom, ProfileForm;
 const photo = { id: 1, image_url: '/full', thumbnail_url: '/small', title: 'Garden', alt_text: 'A shaded garden path', category: 'garden', description: 'Relax outside' };
 const render = (Component, props) => renderToStaticMarkup(React.createElement(Component, props));
 before(async () => {
   server = await createServer({ server: { middlewareMode: true, hmr: false, watch: null, ws: false } });
+  ({ RoomFilters, FavouriteRoom } = await server.ssrLoadModule('/src/components/RoomPreferences.jsx'));
+  ProfileForm = (await server.ssrLoadModule('/src/customer/CustomerProfileForm.jsx')).default;
   CustomerNav = (await server.ssrLoadModule('/src/customer/CustomerNav.jsx')).default;
   Booking = (await server.ssrLoadModule('/src/pages/Booking.jsx')).default;
   Card = (await server.ssrLoadModule('/src/components/GalleryCard.jsx')).default;
@@ -133,4 +135,22 @@ test('booking preserves dates and guest count selected while browsing', () => {
   const html = portalRender(Booking, {}, undefined, '/booking?check_in=2026-12-10&check_out=2026-12-12&adults=2');
   assert.match(html, /value="2026-12-10"/); assert.match(html, /value="2026-12-12"/);
   assert.match(html, /value="2" selected=""/); assert.match(html, /Explore all stays/);
+});
+
+test('booking calendar prevents past check-in and requires checkout after check-in', () => {
+  const html = portalRender(Booking, {}, undefined, '/booking?check_in=2099-12-30&check_out=2099-12-31');
+  const inputs = html.match(/<input[^>]*>/g);
+  assert.match(inputs.find(input => input.includes('name="check_in"')), /min="[0-9]{4}-[0-9]{2}-[0-9]{2}"/);
+  assert.match(inputs.find(input => input.includes('name="check_out"')), /min="2099-12-31"/);
+});
+test('room preferences expose classification filtering and accessible saved state', () => {
+  const preferences = { classification: '', onlyFavourites: true, ids: [3], pending: null, error: '', toggle() {}, setClassification() {}, setOnlyFavourites() {} };
+  const html = render(RoomFilters, { rooms: [{ id: 3, name: 'Deluxe' }, { id: 4, name: 'Standard' }], preferences });
+  assert.match(html, /Room classification/); assert.match(html, /Deluxe/); assert.match(html, /Standard/); assert.match(html, /Favourites \(1\)/);
+  const heart = render(FavouriteRoom, { room: { id: 3, name: 'Deluxe' }, preferences });
+  assert.match(heart, /aria-pressed="true"/); assert.match(heart, /Remove Deluxe from favourites/);
+});
+test('profile collects an optional billing KRA PIN', () => {
+  const html = portalRender(ProfileForm);
+  assert.match(html, /KRA PIN \(for invoicing\)/); assert.match(html, /name="kra_pin"/); assert.match(html, /future invoices/);
 });

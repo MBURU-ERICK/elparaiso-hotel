@@ -1,4 +1,7 @@
 import { useCustomer } from "../customer/context";
+import { useRoomPreferences } from "../hooks/useRoomPreferences";
+import { RoomFilters, FavouriteRoom } from "../components/RoomPreferences";
+import { todayInNairobi, nextStayDate } from "../utils/stayDates";
 import SEO from "../components/SEO";
 import { useSearchParams } from "react-router-dom";
 import { Link } from "react-router-dom";
@@ -13,6 +16,7 @@ import {
 import "./Booking.css";
 
 export default function Booking() {
+  const preferences = useRoomPreferences();
   const [search] = useSearchParams();
   const { user } = useCustomer();
   const [rooms, setRooms] = useState([]);
@@ -39,6 +43,8 @@ export default function Booking() {
       .catch(() => setMessage("Unable to load rooms."));
   }, []);
 
+  const today = todayInNairobi();
+  const earliestCheckout = nextStayDate(form.check_in >= today ? form.check_in : today);
   const selectedRoom = rooms.find(
     (room) => room.id === Number(form.room_type)
   );
@@ -70,6 +76,7 @@ export default function Booking() {
 
     setForm((previous) => ({
       ...previous,
+      ...(name === "check_in" && previous.check_out <= value ? { check_out: "" } : {}),
       [name]:
         ["adults", "children", "room_type"].includes(name)
           ? Number(value)
@@ -81,6 +88,7 @@ export default function Booking() {
   }
 
   async function handleAvailability() {
+    if (form.check_in < today || form.check_out < earliestCheckout) { setMessage("Choose today or a future check-in and a later check-out."); return; }
     setLoading(true);
     setMessage("");
 
@@ -101,6 +109,7 @@ export default function Booking() {
   async function handleSubmit(event) {
     event.preventDefault();
 
+    if (form.check_in < today || form.check_out < earliestCheckout) { setMessage("Choose today or a future check-in and a later check-out."); return; }
     setLoading(true);
     setMessage("");
 
@@ -143,6 +152,8 @@ export default function Booking() {
     availability?.check_in === form.check_in &&
     availability?.check_out === form.check_out &&
     availableCategory?.available_rooms > 0 &&
+    form.check_in >= today &&
+    form.check_out >= earliestCheckout &&
     nights > 0 &&
     selectedRoom &&
     form.adults >= 1 &&
@@ -164,12 +175,14 @@ export default function Booking() {
         <fieldset className="booking-room-picker">
           <legend>Find your room</legend>
           <p>Select a room category, then choose your dates to check availability.</p>
+          <RoomFilters rooms={rooms} preferences={preferences} />
           <div className="booking-room-cards">
-            {rooms.map(room => <button type="button" key={room.id} className="booking-room-card" aria-pressed={Number(form.room_type) === room.id} onClick={() => { setForm(previous => ({ ...previous, room_type: room.id, adults: Math.min(previous.adults, room.max_occupancy), guest_name: previous.guest_name || user?.name || '', email: previous.email || user?.email || '', phone: previous.phone || user?.phone || '' })); setAvailability(null); setMessage(''); }}>
+            {preferences.filter(rooms).map(room => <div className="booking-room-choice" key={room.id}><FavouriteRoom room={room} preferences={preferences} /><button type="button" className="booking-room-card" aria-pressed={Number(form.room_type) === room.id} onClick={() => { setForm(previous => ({ ...previous, room_type: room.id, adults: Math.min(previous.adults, room.max_occupancy), guest_name: previous.guest_name || user?.name || '', email: previous.email || user?.email || '', phone: previous.phone || user?.phone || '' })); setAvailability(null); setMessage(''); }}>
               {room.image_url ? <img src={room.image_url} alt={room.name} loading="lazy" onError={event => { event.currentTarget.hidden = true; }} /> : <span className="booking-room-placeholder">Your stay at Elparaiso</span>}
               <span className="booking-room-copy"><strong>{room.name}</strong><span>{room.description}</span><span>Up to {room.max_occupancy} guests</span><strong>From KSh {Number(room.nightly_rate).toLocaleString()} / night</strong><span>{Number(form.room_type) === room.id ? 'Selected ✓' : 'Choose this room'}</span></span>
-            </button>)}
+            </button></div>)}
           </div>
+          {rooms.length > 0 && !preferences.filter(rooms).length && <p role="status">No rooms match these filters. Choose another classification or switch off favourites.</p>}
           {!rooms.length && <p role="status">{message || 'Loading rooms…'}</p>}
         </fieldset>
         {user && <p className="booking-profile-note">Booking as {user.name}. Your contact details are filled in below; you can update your name and phone for this stay.</p>}
@@ -205,6 +218,7 @@ export default function Booking() {
               <input
                 type="date"
                 name="check_in"
+                min={today}
                 value={form.check_in}
                 onChange={updateField}
                 required
@@ -216,6 +230,7 @@ export default function Booking() {
               <input
                 type="date"
                 name="check_out"
+                min={earliestCheckout}
                 value={form.check_out}
                 onChange={updateField}
                 required
