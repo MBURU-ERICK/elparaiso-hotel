@@ -13,6 +13,7 @@ const StaffCustomers = lazy(() => import("./pages/GuestRequests"));
 const Booking = lazy(() => import("./pages/GuestBooking"));
 const StaffLayout = lazy(() => import("./components/StaffLayout"));
 const GalleryManager = lazy(() => import("./components/GalleryManager"));
+const StaffRoomCategories = lazy(() => import("./pages/StaffRoomCategories"));
 const StaffRooms = lazy(() => import("./pages/StaffRooms"));
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 
@@ -79,6 +80,7 @@ export default function App() {
           <Route path="/staff/customers" element={<StaffCustomers />} />
           <Route path="/staff/dashboard" element={<StaffDashboard />} />
           <Route path="/staff/reservations" element={<StaffReservations />} />
+          <Route path="/staff/room-categories" element={<StaffRoomCategories />} />
           <Route path="/staff/rooms" element={<StaffRooms />} />
           <Route path="/staff/airbnb/rooms" element={<StaffAirbnbRooms />} />
           <Route path="/staff/reviews" element={<StaffReviews />} />

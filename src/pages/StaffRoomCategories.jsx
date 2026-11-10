@@ -1,0 +1,35 @@
+import { useEffect, useState } from 'react';
+import { Link, useOutletContext } from 'react-router-dom';
+import { Plus, Pencil, BedDouble, Users } from 'lucide-react';
+import { staffApi, staffRequest } from '../services/staffApi';
+import { customerApi } from '../customer/customerApi';
+import WorkspaceHeader from '../components/WorkspaceHeader';
+import RoomPhotoPicker from '../components/RoomPhotoPicker';
+import { hotelFacilities, defaultHotelFacility } from '../utils/hotelFacilities';
+const base = '/api/staff/admin/room-types/';
+export default function StaffRoomCategories() {
+  const { user } = useOutletContext();
+  const [categories, setCategories] = useState(null), [facilities, setFacilities] = useState([]), [editing, setEditing] = useState(null), [files, setFiles] = useState([]), [error, setError] = useState(''), [notice, setNotice] = useState(''), [busy, setBusy] = useState(false), [revision, setRevision] = useState(0), [search, setSearch] = useState(''), [editorKey, setEditorKey] = useState(0);
+  useEffect(() => {
+    if (!user.is_superuser) return;
+    let active = true;
+    Promise.all([staffRequest(base), customerApi.facilities()]).then(([c, f]) => { if (active) { setCategories(c.results || c); setFacilities(hotelFacilities(f)); setError(''); } }).catch(e => { if (active) setError(e.message); });
+    return () => { active = false; };
+  }, [revision, user.is_superuser]);
+  function open(category) { setEditing(category); setFiles([]); setEditorKey(n => n + 1); setError(''); setNotice(''); }
+  async function save(event) {
+    event.preventDefault(); const body = new FormData(event.currentTarget);
+    body.set('amenities', JSON.stringify(String(body.get('amenities') || '').split(',').map(v => v.trim()).filter(Boolean)));
+    body.set('is_active', String(body.get('is_active') === 'on'));
+    if (files[0]) body.set('image', files[0]);
+    if (editing.id) body.delete('facility');
+    setBusy(true); setError('');
+    try { await staffApi.csrf(); await staffRequest(`${base}${editing.id ? `${editing.id}/` : ''}`, { method: editing.id ? 'PATCH' : 'POST', body }); setEditing(null); setFiles([]); setNotice('Room category saved. New bookings use the updated rates; existing quotes keep their original amounts.'); setRevision(n => n + 1); } catch (e) { setError(e.message); } finally { setBusy(false); }
+  }
+  if (!user.is_superuser) return <main><h1>Administrator access required</h1><Link to="/staff/rooms">Return to hotel rooms →</Link></main>;
+  const visible = categories?.filter(c => `${c.name} ${c.facility_name}`.toLowerCase().includes(search.toLowerCase()));
+  return <main><WorkspaceHeader eyebrow="YOUR HOTEL ROOM CATEGORIES" title="Room categories & rates" description="Add or edit categories, single and double occupancy rates, capacity and photos for your hotel." actions={<button className="portal-button" disabled={!facilities.length || busy} onClick={() => open({ facility: defaultHotelFacility(facilities), max_occupancy: 2, is_active: true })}><Plus size={17} /> Add room category</button>} />{error && <p role="alert" className="portal-alert">{error}<button onClick={() => setRevision(n => n + 1)}>Retry</button></p>}{notice && <p role="status" className="portal-notice">{notice}</p>}<div className="workspace-panel unit-toolbar"><strong>{categories?.length || 0} hotel room categories</strong><Link className="portal-button" to="/staff/rooms">Manage individual rooms →</Link></div>
+    {editing && <section className="workspace-panel"><div className="workspace-panel-heading"><h2>{editing.id ? `Edit ${editing.name}` : 'Add a room category'}</h2><button disabled={busy} onClick={() => setEditing(null)}>Close editor</button></div><form className="portal-form" onSubmit={save} key={editorKey}><fieldset disabled={busy} className="room-editor-fields"><div className="portal-form-grid"><label>Hotel facility<select name="facility" required disabled={Boolean(editing.id)} defaultValue={editing.facility}><option value="">Choose a hotel</option>{facilities.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}</select></label><label>Category name<input name="name" maxLength={100} defaultValue={editing.name || ''} placeholder="e.g. Standard, Deluxe or Executive" required /></label><label>Single occupancy / night (KES)<input name="nightly_rate" type="number" min="0.01" step="0.01" defaultValue={editing.nightly_rate || ''} required /></label><label>Double occupancy / night (KES)<input name="double_occupancy_rate" type="number" min="0.01" step="0.01" defaultValue={editing.double_occupancy_rate || ''} /><small>Leave blank if double occupancy is not offered.</small></label><label>Maximum guests per room<input name="max_occupancy" type="number" min="1" max="32767" defaultValue={editing.max_occupancy || 2} required /></label></div><label>Description<textarea name="description" rows="4" maxLength={5000} defaultValue={editing.description || ''} /></label><label>Amenities, separated by commas<input name="amenities" maxLength={4000} defaultValue={editing.amenities?.join(', ') || ''} placeholder="Wi-Fi, Breakfast, Ensuite bathroom" /></label>{editing.image_url && <div className="hotel-current-photo"><img src={editing.image_url} alt={editing.name} /><small>Current category photo</small></div>}<RoomPhotoPicker files={files} onChange={setFiles} disabled={busy} multiple={false} /><label className="booking-checkbox"><input type="checkbox" name="is_active" defaultChecked={editing.is_active} /> Offer this category for new bookings</label><button disabled={busy}>{busy ? 'Saving…' : 'Save room category'}</button></fieldset></form></section>}
+    <div className="workspace-filter-bar"><label>Search categories<input type="search" value={search} onChange={e => setSearch(e.target.value)} placeholder="Category or hotel name" /></label></div>{!categories && !error && <p role="status">Loading room categories…</p>}<div className="unit-management-grid">{visible?.map(c => <article className="unit-management-card" key={c.id}><div className="unit-management-image">{c.image_url ? <img src={c.image_url} alt={c.name} loading="lazy" /> : <div><BedDouble size={35} /><span>Add a category photo</span></div>}<span className={`booking-status status-${c.is_active ? 'confirmed' : 'new'}`}>{c.is_active ? 'Available for booking' : 'Not offered'}</span></div><div className="unit-management-copy"><small>{c.facility_name}</small><h2>{c.name}</h2><p><Users size={15} /> Up to {c.max_occupancy} guests</p><div className="hotel-room-rates"><span>Single<strong>KES {Number(c.nightly_rate).toLocaleString()}</strong></span><span>Double<strong>{c.double_occupancy_rate ? `KES ${Number(c.double_occupancy_rate).toLocaleString()}` : 'Not offered'}</strong></span></div><div><button disabled={busy} onClick={() => open(c)}><Pencil size={15} /> Edit category</button></div></div></article>)}</div>{visible?.length === 0 && <div className="workspace-empty"><BedDouble size={35} /><h2>Add your first room category.</h2><p>Create a category, then assign individual hotel rooms to it.</p></div>}
+  </main>;
+}

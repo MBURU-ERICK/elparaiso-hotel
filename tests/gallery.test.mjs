@@ -4,6 +4,7 @@ import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { createServer } from 'vite';
 import { MemoryRouter } from 'react-router-dom';
+import { hotelFacilities, defaultHotelFacility } from '../src/utils/hotelFacilities.js';
 import { validateRoomPhotos } from '../src/utils/roomPhotos.js';
 import { estimateBooking } from '../src/utils/bookingQuote.js';
 import { HelmetProvider } from 'react-helmet-async';
@@ -241,4 +242,26 @@ test('reservation cards keep stay details and actions without treating unavailab
   const html = render(ReservationCard, { booking: { id: 7, reference: 'HOTEL-7', guest_name: 'Guest Seven', status: 'confirmed', room: '101', check_in: '2027-01-02', check_out: '2027-01-03', total_amount: null }, children: React.createElement('button', {}, 'Check in') });
   assert.match(html, /Guest Seven/); assert.match(html, /2027-01-02/); assert.match(html, /Check in/);
   assert.match(html, /Not available/); assert.doesNotMatch(html, /KES 0/);
+});
+
+test('a missing photo-upload endpoint explains recovery and preserves the 404 status', async () => {
+  const original = globalThis.fetch;
+  try {
+    globalThis.fetch = async url => String(url).endsWith('/csrf/')
+      ? { ok: true, json: async () => ({ csrfToken: 'photo-csrf' }) }
+      : { ok: false, status: 404, json: async () => ({}) };
+    await assert.rejects(photoApi.upload(42, new Blob(['image'], { type: 'image/jpeg' }), 'Room 42'), error => {
+      assert.equal(error.status, 404);
+      assert.match(error.message, /update and restart the backend/);
+      return true;
+    });
+  } finally { globalThis.fetch = original; }
+});
+
+test('hotel facility selection uses the Elparaiso name rather than assuming facility 1', () => {
+  const facilities = [{ id: 1, name: 'Private stays', facility_type: 'airbnb' }, { id: 37, name: 'Elparaiso Hotel', facility_type: 'hotel' }, { id: 9, name: 'Other hotel', facility_type: 'hotel' }];
+  assert.equal(defaultHotelFacility(facilities), '37');
+  assert.deepEqual(hotelFacilities(facilities).map(f => f.name), ['Elparaiso Hotel', 'Other hotel']);
+  assert.equal(defaultHotelFacility([{ id: 42, name: 'One hotel', facility_type: 'hotel' }]), '42');
+  assert.equal(defaultHotelFacility([{ id: 1, name: 'Private stay', facility_type: 'airbnb' }]), '');
 });

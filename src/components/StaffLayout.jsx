@@ -27,6 +27,7 @@ export default function StaffLayout() {
     ['/staff/admin', 'Administration', Users, user.is_superuser],
     ['/staff/dashboard', 'Overview', LayoutDashboard, true],
     ['/staff/reservations', 'Reservations', BedDouble, permits('view')],
+    ['/staff/room-categories', 'Room categories & rates', BedDouble, user.is_superuser],
     ['/staff/rooms', 'Room management', DoorOpen, permits('view')],
     ['/staff/airbnb', 'Airbnb reservations', Building2, permits('view')],
     ['/staff/airbnb/rooms', 'Airbnb room management', DoorOpen, permits('manage')],

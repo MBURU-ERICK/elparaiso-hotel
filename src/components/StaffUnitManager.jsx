@@ -36,7 +36,10 @@ export default function StaffUnitManager() {
       setNotice('Room and photos saved. Available rooms appear on the website when both room and facility are published.');
       setRevision(n => n + 1);
     } catch (e) {
-      setError(saved ? `Room details saved. ${completed} photo(s) uploaded. ${e.message} The remaining photos are selected; save again to retry.` : e.message);
+      const recovery = e.status === 404
+        ? 'Your remaining photos are still selected. Save again after the endpoint or room access is restored.'
+        : 'The remaining photos are selected; save again to retry.';
+      setError(saved ? `Room details saved. ${completed} photo(s) uploaded. ${e.message} ${recovery}` : e.message);
       if (saved) setRevision(n => n + 1);
     } finally { setBusy(false); setUploading(''); }
   }
@@ -58,7 +61,7 @@ export default function StaffUnitManager() {
   }
   const visible = data?.units.filter(u => (!propertyFilter || String(u.property) === propertyFilter) && `${u.name} ${u.unit_number} ${u.property_name}`.toLowerCase().includes(search.toLowerCase()));
   const availableFacilities = data?.facilities.filter(f => ['airbnb', 'mixed'].includes(f.facility_type) && !data.properties.some(p => p.facility === f.id));
-  return <section>{error && <p role="alert" className="portal-alert">{error}<button onClick={() => setRevision(n => n + 1)}>Retry</button></p>}{notice && <p role="status" className="portal-notice">{notice}</p>}{!data && !error && <p role="status">Loading your room collection…</p>}
+  return <section>{error && <p role="alert" className="portal-alert">{error}{!data && <button onClick={() => setRevision(n => n + 1)}>Reload rooms</button>}</p>}{notice && <p role="status" className="portal-notice">{notice}</p>}{!data && !error && <p role="status">Loading your room collection…</p>}
     <div className="workspace-panel unit-toolbar"><div><Building2 size={22} /><strong>{data?.units.length || 0} rooms in your collection</strong></div><div className="portal-toolbar"><button disabled={busy || !data?.properties.length} onClick={() => openEditor({})}> <Plus size={16} /> Add Airbnb room</button><button disabled={busy} onClick={() => setAddingProperty(v => !v)}>Set up a facility</button></div></div>
     {addingProperty && <form className="portal-form workspace-panel" onSubmit={addProperty}><h2>Set up an Airbnb property</h2><label>Existing facility<select name="facility" required><option value="">Choose an Airbnb / mixed facility</option>{availableFacilities?.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}</select></label><label>Property description<textarea name="description" maxLength={5000} /></label><button disabled={busy || !availableFacilities?.length}>Create property</button><small>Facilities and staff access are managed by an administrator in Django administration.</small></form>}
     {data?.properties.length > 0 && <div className="workspace-property-list">{data.properties.map(p => <article key={p.id}><Building2 size={20} /><div><strong>{p.name}</strong><small>{p.is_published ? 'Facility is live' : 'Facility is unpublished'}</small></div><button disabled={busy} onClick={() => propertyAction(p)}>{p.is_published ? 'Unpublish' : 'Publish'}</button></article>)}</div>}
