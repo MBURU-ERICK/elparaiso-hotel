@@ -1,5 +1,6 @@
 import "./styles/hospitality.css";
 import "./styles/staff-refresh.css";
+import "./styles/workspace.css";
 import "./styles/customer.css";
 import "./styles/guest-redesign.css";
 import HelpChat from "./components/HelpChat";
@@ -32,6 +33,10 @@ const StaffDashboard = lazy(() => import("./pages/StaffDashboard"));
 const StaffReservations = lazy(() => import("./pages/StaffReservations"));
 const Airbnb = lazy(() => import("./pages/PrivateStays"));
 const StaffAirbnb = lazy(() => import("./pages/StaffAirbnb"));
+const GuestReview = lazy(() => import("./pages/GuestReview"));
+const StaffReviews = lazy(() => import("./pages/StaffReviews"));
+const StaffAirbnbRooms = lazy(() => import("./pages/StaffAirbnbRooms"));
+const StaffPackages = lazy(() => import("./customer/StaffPackages"));
 const StaffReconciliation = lazy(() => import("./pages/StaffReconciliation"));
 
 function NotFound() {
@@ -45,9 +50,10 @@ function NotFound() {
 
 export default function App() {
   const { pathname } = useLocation();
-  const privatePage = /^\/(account|staff|booking)(\/|$)/.test(pathname);
+  const privatePage = /^\/(account|staff|booking|review)(\/|$)/.test(pathname);
   return (
     <div className={pathname.startsWith("/staff") ? "staff-experience" : "guest-experience"}>
+      {pathname === "/review" && <Helmet><meta name="referrer" content="no-referrer" /></Helmet>}
       {privatePage && <Helmet><meta name="robots" content="noindex, nofollow" /></Helmet>}
       <a className="skip-link" href="#page-content">Skip to content</a>
       
@@ -62,6 +68,7 @@ export default function App() {
         <Route path="/restaurant" element={<Restaurant />} />
         <Route path="/experiences" element={<Experiences />} />
         <Route path="/booking" element={<Booking />} />
+        <Route path="/review" element={<GuestReview />} />
         <Route path="/business" element={<Business />} />
         <Route path="/account/*" element={<Navigate to="/booking" replace />} />
         <Route path="/about" element={<About />} />
@@ -73,6 +80,9 @@ export default function App() {
           <Route path="/staff/dashboard" element={<StaffDashboard />} />
           <Route path="/staff/reservations" element={<StaffReservations />} />
           <Route path="/staff/rooms" element={<StaffRooms />} />
+          <Route path="/staff/airbnb/rooms" element={<StaffAirbnbRooms />} />
+          <Route path="/staff/reviews" element={<StaffReviews />} />
+          <Route path="/staff/packages" element={<StaffPackages />} />
           <Route path="/staff/airbnb" element={<StaffAirbnb />} />
           <Route path="/staff/reconciliation" element={<StaffReconciliation />} />
           <Route path="/staff/gallery" element={<GalleryManager />} />

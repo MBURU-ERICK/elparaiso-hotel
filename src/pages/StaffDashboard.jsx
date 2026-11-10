@@ -1,144 +1,30 @@
-
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { staffApi } from "../services/staffApi";
-import "../styles/staff.css";
-
-
+import { useEffect, useState } from 'react';
+import { Link, useOutletContext } from 'react-router-dom';
+import { Inbox, BedDouble, Building2, CalendarDays, Star, ArrowUpRight, Wallet, Clock3 } from 'lucide-react';
+import { staffApi } from '../services/staffApi';
+import { customerRequest } from '../customer/customerApi';
+import '../styles/staff.css';
 export default function StaffDashboard() {
-  const navigate = useNavigate();
-
-  const [dashboard, setDashboard] = useState(null);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(true);
-
+  const { user } = useOutletContext();
+  const [state, setState] = useState({ loading: true, overview: null, operations: null, errors: [] });
+  const [revision, setRevision] = useState(0);
   useEffect(() => {
     let active = true;
-
-    async function loadDashboard() {
-      try {
-        await staffApi.me();
-        const data = await staffApi.dashboard();
-
-        if (active) setDashboard(data);
-      } catch (err) {
-        if (!active) return;
-
-        if (
-          [401, 403].includes(err.status)
-        ) {
-          navigate("/staff/login", { replace: true });
-        } else {
-          setError(err.message);
-        }
-      } finally {
-        if (active) setLoading(false);
-      }
-    }
-
-    loadDashboard();
-
-    return () => {
-      active = false;
-    };
-  }, [navigate]);
-
-  if (loading) return <p>Loading staff dashboard...</p>;
-
-  if (error) return <p role="alert">{error}</p>;
-
-  if (!dashboard) return null;
-
-  const { summary, arrivals, departures, upcoming } = dashboard;
-
-  const stats = [
-    ["Total rooms", summary.total_rooms],
-    ["Occupied rooms", summary.occupied_rooms],
-    ["Vacant rooms", summary.available_rooms],
-    ["Pending bookings", summary.pending_reservations],
-    ["Outstanding arrivals", summary.arrivals_today],
-    ["Scheduled departures", summary.departures_today],
-  ];
-
-  return (
-    <main className="staff-dashboard">
-      <header className="staff-header">
-        <div>
-          <p className="staff-eyebrow">ELPARAISO HOTEL</p>
-          <h1>Hotel Operations</h1>
-          <p>Operational date: {dashboard.date}</p>
-        </div>
-      </header>
-
-      <div className="portal-panel"><h2>Website booking inbox</h2><p>View new hotel, Airbnb and conference requests, reply by email and manage their invoices.</p><Link className="portal-button" to="/staff/customers">Open booking inbox →</Link></div>
-      <section className="staff-stats">
-        {stats.map(([label, value]) => (
-          <article className="staff-stat" key={label}>
-            <p>{label}</p>
-            <h2>{value}</h2>
-          </article>
-        ))}
-      </section>
-
-    {summary.booked_accommodation_value !== null &&
- summary.booked_accommodation_value !== undefined && (
-  <section className="staff-revenue">
-    <h2>Booked accommodation value</h2>
-    <p>
-      KSh{" "}
-      {Number(
-        summary.booked_accommodation_value
-      ).toLocaleString("en-KE", {
-        minimumFractionDigits: 2,
-      })}
-    </p>
-    <small>Not actual payments collected.</small>
-  </section>
-)}
-
-      <ReservationTable title="Today's arrivals" rows={arrivals} />
-      <ReservationTable title="Today's departures" rows={departures} />
-      <ReservationTable title="Upcoming bookings" rows={upcoming} />
-    </main>
-  );
-}
-
-function ReservationTable({ title, rows }) {
-  return (
-    <section className="staff-table-section">
-      <h2>{title}</h2>
-
-      {rows.length === 0 ? (
-        <p>No reservations to display.</p>
-      ) : (
-        <div className="staff-table-scroll">
-          <table>
-            <thead>
-              <tr>
-                <th>Reference</th>
-                <th>Guest</th>
-                <th>Room</th>
-                <th>Check-in</th>
-                <th>Check-out</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {rows.map((booking) => (
-                <tr key={booking.reference}>
-                  <td>{booking.reference}</td>
-                  <td>{booking.guest}</td>
-                  <td>{booking.room || "Unassigned"}</td>
-                  <td>{booking.check_in}</td>
-                  <td>{booking.check_out}</td>
-                  <td>{booking.status}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
-    </section>
-  );
+    Promise.allSettled([customerRequest('/api/customers/staff/guest-reservations/overview/'), staffApi.dashboard()]).then(([inbox, operations]) => {
+      if (active) setState({ loading: false, overview: inbox.status === 'fulfilled' ? inbox.value : null, operations: operations.status === 'fulfilled' ? operations.value : null, errors: [inbox, operations].filter(r => r.status === 'rejected').map(r => r.reason.message) });
+    });
+    return () => { active = false; };
+  }, [revision]);
+  const permits = action => user.is_superuser || user.facilities?.some(f => f.actions?.includes(action));
+  const data = state.overview;
+  const stats = data ? [[Inbox, 'New requests', data.statuses.new || 0, '/staff/customers'], [BedDouble, 'Stays checked in', data.statuses.checked_in || 0, '/staff/customers?status=checked_in'], [Building2, 'Airbnb rooms live', `${data.published_airbnb_rooms} / ${data.airbnb_rooms}`, permits('manage') ? '/staff/airbnb/rooms' : '/staff/airbnb'], [Star, 'Verified reviews', data.reviews, '/staff/reviews']] : [];
+  const tools = [[Inbox, 'Booking inbox', 'Reply, confirm, check in and check out.', '/staff/customers', permits('view')], [Building2, 'Manage Airbnb rooms', 'Add rooms, update prices and publish photos.', '/staff/airbnb/rooms', permits('manage')], [CalendarDays, 'Conference packages', 'Keep half and full day packages current.', '/staff/packages', permits('manage')], [Star, 'Guest reviews', 'Read feedback from verified checkouts.', '/staff/reviews', permits('view')]];
+  return <main className="operations-home"><header className="workspace-page-heading"><div><span className="eyebrow">ELPARAISO · TEAM WORKSPACE</span><h1>A good day starts here, {user.first_name || user.username}.</h1><p>{new Date().toLocaleDateString('en-KE', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Africa/Nairobi' })} · Reservations, rooms and guest care in one place.</p></div><Link className="portal-button" to="/staff/customers">Open booking inbox <ArrowUpRight size={17} /></Link></header>
+    {state.loading && <p role="status">Preparing your workspace…</p>}{state.errors.length > 0 && <div role="alert" className="portal-alert">{state.errors.join(' · ')} <button onClick={() => setRevision(n => n + 1)}>Retry</button></div>}
+    <section className="operations-stats">{stats.map(([Icon, label, value, to]) => <Link key={label} className="operations-stat" to={to}><span><Icon size={21} /><ArrowUpRight size={15} /></span><strong>{value}</strong><p>{label}</p></Link>)}</section>
+    <div className="operations-columns"><section className="workspace-panel"><div className="workspace-panel-heading"><div><span className="eyebrow">THE NEXT WELCOME</span><h2>Recent booking requests</h2></div><Link to="/staff/customers">View all ↗</Link></div>{data?.recent.length === 0 && <div className="workspace-empty"><Inbox /><h3>Your inbox is clear.</h3><p>New website requests will appear here.</p></div>}{data?.recent.map(row => <Link className="operations-booking-row" key={row.id} to={`/staff/customers?request=${row.id}`}><span className={`service-avatar ${row.service}`}>{row.service === 'conference' ? <CalendarDays size={21} /> : row.service === 'airbnb' ? <Building2 size={21} /> : <BedDouble size={21} />}</span><div><strong>{row.company || row.name}</strong><p>{row.selection || row.service} · {row.guests} guests</p><small>{row.start_date} → {row.end_date}</small></div><span className={`booking-status status-${row.status}`}>{row.status.replaceAll('_', ' ')}</span><ArrowUpRight size={17} /></Link>)}</section>
+    <aside className="operations-side"><section className="workspace-panel operations-flow"><span className="eyebrow">A LITTLE CARE. EVERY DETAIL.</span><h2>From first enquiry<br />to the next visit.</h2><ol><li><Inbox size={17} /><span>Receive request & estimated quote</span></li><li><CalendarDays size={17} /><span>Reply and confirm availability</span></li><li><BedDouble size={17} /><span>Record check-in and checkout</span></li><li><Star size={17} /><span>Guest receives a personal review link</span></li></ol></section>{data?.outstanding !== null && data?.outstanding !== undefined && <section className="workspace-panel outstanding-card"><Wallet size={24} /><span className="eyebrow">PAYMENT FOLLOW-UP</span><h2>KES {Number(data.outstanding).toLocaleString('en-KE', { minimumFractionDigits: 2 })}</h2><p>{data.unpaid_invoices} unpaid invoice(s)</p><small>Issued invoices awaiting recorded payment.</small><Link to="/staff/customers">Review invoices →</Link></section>}</aside></div>
+    <section className="operations-tools">{tools.filter(([, , , , allowed]) => allowed).map(([Icon, title, copy, to]) => <Link key={to} to={to}><Icon size={25} /><h3>{title}</h3><p>{copy}</p><ArrowUpRight size={19} /></Link>)}</section>
+    {state.operations && <section className="workspace-panel"><div className="workspace-panel-heading"><div><span className="eyebrow">HOTEL INVENTORY</span><h2>Room operations</h2></div><Link to="/staff/reservations">Manage hotel reservations ↗</Link></div><div className="operations-inventory"><span><strong>{state.operations.summary.total_rooms}</strong> hotel rooms</span><span><strong>{state.operations.summary.occupied_rooms}</strong> occupied</span><span><strong>{state.operations.summary.available_rooms}</strong> available</span><span><Clock3 size={16} /><strong>{state.operations.summary.arrivals_today}</strong> arrivals today</span></div><p className="workspace-caption">Website requests are managed in the booking inbox. Assigned hotel inventory remains in hotel reservations.</p><div className="operations-table-scroll"><table><thead><tr><th>Upcoming hotel stay</th><th>Guest</th><th>Room</th><th>Arrival</th><th>Status</th></tr></thead><tbody>{state.operations.upcoming.slice(0, 5).map(b => <tr key={b.reference}><td>{b.reference}</td><td>{b.guest}</td><td>{b.room || 'Unassigned'}</td><td>{b.check_in}</td><td>{b.status}</td></tr>)}</tbody></table></div></section>}
+  </main>;
 }

@@ -1,4 +1,3 @@
-import StaffUnitManager from "../components/StaffUnitManager";
 
 import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -23,6 +22,7 @@ const STATUSES = [
 ];
 
 const ACTIONS = {
+  checked_out: [["invite-review", "Email review invitation"]],
   cancelled: [["delete", "Delete cancelled booking"]],
   pending: [
     ["confirm", "Confirm"],
@@ -157,7 +157,7 @@ export default function StaffAirbnb() {
 
   return (
     <main className="staff-dashboard staff-airbnb">
-      <StaffUnitManager />
+      <Link className="portal-button" to="/staff/airbnb/rooms">Manage Airbnb rooms →</Link>
       <header className="staff-header">
         <div>
           <p className="staff-eyebrow">ELPARAISO HOTEL</p>

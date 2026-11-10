@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
-import { LayoutDashboard, BedDouble, DoorOpen, Building2, Images, Users, Wallet, LogOut, Menu, X, ArrowUpRight, ChevronRight } from 'lucide-react';
+import { LayoutDashboard, BedDouble, DoorOpen, Building2, Images, Users, Wallet, LogOut, Menu, X, ArrowUpRight, ChevronRight, Star, CalendarDays } from 'lucide-react';
 import { staffApi } from '../services/staffApi';
 export default function StaffLayout() {
   const [user, setUser] = useState(null);
@@ -28,10 +28,13 @@ export default function StaffLayout() {
     ['/staff/dashboard', 'Overview', LayoutDashboard, true],
     ['/staff/reservations', 'Reservations', BedDouble, permits('view')],
     ['/staff/rooms', 'Room management', DoorOpen, permits('view')],
-    ['/staff/airbnb', 'Private stays', Building2, permits('view')],
+    ['/staff/airbnb', 'Airbnb reservations', Building2, permits('view')],
+    ['/staff/airbnb/rooms', 'Airbnb room management', DoorOpen, permits('manage')],
+    ['/staff/packages', 'Conference packages', CalendarDays, permits('manage')],
+    ['/staff/reviews', 'Guest reviews', Star, permits('view')],
     ['/staff/customers', 'Booking inbox & invoices', Users, permits('view')],
     ['/staff/gallery', 'Photo library', Images, permits('manage')],
-    ['/staff/reconciliation', 'Payments & reviews', Wallet, permits('payments_manage')],
+    ['/staff/reconciliation', 'Payment reconciliation', Wallet, permits('payments_manage')],
   ].filter(([, , , visible]) => visible);
   const current = destinations.find(([to]) => pathname === to)?.[1] || 'Workspace';
   const name = user.first_name || user.username;
@@ -39,7 +42,7 @@ export default function StaffLayout() {
     <Link to="/staff/dashboard" className="staff-brand"><img src="/images/Logo%20elparaiso.png" alt="Elparaiso Hotel" /><span>TEAM WORKSPACE</span></Link>
     <button className="staff-menu" aria-expanded={open} aria-controls="staff-navigation" onClick={() => setOpen(v => !v)}>{open ? <X size={18} /> : <Menu size={18} />} {open ? 'Close menu' : 'Workspace menu'}</button>
     <div className="staff-nav-heading">MANAGE YOUR DAY</div>
-    <nav id="staff-navigation" className={open ? 'is-open' : ''} aria-label="Staff navigation">{destinations.map(([to, title, Icon]) => <NavLink key={to} to={to} onClick={() => setOpen(false)}><Icon size={19} /><span>{title}</span></NavLink>)}</nav>
+    <nav id="staff-navigation" className={open ? 'is-open' : ''} aria-label="Staff navigation">{destinations.map(([to, title, Icon]) => <NavLink end key={to} to={to} onClick={() => setOpen(false)}><Icon size={19} /><span>{title}</span></NavLink>)}</nav>
     <Link to="/" className="staff-visit-site">View guest website <ArrowUpRight size={16} /></Link>
     <div className="staff-profile"><span className="staff-avatar" aria-hidden="true">{name.slice(0, 1).toUpperCase()}</span><div><strong>{name}</strong><small>{user.is_superuser ? 'Administrator' : 'Hotel team'}</small></div><button onClick={logout} aria-label="Sign out" title="Sign out"><LogOut size={18} /></button></div>
     {error && <p role="alert">{error}</p>}

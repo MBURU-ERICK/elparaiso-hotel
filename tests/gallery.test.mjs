@@ -4,14 +4,16 @@ import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { createServer } from 'vite';
 import { MemoryRouter } from 'react-router-dom';
+import { estimateBooking } from '../src/utils/bookingQuote.js';
 import { HelmetProvider } from 'react-helmet-async';
 let server;
-let GuestBooking, Card, Grid, Upload, Carousel, api, staffApi, CustomerContext, Gate, Auth, RequestForm, safeNext, PortalState, Navbar, CustomerNav, Booking, RoomFilters, FavouriteRoom, ProfileForm;
+let GuestReview, GuestBooking, Card, Grid, Upload, Carousel, api, staffApi, CustomerContext, Gate, Auth, RequestForm, safeNext, PortalState, Navbar, CustomerNav, Booking, RoomFilters, FavouriteRoom, ProfileForm;
 const photo = { id: 1, image_url: '/full', thumbnail_url: '/small', title: 'Garden', alt_text: 'A shaded garden path', category: 'garden', description: 'Relax outside' };
 const render = (Component, props) => renderToStaticMarkup(React.createElement(Component, props));
 before(async () => {
   server = await createServer({ server: { middlewareMode: true, hmr: false, watch: null, ws: false } });
   ({ RoomFilters, FavouriteRoom } = await server.ssrLoadModule('/src/components/RoomPreferences.jsx'));
+  GuestReview = (await server.ssrLoadModule('/src/pages/GuestReview.jsx')).default;
   GuestBooking = (await server.ssrLoadModule('/src/pages/GuestBooking.jsx')).default;
   ProfileForm = (await server.ssrLoadModule('/src/customer/CustomerProfileForm.jsx')).default;
   CustomerNav = (await server.ssrLoadModule('/src/customer/CustomerNav.jsx')).default;
@@ -163,4 +165,39 @@ test('public booking works without a customer provider and requests guest contac
   assert.match(html, /value="2027-01-02"/);
   assert.match(html, /value="2027-01-04"/);
   assert.doesNotMatch(html, /password|Sign in/);
+});
+
+const quoteOptions = {
+  rooms: [{ id: 1, facility: 1, name: 'Deluxe', nightly_rate: '3000.00', double_occupancy_rate: '4500.00', max_occupancy: 2 }],
+  packages: [{ id: 2, facility: 1, duration: 'full', price_per_guest: '2500.00' }],
+  units: [{ id: 3, facility: 1, name: 'Garden suite', nightly_rate: '5000.00', max_guests: 4 }],
+};
+const quoteForm = { service: 'conference', facility: '1', package: '2', room_type: '1', unit: '3', guests: '10', occupancy: '1', start_date: '2027-01-02', end_date: '2027-01-02' };
+test('conference estimate shows 10 full-day guests at 2500 as 25000', () => {
+  const quote = estimateBooking(quoteForm, quoteOptions);
+  assert.equal(quote.total, '25000.00');
+  assert.equal(quote.lines[0].quantity, 10);
+});
+test('hotel estimates use occupancy, room counts and nights including an odd guest count', () => {
+  const form = { ...quoteForm, service: 'hotel', guests: '3', occupancy: '2', end_date: '2027-01-04' };
+  const quote = estimateBooking(form, quoteOptions);
+  assert.equal(quote.total, '18000.00');
+  assert.equal(quote.lines[0].quantity, 4);
+  assert.match(quote.lines[0].basis, /2 rooms × 2 nights/);
+  assert.equal(estimateBooking({ ...form, occupancy: '1' }, quoteOptions).total, '18000.00');
+});
+test('optional conference accommodation is itemized separately from attendee pricing', () => {
+  const quote = estimateBooking({ ...quoteForm, add_accommodation: true, accommodation_guests: '4', occupancy: '2', accommodation_check_in: '2027-01-02', accommodation_check_out: '2027-01-03' }, quoteOptions);
+  assert.equal(quote.total, '34000.00');
+  assert.equal(quote.lines.length, 2);
+  assert.equal(estimateBooking({ ...quoteForm, add_accommodation: false }, quoteOptions).lines.length, 1);
+});
+test('invalid capacity and unconfigured double occupancy cannot produce an estimate', () => {
+  assert.equal(estimateBooking({ ...quoteForm, service: 'airbnb', guests: '5', end_date: '2027-01-04' }, quoteOptions), null);
+  assert.equal(estimateBooking({ ...quoteForm, service: 'hotel', occupancy: '2', end_date: '2027-01-04' }, { ...quoteOptions, rooms: [{ ...quoteOptions.rooms[0], double_occupancy_rate: null }] }), null);
+});
+test('the public review page without a personal invitation does not display a review form', () => {
+  const html = renderToStaticMarkup(React.createElement(MemoryRouter, { initialEntries: ['/review'] }, React.createElement(GuestReview)));
+  assert.match(html, /Reviews open after checkout/);
+  assert.doesNotMatch(html, /name="comment"|name="rating"/);
 });
