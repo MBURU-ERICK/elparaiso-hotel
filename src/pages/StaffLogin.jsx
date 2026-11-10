@@ -18,8 +18,8 @@ export default function StaffLogin() {
     setLoading(true);
 
     try {
-      await staffApi.login(username, password);
-      navigate("/staff/dashboard", { replace: true });
+      const { user } = await staffApi.login(username, password);
+      navigate(user.is_superuser ? "/staff/admin" : "/staff/dashboard", { replace: true });
     } catch (err) {
       setError(err.message);
     } finally {

@@ -22,8 +22,9 @@ export default function StaffLayout() {
   }
   if (error && !user) return <main className="section"><p role="alert">{error}</p><button onClick={() => window.location.reload()}>Try again</button></main>;
   if (!user) return <main className="section"><p role="status">Loading your workspace…</p></main>;
-  const permits = action => user.is_superuser || user.facilities?.some(f => f.actions.includes(action));
+  const permits = action => user.is_superuser || user.facilities?.some(f => f.actions?.includes(action));
   const destinations = [
+    ['/staff/admin', 'Administration', Users, user.is_superuser],
     ['/staff/dashboard', 'Overview', LayoutDashboard, true],
     ['/staff/reservations', 'Reservations', BedDouble, permits('view')],
     ['/staff/rooms', 'Room management', DoorOpen, permits('view')],

@@ -1,5 +1,7 @@
 import "./styles/hospitality.css";
 import "./styles/staff-refresh.css";
+import HelpChat from "./components/HelpChat";
+import AdminDashboard from "./pages/AdminDashboard";
 import CustomerNav from "./customer/CustomerNav";
 import { Helmet } from "react-helmet-async";
 import { lazy, Suspense } from "react";
@@ -85,6 +87,7 @@ export default function App() {
         <Route path="/staff/login" element={<StaffLogin />} />
         <Route path="/airbnb" element={<CustomerGate><Airbnb /></CustomerGate>} />
         <Route element={<StaffLayout />}>
+          <Route path="/staff/admin" element={<AdminDashboard />} />
           <Route path="/staff/customers" element={<StaffCustomers />} />
           <Route path="/staff/dashboard" element={<StaffDashboard />} />
           <Route path="/staff/reservations" element={<StaffReservations />} />
@@ -102,6 +105,7 @@ export default function App() {
 
       {!pathname.startsWith("/staff") && <Footer />}
       {!pathname.startsWith("/staff") && <WhatsAppButton />}
+      <HelpChat />
       </CustomerProvider>
     </div>
   );

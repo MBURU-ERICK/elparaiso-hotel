@@ -34,6 +34,7 @@ export function GalleryCarouselView({ images = [], loading, error, retry }) {
       <img src={image.image_url} srcSet={`${image.thumbnail_url} 640w, ${image.image_url} 1920w`} sizes="100vw"
         alt={image.alt_text} loading={n === 0 ? 'eager' : 'lazy'} fetchPriority={n === 0 ? 'high' : 'auto'} />
     </div>)}
+    {count > 1 && <div className="carousel-thumbnails" aria-label="Choose a photograph">{images.map((photo, n) => <button key={photo.id} aria-label={`Show photograph ${n + 1}`} aria-pressed={active === n} onClick={() => setIndex(n)}><img src={photo.thumbnail_url || photo.image_url} alt="" loading="lazy" /></button>)}</div>}
     {count > 1 && <div className="carousel-controls"><button aria-label="Previous photograph" onClick={() => move(-1)}>←</button>
       <span aria-live={paused || focused ? 'polite' : 'off'}>{active + 1} / {count}</span>
       <button aria-label="Next photograph" onClick={() => move(1)}>→</button>
