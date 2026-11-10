@@ -4,15 +4,19 @@ import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { createServer } from 'vite';
 import { MemoryRouter } from 'react-router-dom';
+import { validateRoomPhotos } from '../src/utils/roomPhotos.js';
 import { estimateBooking } from '../src/utils/bookingQuote.js';
 import { HelmetProvider } from 'react-helmet-async';
 let server;
-let GuestReview, GuestBooking, Card, Grid, Upload, Carousel, api, staffApi, CustomerContext, Gate, Auth, RequestForm, safeNext, PortalState, Navbar, CustomerNav, Booking, RoomFilters, FavouriteRoom, ProfileForm;
+let PhotoPicker, ReservationCard, photoApi, GuestReview, GuestBooking, Card, Grid, Upload, Carousel, api, staffApi, CustomerContext, Gate, Auth, RequestForm, safeNext, PortalState, Navbar, CustomerNav, Booking, RoomFilters, FavouriteRoom, ProfileForm;
 const photo = { id: 1, image_url: '/full', thumbnail_url: '/small', title: 'Garden', alt_text: 'A shaded garden path', category: 'garden', description: 'Relax outside' };
 const render = (Component, props) => renderToStaticMarkup(React.createElement(Component, props));
 before(async () => {
   server = await createServer({ server: { middlewareMode: true, hmr: false, watch: null, ws: false } });
   ({ RoomFilters, FavouriteRoom } = await server.ssrLoadModule('/src/components/RoomPreferences.jsx'));
+  PhotoPicker = (await server.ssrLoadModule('/src/components/RoomPhotoPicker.jsx')).default;
+  ReservationCard = (await server.ssrLoadModule('/src/components/StaffReservationCard.jsx')).default;
+  photoApi = (await server.ssrLoadModule('/src/services/airbnbPhotos.js')).airbnbPhotos;
   GuestReview = (await server.ssrLoadModule('/src/pages/GuestReview.jsx')).default;
   GuestBooking = (await server.ssrLoadModule('/src/pages/GuestBooking.jsx')).default;
   ProfileForm = (await server.ssrLoadModule('/src/customer/CustomerProfileForm.jsx')).default;
@@ -200,4 +204,41 @@ test('the public review page without a personal invitation does not display a re
   const html = renderToStaticMarkup(React.createElement(MemoryRouter, { initialEntries: ['/review'] }, React.createElement(GuestReview)));
   assert.match(html, /Reviews open after checkout/);
   assert.doesNotMatch(html, /name="comment"|name="rating"/);
+});
+
+test('room photo picker offers direct device uploads with multiple photos and accepted types', () => {
+  const html = render(PhotoPicker, { files: [], onChange() {} });
+  assert.match(html, /type="file"/);
+  assert.match(html, /multiple=""/);
+  assert.match(html, /accept="image\/jpeg,image\/png,image\/webp"/);
+  assert.match(html, /Browse photos/);
+  assert.doesNotMatch(render(PhotoPicker, { files: [], multiple: false, onChange() {} }), /multiple=""/);
+});
+test('room photo validation rejects unsupported formats, oversized files and excess photos', () => {
+  const valid = { name: 'room.jpg', type: 'image/jpeg', size: 1000 };
+  assert.equal(validateRoomPhotos([valid], 1), '');
+  assert.match(validateRoomPhotos([{ ...valid, type: 'image/svg+xml' }]), /JPEG, PNG or WebP/);
+  assert.match(validateRoomPhotos([{ ...valid, size: 9 * 1024 * 1024 }]), /8 MiB/);
+  assert.match(validateRoomPhotos([valid, valid], 1), /at most 1 more/);
+});
+test('direct Airbnb photo requests preserve multipart boundaries and room identity', async () => {
+  const original = globalThis.fetch;
+  try {
+    const requests = [];
+    globalThis.fetch = async (url, options) => { requests.push({ url, options }); return { ok: true, json: async () => ({ csrfToken: 'photo-csrf' }) }; };
+    await photoApi.upload(42, new Blob(['image bytes'], { type: 'image/jpeg' }), 'Room 42');
+    const request = requests.at(-1);
+    assert.match(request.url, /units\/42\/photos\/$/);
+    assert.ok(request.options.body instanceof FormData);
+    assert.equal(request.options.body.get('alt_text'), 'Room 42');
+    assert.equal(request.options.headers['Content-Type'], undefined);
+    assert.equal(request.options.headers['X-CSRFToken'], 'photo-csrf');
+    assert.equal(request.options.credentials, 'include');
+    await staffApi.logout();
+  } finally { globalThis.fetch = original; }
+});
+test('reservation cards keep stay details and actions without treating unavailable amounts as zero', () => {
+  const html = render(ReservationCard, { booking: { id: 7, reference: 'HOTEL-7', guest_name: 'Guest Seven', status: 'confirmed', room: '101', check_in: '2027-01-02', check_out: '2027-01-03', total_amount: null }, children: React.createElement('button', {}, 'Check in') });
+  assert.match(html, /Guest Seven/); assert.match(html, /2027-01-02/); assert.match(html, /Check in/);
+  assert.match(html, /Not available/); assert.doesNotMatch(html, /KES 0/);
 });

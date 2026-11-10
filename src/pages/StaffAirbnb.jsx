@@ -1,3 +1,5 @@
+import WorkspaceHeader from '../components/WorkspaceHeader';
+import StaffReservationCard from '../components/StaffReservationCard';
 
 import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -34,17 +36,6 @@ const ACTIONS = {
   ],
   checked_in: [["check-out", "Check out"]],
 };
-
-function formatMoney(value) {
-  if (value === null || value === undefined) {
-    return "Restricted";
-  }
-
-  return `KSh ${Number(value).toLocaleString("en-KE", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })}`;
-}
 
 export default function StaffAirbnb() {
   const navigate = useNavigate();
@@ -157,21 +148,7 @@ export default function StaffAirbnb() {
 
   return (
     <main className="staff-dashboard staff-airbnb">
-      <Link className="portal-button" to="/staff/airbnb/rooms">Manage Airbnb rooms →</Link>
-      <header className="staff-header">
-        <div>
-          <p className="staff-eyebrow">ELPARAISO HOTEL</p>
-          <h1>Airbnb Management</h1>
-          <p>Manage short-stay reservations and guest arrivals.</p>
-        </div>
-
-        <Link
-          to="/staff/dashboard"
-          className="staff-back-link"
-        >
-          Back to dashboard
-        </Link>
-      </header>
+      <WorkspaceHeader eyebrow="YOUR PRIVATE-STAY GUEST COLLECTION" title="Airbnb reservations" description="Manage each private stay with the same care, from confirmation to checkout." actions={<Link className="portal-button" to="/staff/airbnb/rooms">Manage Airbnb rooms →</Link>} />
 
       {error && (
         <p className="staff-alert staff-alert-error" role="alert">
@@ -223,71 +200,15 @@ export default function StaffAirbnb() {
         </button>
       </section>
 
-      <section className="staff-table-section">
-        <h2>Short-stay reservations</h2>
+      <section className="reservation-collection-section">
+        <div className="workspace-panel-heading"><h2>Short-stay reservations</h2><span>{bookings.length} in view</span></div>
 
         {loading ? (
           <p>Loading bookings...</p>
         ) : bookings.length === 0 ? (
           <p>No bookings found for this selection.</p>
         ) : (
-          <div className="staff-table-scroll">
-            <table>
-              <thead>
-                <tr>
-                  <th>Booking</th>
-                  <th>Guest</th>
-                  <th>Unit</th>
-                  <th>Stay</th>
-                  <th>Total</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {bookings.map((booking) => (
-                  <tr key={booking.id}>
-                    <td>#{booking.id}</td>
-
-                    <td>
-                      <strong>{booking.guest_name}</strong>
-                      <div className="staff-muted">
-                        {booking.guest_phone}
-                      </div>
-                    </td>
-
-                    <td>
-                      {booking.unit_name}
-                      <div className="staff-muted">
-                        Unit #{booking.unit_id}
-                      </div>
-                    </td>
-
-                    <td>
-                      {booking.check_in}
-                      <div className="staff-muted">
-                        to {booking.check_out}
-                      </div>
-                      <div className="staff-muted">
-                        {booking.nights} nights
-                      </div>
-                    </td>
-
-                    <td>
-                      {formatMoney(booking.total_amount)}
-                    </td>
-
-                    <td>
-                      <span
-                        className={`staff-status staff-status-${booking.status}`}
-                      >
-                        {booking.status.replaceAll("_", " ")}
-                      </span>
-                    </td>
-
-                    <td>
-                      <div className="staff-action-buttons">
+          <div className="reservation-collection-grid">{bookings.map(booking => <StaffReservationCard airbnb booking={booking} key={booking.id}><div className="staff-action-buttons">
                         {(ACTIONS[booking.status] || []).map(
                           ([action, label]) => (
                             <button
@@ -309,13 +230,7 @@ export default function StaffAirbnb() {
                             </button>
                           )
                         )}
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                      </div></StaffReservationCard>)}</div>
         )}
       </section>
 

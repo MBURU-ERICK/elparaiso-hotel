@@ -1,3 +1,4 @@
+import WorkspaceHeader from './WorkspaceHeader';
 import { useCallback, useEffect, useState } from 'react';
 import { galleryApi } from '../services/galleryApi';
 import { staffApi } from '../services/staffApi';
@@ -38,12 +39,12 @@ export default function GalleryManager() {
     catch (err) { setError(err.message); }
     finally { setBusy(false); }
   }
-  return <section className="gallery-manager"><header><p className="eyebrow">ELPARAISO PHOTOGRAPHS</p><h1>Gallery management</h1><p>Manage photographs for your assigned facilities. Publication makes an image visible to everyone.</p></header>
+  return <section className="gallery-manager"><WorkspaceHeader eyebrow="YOUR PROPERTY PHOTO COLLECTION" title="Photo library" description="Curate the photographs behind every welcome. Airbnb room photos follow their room’s publication settings." actions={<span className="booking-status status-confirmed">{count} photographs</span>} />
     {error && <div role="alert"><p>{error}</p><button onClick={() => { setLoading(true); load(); }}>Try again</button></div>}
     {message && <p role="status">{message}</p>}
     {!loading && !facilities.length && <p>You need a facility manager assignment to manage photographs.</p>}
     {!!facilities.length && <GalleryUploadForm key={editing?.id || 'new'} image={editing} facilities={facilities} onCancel={editing ? () => setEditing(null) : undefined} onSaved={() => { setEditing(null); setMessage('Photograph saved.'); load(); }} />}
-    {loading ? <p role="status">Loading photographs…</p> : !images.length ? <p>No photographs yet.</p> : <div className="gallery-grid">{images.map(image => <div key={image.id}>
+    {loading ? <p role="status">Loading photographs…</p> : !images.length ? <p>No photographs yet.</p> : <div className="gallery-grid">{images.map(image => <div className="unit-management-card gallery-management-card" key={image.id}>
       <GalleryCard image={image} /><p>{image.published ? 'Published' : 'Private draft'} · Order {image.display_order}</p>
       <div className="gallery-actions"><button disabled={busy} onClick={() => setEditing(image)}>Edit</button>
         <button disabled={busy} onClick={() => mutate(() => galleryApi.update(image.id, { published: !image.published }), 'Publication updated.')}>{image.published ? 'Unpublish' : 'Publish'}</button>

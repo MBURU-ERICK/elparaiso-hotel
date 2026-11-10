@@ -1,3 +1,4 @@
+import WorkspaceHeader from '../components/WorkspaceHeader';
 
 import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate, useOutletContext } from "react-router-dom";
@@ -185,25 +186,14 @@ export default function StaffReconciliation() {
   ];
 
   return (
-    <main className="staff-dashboard">
-      <header className="staff-header">
-        <div>
-          <p className="staff-eyebrow">ELPARAISO HOTEL</p>
-          <h1>M-Pesa Reconciliation</h1>
-          <p>
-            Statement reconciliation and independent accountant review
-          </p>
-        </div>
+    <main className="staff-dashboard reconciliation-workspace">
+      <WorkspaceHeader eyebrow="YOUR PAYMENT REVIEW WORKSPACE" title="Payment reconciliation" description="Review statements, follow up discrepancies and keep independent accountant decisions organized." actions={<Link to="/staff/dashboard" className="portal-button">Workspace overview →</Link>} />
 
-        <Link to="/staff/dashboard">
-          Back to dashboard
-        </Link>
-      </header>
-
-      <label htmlFor="reconciliation-facility">Facility</label>
+      <div className="workspace-panel workspace-filter-bar"><label htmlFor="reconciliation-facility">Facility</label>
       <select id="reconciliation-facility" value={facilityId} disabled={saving} onChange={event => {
         setSelected(null); setReport(null); setRows([]); setLoading(true); setFacilityId(Number(event.target.value));
       }}>{facilities.map(f => <option value={f.id} key={f.id}>{f.name}</option>)}</select>
+      </div>
       {!facilities.length && <p>No facilities are available for your reconciliation permissions.</p>}
       <section className="staff-table-section">
         <strong>Sandbox reconciliation</strong>

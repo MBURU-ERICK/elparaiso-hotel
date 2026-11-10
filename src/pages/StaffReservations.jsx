@@ -1,3 +1,5 @@
+import WorkspaceHeader from '../components/WorkspaceHeader';
+import StaffReservationCard from '../components/StaffReservationCard';
 
 import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -169,17 +171,7 @@ export default function StaffReservations() {
 
   return (
     <main className="staff-dashboard staff-reservations">
-      <header className="staff-header">
-        <div>
-          <p className="staff-eyebrow">ELPARAISO HOTEL</p>
-          <h1>Reservation Management</h1>
-          <p>Manage guest bookings and room assignments.</p>
-        </div>
-
-        <Link to="/staff/dashboard" className="staff-back-link">
-          Back to dashboard
-        </Link>
-      </header>
+      <WorkspaceHeader eyebrow="YOUR HOTEL GUEST COLLECTION" title="Hotel reservations" description="Welcome the next guest. Manage room assignments, arrivals and departures from one place." actions={<Link className="portal-button" to="/staff/customers">Website booking inbox →</Link>} />
 
       {error && (
         <p className="staff-alert staff-alert-error" role="alert">
@@ -223,66 +215,15 @@ export default function StaffReservations() {
         </button>
       </section>
 
-      <section className="staff-table-section">
-        <h2>Guest reservations</h2>
+      <section className="reservation-collection-section">
+        <div className="workspace-panel-heading"><h2>Guest reservations</h2><span>{reservations.length} in view</span></div>
 
         {loading ? (
           <p>Loading reservations...</p>
         ) : reservations.length === 0 ? (
           <p>No matching reservations found.</p>
         ) : (
-          <div className="staff-table-scroll">
-            <table>
-              <thead>
-                <tr>
-                  <th>Reference</th>
-                  <th>Guest</th>
-                  <th>Room</th>
-                  <th>Stay</th>
-                  <th>Total</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {reservations.map((booking) => (
-                  <tr key={booking.id}>
-                    <td>{booking.reference}</td>
-
-                    <td>
-                      <strong>{booking.guest_name}</strong>
-                      <div className="staff-muted">
-                        {booking.phone}
-                      </div>
-                    </td>
-
-                    <td>{booking.room || "Unassigned"}</td>
-
-                    <td>
-                      {booking.check_in}
-                      <div className="staff-muted">
-                        to {booking.check_out}
-                      </div>
-                    </td>
-
-                    <td>
-                      KSh{" "}
-                      {Number(booking.total_amount).toLocaleString(
-                        "en-KE"
-                      )}
-                    </td>
-
-                    <td>
-                      <span
-                        className={`staff-status staff-status-${booking.status}`}
-                      >
-                        {booking.status.replaceAll("_", " ")}
-                      </span>
-                    </td>
-
-                    <td>
-                      <div className="staff-action-buttons">
+          <div className="reservation-collection-grid">{reservations.map(booking => <StaffReservationCard booking={booking} key={booking.id}><div className="staff-action-buttons">
                         {booking.status === "pending" && (
                           <button
                             type="button"
@@ -333,13 +274,7 @@ export default function StaffReservations() {
                             Cancel
                           </button>
                         )}
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                      </div></StaffReservationCard>)}</div>
         )}
       </section>
 

@@ -16,7 +16,7 @@ export default function GalleryUploadForm({ facilities, image, onSaved, onCancel
     catch (err) { setError(err.message); }
     finally { setBusy(false); }
   }
-  return <form className="gallery-upload" onSubmit={submit}>
+  return <form className="gallery-upload portal-form workspace-panel" onSubmit={submit}>
     <h2>{image ? 'Edit photograph' : 'Upload a photograph'}</h2>
     <p>JPEG, PNG or WebP, up to 8 MiB. At least 200px per side and at most 24 megapixels. New uploads stay private until published.</p>
     {error && <p role="alert">{error}</p>}
