@@ -6,12 +6,13 @@ import { createServer } from 'vite';
 import { MemoryRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 let server;
-let Card, Grid, Upload, Carousel, api, staffApi, CustomerContext, Gate, Auth, RequestForm, safeNext, PortalState, Navbar, CustomerNav, Booking, RoomFilters, FavouriteRoom, ProfileForm;
+let GuestBooking, Card, Grid, Upload, Carousel, api, staffApi, CustomerContext, Gate, Auth, RequestForm, safeNext, PortalState, Navbar, CustomerNav, Booking, RoomFilters, FavouriteRoom, ProfileForm;
 const photo = { id: 1, image_url: '/full', thumbnail_url: '/small', title: 'Garden', alt_text: 'A shaded garden path', category: 'garden', description: 'Relax outside' };
 const render = (Component, props) => renderToStaticMarkup(React.createElement(Component, props));
 before(async () => {
   server = await createServer({ server: { middlewareMode: true, hmr: false, watch: null, ws: false } });
   ({ RoomFilters, FavouriteRoom } = await server.ssrLoadModule('/src/components/RoomPreferences.jsx'));
+  GuestBooking = (await server.ssrLoadModule('/src/pages/GuestBooking.jsx')).default;
   ProfileForm = (await server.ssrLoadModule('/src/customer/CustomerProfileForm.jsx')).default;
   CustomerNav = (await server.ssrLoadModule('/src/customer/CustomerNav.jsx')).default;
   Booking = (await server.ssrLoadModule('/src/pages/Booking.jsx')).default;
@@ -121,7 +122,7 @@ test('portal error and empty states are explicit and navigation uses the supplie
   assert.match(render(PortalState, { error: 'Offline' }), /role="alert"/);
   assert.match(render(PortalState, { empty: true }), /Nothing here yet/);
   const html = portalRender(Navbar);
-  assert.match(html, /Logo%20elparaiso.png/); assert.match(html, /Groups &amp; conferences/); assert.match(html, /My portal/);
+  assert.match(html, /Logo%20elparaiso.png/); assert.match(html, /Groups &amp; conferences/); assert.match(html, /Private stays/); assert.doesNotMatch(html, /My portal|href="\/account/);
 });
 
 test('guest navigation stays available on booking and private-stay routes', () => {
@@ -153,4 +154,13 @@ test('room preferences expose classification filtering and accessible saved stat
 test('profile collects an optional billing KRA PIN', () => {
   const html = portalRender(ProfileForm);
   assert.match(html, /KRA PIN \(for invoicing\)/); assert.match(html, /name="kra_pin"/); assert.match(html, /future invoices/);
+});
+
+test('public booking works without a customer provider and requests guest contact details', () => {
+  const html = renderToStaticMarkup(React.createElement(MemoryRouter, { initialEntries: ['/booking?check_in=2027-01-02&check_out=2027-01-04&adults=2'] }, React.createElement(GuestBooking)));
+  for (const field of ['name', 'email', 'phone', 'guests', 'start_date', 'end_date', 'facility']) assert.ok(html.includes(`name="${field}"`));
+  assert.match(html, /No account needed/);
+  assert.match(html, /value="2027-01-02"/);
+  assert.match(html, /value="2027-01-04"/);
+  assert.doesNotMatch(html, /password|Sign in/);
 });

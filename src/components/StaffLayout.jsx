@@ -29,7 +29,7 @@ export default function StaffLayout() {
     ['/staff/reservations', 'Reservations', BedDouble, permits('view')],
     ['/staff/rooms', 'Room management', DoorOpen, permits('view')],
     ['/staff/airbnb', 'Private stays', Building2, permits('view')],
-    ['/staff/customers', 'Customers & quotations', Users, permits('manage')],
+    ['/staff/customers', 'Booking inbox & invoices', Users, permits('view')],
     ['/staff/gallery', 'Photo library', Images, permits('manage')],
     ['/staff/reconciliation', 'Payments & reviews', Wallet, permits('payments_manage')],
   ].filter(([, , , visible]) => visible);

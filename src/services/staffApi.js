@@ -158,6 +158,7 @@ export const staffApi = {
       "check-in",
       "check-out",
       "cancel",
+      "delete",
     ];
 
     if (!allowedActions.includes(action)) {
@@ -192,6 +193,7 @@ export const staffApi = {
       "cancel",
       "check-in",
       "check-out",
+      "delete",
     ];
 
     if (!allowed.includes(action)) {

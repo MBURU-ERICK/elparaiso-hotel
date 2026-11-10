@@ -18,6 +18,7 @@ const ACTION_LABELS = {
   "check-in": "Check in",
   "check-out": "Check out",
   cancel: "Cancel reservation",
+  delete: "Permanently delete cancelled reservation",
 };
 
 function errorMessage(error) {
@@ -315,6 +316,7 @@ export default function StaffReservations() {
                           </button>
                         )}
 
+                        {booking.status === "cancelled" && <button type="button" className="staff-danger" disabled={busy} onClick={() => performAction(booking, "delete")}>Delete cancelled booking</button>}
                         {["pending", "confirmed"].includes(
                           booking.status
                         ) && (

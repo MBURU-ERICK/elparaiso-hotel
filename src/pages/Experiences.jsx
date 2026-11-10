@@ -55,7 +55,7 @@ const activities = [
 function EnquiryButton({ children = "Make an Enquiry" }) {
   return (
     <Link
-      to="/account/requests/new?service=general"
+      to="/booking?service=conference?service=general"
       className="btn btn-gold"
     >
       <MessageCircle size={17} />

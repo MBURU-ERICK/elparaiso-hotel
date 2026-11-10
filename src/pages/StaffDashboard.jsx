@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { staffApi } from "../services/staffApi";
 import "../styles/staff.css";
 
@@ -70,6 +70,7 @@ export default function StaffDashboard() {
         </div>
       </header>
 
+      <div className="portal-panel"><h2>Website booking inbox</h2><p>View new hotel, Airbnb and conference requests, reply by email and manage their invoices.</p><Link className="portal-button" to="/staff/customers">Open booking inbox →</Link></div>
       <section className="staff-stats">
         {stats.map(([label, value]) => (
           <article className="staff-stat" key={label}>

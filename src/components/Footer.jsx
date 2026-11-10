@@ -21,7 +21,7 @@ export default function Footer() {
           <h3>Explore</h3>
           <Link to="/rooms">Accommodation</Link>
           <Link to="/business">Groups & conferences</Link>
-          <Link to="/account">Customer portal</Link>
+          <Link to="/booking">Request a booking</Link>
           <Link to="/restaurant">Restaurant</Link>
           <Link to="/experiences">Experiences</Link>
           <Link to="/gallery">Gallery</Link>

@@ -8,7 +8,7 @@ const links = [
   { name: "Restaurant", path: "/restaurant" },
   { name: "Groups & conferences", path: "/business" },
   { name: "Gallery", path: "/gallery" },
-  { name: "My portal", path: "/account" },
+  { name: "Private stays", path: "/airbnb" },
   { name: "Contact", path: "/contact" },
 ];
 

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-const topics = [ ['Find a room', '/rooms', 'Browse rooms, compare amenities and choose your stay.'], ['Book a stay', '/booking', 'Sign in to your guest account, then choose your dates and room.'], ['Browse photographs', '/gallery', 'Explore the property and use the photograph controls to browse images.'], ['Manage my requests', '/account/requests', 'Your account keeps your quotations and requests together.'], ['Contact the hotel', '/contact', 'Find hotel contact details and get help from our team.'] ];
+const topics = [ ['Find a room', '/rooms', 'Browse rooms, compare amenities and choose your stay.'], ['Book a stay', '/booking', 'Choose your dates and room, then send a request. Our team replies by email.'], ['Browse photographs', '/gallery', 'Explore the property and use the photograph controls to browse images.'], ['Booking updates', '/contact', 'Reply to your booking email or contact our team for an update.'], ['Contact the hotel', '/contact', 'Find hotel contact details and get help from our team.'] ];
 export default function HelpChat() {
  const [open, setOpen] = useState(false);
  const [selected, setSelected] = useState(null);
