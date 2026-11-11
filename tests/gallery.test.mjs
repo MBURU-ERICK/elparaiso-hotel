@@ -10,12 +10,14 @@ import { validateRoomPhotos } from '../src/utils/roomPhotos.js';
 import { estimateBooking } from '../src/utils/bookingQuote.js';
 import { HelmetProvider } from 'react-helmet-async';
 let server;
-let StaffContent, PhotoPicker, ReservationCard, photoApi, GuestReview, GuestBooking, Card, Grid, Upload, Carousel, api, staffApi, CustomerContext, Gate, Auth, RequestForm, safeNext, PortalState, Navbar, CustomerNav, Booking, RoomFilters, FavouriteRoom, ProfileForm;
+let EventCarousel, EventDetailsDialog, StaffContent, PhotoPicker, ReservationCard, photoApi, GuestReview, GuestBooking, Card, Grid, Upload, Carousel, api, staffApi, CustomerContext, Gate, Auth, RequestForm, safeNext, PortalState, Navbar, CustomerNav, Booking, RoomFilters, FavouriteRoom, ProfileForm;
 const photo = { id: 1, image_url: '/full', thumbnail_url: '/small', title: 'Garden', alt_text: 'A shaded garden path', category: 'garden', description: 'Relax outside' };
 const render = (Component, props) => renderToStaticMarkup(React.createElement(Component, props));
 before(async () => {
   server = await createServer({ server: { middlewareMode: true, hmr: false, watch: null, ws: false } });
   ({ RoomFilters, FavouriteRoom } = await server.ssrLoadModule('/src/components/RoomPreferences.jsx'));
+  EventCarousel = (await server.ssrLoadModule('/src/components/EventCarousel.jsx')).default;
+  EventDetailsDialog = (await server.ssrLoadModule('/src/components/EventDetailsDialog.jsx')).default;
   StaffContent = (await server.ssrLoadModule('/src/pages/StaffContent.jsx')).default;
   PhotoPicker = (await server.ssrLoadModule('/src/components/RoomPhotoPicker.jsx')).default;
   ReservationCard = (await server.ssrLoadModule('/src/components/StaffReservationCard.jsx')).default;
@@ -297,4 +299,33 @@ test('event booking has a dedicated form without requiring a conference package'
 });
 test('event bookings use a staff quotation rather than a zero-priced conference estimate', () => {
   assert.equal(estimateBooking({ service: 'event', guests: '20' }, {}), null);
+});
+
+const eventPoster = { id: 17, title: 'Garden celebration', type_name: 'Celebration', image: '/poster.webp', start_date: '2026-12-20', end_date: '2026-12-21', description: 'Live music and dinner.\nAll are welcome.' };
+test('event carousel uses compact room-style cards, image buttons and event-specific bookings', () => {
+  const html = renderToStaticMarkup(React.createElement(MemoryRouter, null, React.createElement(EventCarousel, { events: [eventPoster, { ...eventPoster, id: 18, title: 'Team retreat' }] })));
+  assert.match(html, /aria-roledescription="carousel"/);
+  assert.match(html, /stay-listing event-listing/);
+  assert.match(html, /View Garden celebration image and details/);
+  assert.match(html, /aria-haspopup="dialog"/);
+  assert.match(html, /Previous events/);
+  assert.match(html, /Next events/);
+  assert.match(html, /service=event&amp;event=17/);
+  assert.match(html, /aria-roledescription="slide"/);
+});
+test('a single event keeps its card and hides unnecessary carousel controls', () => {
+  const html = renderToStaticMarkup(React.createElement(MemoryRouter, null, React.createElement(EventCarousel, { events: [eventPoster] })));
+  assert.match(html, /event-listing/);
+  assert.doesNotMatch(html, /Previous events|Next events/);
+  assert.equal(render(EventCarousel, { events: [] }), '');
+});
+test('event details include the full image, unabridged description and booking action', () => {
+  const html = renderToStaticMarkup(React.createElement(MemoryRouter, null, React.createElement(EventDetailsDialog, { event: eventPoster, onDismiss() {} })));
+  assert.match(html, /<dialog/);
+  assert.match(html, /aria-labelledby=/);
+  assert.match(html, /Close event details/);
+  assert.match(html, /src="\/poster.webp"/);
+  assert.match(html, /All are welcome/);
+  assert.match(html, /Open full image in a new tab/);
+  assert.match(html, /service=event&amp;event=17/);
 });
