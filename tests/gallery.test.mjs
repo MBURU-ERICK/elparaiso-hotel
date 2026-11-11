@@ -3,18 +3,20 @@ import assert from 'node:assert/strict';
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { createServer } from 'vite';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, Routes, Route, Outlet } from 'react-router-dom';
+import { todayInNairobi } from '../src/utils/stayDates.js';
 import { hotelFacilities, defaultHotelFacility } from '../src/utils/hotelFacilities.js';
 import { validateRoomPhotos } from '../src/utils/roomPhotos.js';
 import { estimateBooking } from '../src/utils/bookingQuote.js';
 import { HelmetProvider } from 'react-helmet-async';
 let server;
-let PhotoPicker, ReservationCard, photoApi, GuestReview, GuestBooking, Card, Grid, Upload, Carousel, api, staffApi, CustomerContext, Gate, Auth, RequestForm, safeNext, PortalState, Navbar, CustomerNav, Booking, RoomFilters, FavouriteRoom, ProfileForm;
+let StaffContent, PhotoPicker, ReservationCard, photoApi, GuestReview, GuestBooking, Card, Grid, Upload, Carousel, api, staffApi, CustomerContext, Gate, Auth, RequestForm, safeNext, PortalState, Navbar, CustomerNav, Booking, RoomFilters, FavouriteRoom, ProfileForm;
 const photo = { id: 1, image_url: '/full', thumbnail_url: '/small', title: 'Garden', alt_text: 'A shaded garden path', category: 'garden', description: 'Relax outside' };
 const render = (Component, props) => renderToStaticMarkup(React.createElement(Component, props));
 before(async () => {
   server = await createServer({ server: { middlewareMode: true, hmr: false, watch: null, ws: false } });
   ({ RoomFilters, FavouriteRoom } = await server.ssrLoadModule('/src/components/RoomPreferences.jsx'));
+  StaffContent = (await server.ssrLoadModule('/src/pages/StaffContent.jsx')).default;
   PhotoPicker = (await server.ssrLoadModule('/src/components/RoomPhotoPicker.jsx')).default;
   ReservationCard = (await server.ssrLoadModule('/src/components/StaffReservationCard.jsx')).default;
   photoApi = (await server.ssrLoadModule('/src/services/airbnbPhotos.js')).airbnbPhotos;
@@ -264,4 +266,20 @@ test('hotel facility selection uses the Elparaiso name rather than assuming faci
   assert.deepEqual(hotelFacilities(facilities).map(f => f.name), ['Elparaiso Hotel', 'Other hotel']);
   assert.equal(defaultHotelFacility([{ id: 42, name: 'One hotel', facility_type: 'hotel' }]), '42');
   assert.equal(defaultHotelFacility([{ id: 1, name: 'Private stay', facility_type: 'airbnb' }]), '');
+});
+
+test('event form prevents past dates while keeping dates optional', () => {
+  const form = React.createElement(StaffContent, { kind: 'events' });
+  const app = React.createElement(MemoryRouter, null,
+    React.createElement(Routes, null,
+      React.createElement(Route, { element: React.createElement(Outlet, { context: { user: { is_superuser: true } } }) },
+        React.createElement(Route, { index: true, element: form }))));
+  const html = renderToStaticMarkup(app);
+  for (const name of ['start_date', 'end_date']) {
+    const input = html.match(new RegExp(`<input[^>]*name="${name}"[^>]*>`))?.[0];
+    assert.ok(input);
+    assert.match(input, /type="date"/);
+    assert.ok(input.includes(`min="${todayInNairobi()}"`));
+    assert.doesNotMatch(input, /required/);
+  }
 });
