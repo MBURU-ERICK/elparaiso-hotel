@@ -1,0 +1,8 @@
+import { useEffect, useState } from 'react';
+import { staffApi, staffRequest } from '../services/staffApi';
+export default function StaffProfile() {
+  const [profile, setProfile] = useState(null), [error, setError] = useState(''), [notice, setNotice] = useState(''), [busy, setBusy] = useState(false);
+  useEffect(() => { let active = true; staffRequest('/api/staff/profile/').then(p => { if (active) setProfile(p); }).catch(e => { if (active) setError(e.message); }); return () => { active = false; }; }, []);
+  async function save(e) { e.preventDefault(); setBusy(true); setError(''); setNotice(''); const data = Object.fromEntries(new FormData(e.currentTarget)); try { await staffApi.csrf(); setProfile(await staffRequest('/api/staff/profile/', { method: 'PATCH', body: JSON.stringify(data) })); setNotice('Profile updated.'); } catch (err) { setError(err.message); } finally { setBusy(false); } }
+  return <section><h1>My staff profile</h1>{error && <p role="alert">{error}</p>}{notice && <p role="status">{notice}</p>}{profile ? <form className="portal-form workspace-panel" onSubmit={save}>{[['first_name', 'First name'], ['last_name', 'Last name'], ['email', 'Email', 'email'], ['phone', 'Phone', 'tel'], ['title', 'Job title']].map(([key, label, type = 'text']) => <label key={key}>{label}<input name={key} type={type} defaultValue={profile[key]} maxLength={key === 'phone' ? 30 : key === 'email' ? 254 : 150} /></label>)}<label>About you<textarea name="biography" maxLength={3000} defaultValue={profile.biography} /></label><button disabled={busy}>Save profile</button></form> : !error && <p role="status">Loading profile…</p>}</section>;
+}

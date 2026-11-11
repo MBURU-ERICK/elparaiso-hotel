@@ -7,6 +7,7 @@ const links = [
   { name: "Accommodation", path: "/rooms" },
   { name: "Restaurant", path: "/restaurant" },
   { name: "Groups & conferences", path: "/business" },
+  { name: "Events", path: "/events" },
   { name: "Gallery", path: "/gallery" },
   { name: "Private stays", path: "/airbnb" },
   { name: "Contact", path: "/contact" },

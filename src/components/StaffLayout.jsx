@@ -24,6 +24,11 @@ export default function StaffLayout() {
   if (!user) return <main className="section"><p role="status">Loading your workspace…</p></main>;
   const permits = action => user.is_superuser || user.facilities?.some(f => f.actions?.includes(action));
   const destinations = [
+    ['/staff/profile', 'My profile', Users, true],
+    ['/staff/events', 'Events & advertisements', CalendarDays, user.is_superuser],
+    ['/staff/event-types', 'Event types', CalendarDays, user.is_superuser],
+    ['/staff/contacts', 'Contact configuration', Users, user.is_superuser],
+    ['/staff/guest-reservations', 'Guest rooms & conference reservations', BedDouble, permits('view')],
     ['/staff/admin', 'Administration', Users, user.is_superuser],
     ['/staff/dashboard', 'Overview', LayoutDashboard, true],
     ['/staff/reservations', 'Reservations', BedDouble, permits('view')],

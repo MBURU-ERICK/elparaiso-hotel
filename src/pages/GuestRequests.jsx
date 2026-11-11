@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useOutletContext, useSearchParams, Link } from 'react-router-dom';
+import { useOutletContext, useSearchParams, useNavigate, Link } from 'react-router-dom';
 import { Inbox, ArrowUpRight, Mail, BedDouble, LogOut, Star } from 'lucide-react';
 import { customerRequest } from '../customer/customerApi';
 import InvoiceList from '../customer/InvoiceList';
@@ -7,15 +7,29 @@ import InvoiceDetail from '../customer/InvoiceDetail';
 import BookingQuote from '../components/BookingQuote';
 const base = '/api/customers/staff/guest-reservations/';
 const blankLine = () => ({ description: '', quantity: 1, unit_price: '' });
-export default function GuestRequests() {
+export default function GuestRequests({ reservationMode = false }) {
+  const navigate = useNavigate();
   const { user } = useOutletContext();
   const [params, setParams] = useSearchParams();
   const [rows, setRows] = useState(null), [error, setError] = useState(''), [notice, setNotice] = useState(''), [busy, setBusy] = useState(false), [revision, setRevision] = useState(0);
   const [tab, setTab] = useState('requests'), [invoiceId, setInvoiceId] = useState(null), [search, setSearch] = useState('');
+  const [availableRooms, setAvailableRooms] = useState([]);
+  const [roomOptions, setRoomOptions] = useState([]);
+  useEffect(() => {
+    let active = true;
+    if (reservationMode) customerRequest('/api/customers/booking-options/').then(d => { if (active) setRoomOptions(d.rooms); }).catch(e => { if (active) setError(e.message); });
+    return () => { active = false; };
+  }, [reservationMode]);
   const [lines, setLines] = useState([blankLine()]);
   const selected = rows?.find(row => String(row.id) === params.get('request'));
   const status = params.get('status') || '', service = params.get('service') || '';
   useEffect(() => { let active = true; customerRequest(base).then(d => { if (active) setRows(d.results || d); }).catch(e => { if (active) setError(e.message); }); return () => { active = false; }; }, [revision]);
+  useEffect(() => {
+    let active = true;
+    if (!selected?.room_type || !reservationMode) return;
+    customerRequest(`${base}${selected.id}/available-rooms/`).then(data => { if (active) setAvailableRooms(data); }).catch(e => { if (active) setError(e.message); });
+    return () => { active = false; };
+  }, [selected?.id, selected?.room_type, reservationMode, revision]);
   function permits(action, facility = selected?.facility) { return user.is_superuser || user.facilities?.some(f => f.id === facility && f.actions?.includes(action)); }
   function select(row) {
     setParams({ request: row.id }); setError(''); setNotice('');
@@ -29,14 +43,19 @@ export default function GuestRequests() {
       if (method === 'DELETE') { setParams({}); setNotice('Cancelled request deleted.'); }
       else { if (result?.id) setRows(old => old.map(row => row.id === result.id ? result : row)); setNotice(result?.detail || 'Saved. Guest email queued where applicable.'); }
       setRevision(n => n + 1);
+      if (path === 'reply/' && ['responded', 'confirmed'].includes(result?.status)) {
+        navigate(`/staff/guest-reservations?request=${result.id}`);
+      }
     } catch (e) { setError(e.message); } finally { setBusy(false); }
   }
-  const visible = rows?.filter(row => (!status || row.status === status) && (!service || row.service === service) && `${row.name} ${row.company} ${row.email} ${row.selection} ${row.reference}`.toLowerCase().includes(search.toLowerCase()));
-  return <section className="booking-workspace"><header className="workspace-page-heading"><div><span className="eyebrow">EVERY REQUEST. A PERSONAL WELCOME.</span><h1>Booking inbox & invoices</h1><p>Quotes, guest correspondence, stays and payment follow-up.</p></div><div className="workspace-tabs"><button aria-pressed={tab === 'requests'} onClick={() => setTab('requests')}>Booking inbox</button><button aria-pressed={tab === 'previous'} onClick={() => setTab('previous')}>Previous invoices</button></div></header>
+  const visible = rows?.filter(row => (!reservationMode || ['responded', 'confirmed', 'checked_in', 'checked_out'].includes(row.status)) && (!status || row.status === status) && (!service || row.service === service) && `${row.name} ${row.company} ${row.email} ${row.selection} ${row.reference}`.toLowerCase().includes(search.toLowerCase()));
+  return <section className="booking-workspace"><header className="workspace-page-heading"><div><span className="eyebrow">EVERY REQUEST. A PERSONAL WELCOME.</span><h1>{reservationMode ? 'Guest rooms & conference reservations' : 'Booking inbox & invoices'}</h1><p>Quotes, guest correspondence, stays and payment follow-up.</p></div><div className="workspace-tabs"><button aria-pressed={tab === 'requests'} onClick={() => setTab('requests')}>Booking inbox</button><button aria-pressed={tab === 'previous'} onClick={() => setTab('previous')}>Previous invoices</button></div></header>
     {error && <p role="alert" className="portal-alert">{error}</p>}{notice && <p role="status" className="portal-notice">{notice}</p>}
     {tab === 'previous' ? (invoiceId ? <><button onClick={() => setInvoiceId(null)}>← Previous invoices</button><InvoiceDetail staff invoiceId={invoiceId} /></> : <InvoiceList staff onSelect={setInvoiceId} />) : selected ? <>
       <button className="workspace-back" onClick={() => setParams({})}>← All booking requests</button>
       <header className="workspace-panel booking-detail-header"><div><span className={`booking-status status-${selected.status}`}>{selected.status.replaceAll('_', ' ')}</span><h2>{selected.company || selected.name}</h2><p>{selected.selection || selected.service}</p><p>{selected.start_date} → {selected.end_date} · {selected.guests} guests</p><small>Contact person: {selected.name} · <a href={`mailto:${selected.email}`}>{selected.email}</a> · {selected.phone}</small><p className="workspace-reference">{selected.reference}</p></div><div className="booking-stay-actions">{selected.status === 'confirmed' && permits('check_in') && (selected.service !== 'conference' || selected.accommodation_guests > 0) && <button disabled={busy} onClick={() => send('stay-action/', { action: 'check_in' })}><BedDouble size={17} /> Record check-in</button>}{selected.status === 'checked_in' && permits('check_out') && <button disabled={busy} onClick={() => { if (window.confirm('Record checkout and email the guest a personal review invitation?')) send('stay-action/', { action: 'check_out' }); }}><LogOut size={17} /> Record checkout</button>}{selected.status === 'checked_out' && permits('check_out') && <button disabled={busy} onClick={() => send('invite-review/', {})}><Star size={17} /> Resend review invitation</button>}<Link to="/staff/reviews">View guest feedback ↗</Link></div></header>
+      {!reservationMode && ['responded', 'confirmed'].includes(selected.status) && <Link className="portal-button" to={`/staff/guest-reservations?request=${selected.id}`}>Continue to room / hall reservation →</Link>}
+      {reservationMode && <section className="workspace-panel"><h2>Offer accommodation & reserve the venue</h2><p>{selected.name} · {selected.selection} · {selected.start_date} → {selected.end_date}</p>{selected.service === 'conference' && selected.package && <><p>Conference hall: {selected.hall_reserved ? 'Reserved' : 'Awaiting allocation'}</p>{!selected.hall_reserved && permits('confirm') && <button disabled={busy} onClick={() => send('reserve-hall/', {})}>Reserve conference hall</button>}</>}{selected.service === 'conference' && selected.package && permits('confirm') && !selected.room_allocations?.length && <form className="portal-form" onSubmit={e => { e.preventDefault(); send('offer-accommodation/', Object.fromEntries(new FormData(e.currentTarget))); }}><h3>Offer optional guest accommodation</h3><label>Hotel room category<select name="room_type" required defaultValue={selected.room_type || ''}><option value="">Choose a category</option>{roomOptions.map(room => <option key={room.id} value={room.id}>{room.name}</option>)}</select></label><label>Guests needing rooms<input name="accommodation_guests" type="number" min="1" max={selected.guests} defaultValue={selected.accommodation_guests || selected.guests} required /></label><label>People per room<select name="occupancy" defaultValue={selected.occupancy}><option value="1">One person</option><option value="2">Two people</option></select></label><label>Arrival<input name="accommodation_check_in" type="date" defaultValue={selected.accommodation_check_in || selected.start_date} required /></label><label>Departure<input name="accommodation_check_out" type="date" defaultValue={selected.accommodation_check_out || ''} required /></label><button disabled={busy}>Email accommodation offer</button></form>}{selected.room_type && permits('confirm') && <form className="portal-form" onSubmit={e => { e.preventDefault(); send('allocate-room/', { room_id: new FormData(e.currentTarget).get('room_id') }); }}><label>Available hotel rooms<select name="room_id" required defaultValue=""><option value="">Select room to offer</option>{availableRooms.map(room => <option key={room.id} value={room.id}>Room {room.room_number}</option>)}</select></label><button disabled={busy || !availableRooms.length}>Allocate room & reserve</button></form>}{selected.room_allocations?.map(room => <p key={room.id}>{room.reference} · Room {room.room || 'unassigned'} · {room.status}</p>)}{selected.service === 'airbnb' && <Link to="/staff/airbnb">Open Airbnb reservations →</Link>}<p>Room allocations also appear in hotel reservations. Confirm the final arrangements with the guest using the reply form below.</p></section>}
       {selected.requirements && <div className="workspace-panel"><span className="eyebrow">GUEST REQUIREMENTS</span><p style={{ whiteSpace: 'pre-wrap' }}>{selected.requirements}</p></div>}
       <div className="booking-detail-columns"><BookingQuote quote={selected.quote} title="Original booking estimate" /><section className="workspace-panel booking-lifecycle"><h2>Stay progress</h2>{[['Received', selected.created_at], ['Checked in', selected.checked_in_at], ['Checked out', selected.checked_out_at]].map(([label, date]) => <div key={label}><span className={date ? 'progress-dot complete' : 'progress-dot'} /><strong>{label}</strong><small>{date ? new Date(date).toLocaleString() : 'Awaiting staff update'}</small></div>)}{selected.accommodation_guests > 0 && <p>Conference accommodation: {selected.accommodation_guests} guests · {selected.accommodation_check_in} → {selected.accommodation_check_out}</p>}<p>Reviews open only after checkout has been recorded.</p></section></div>
       <div className="booking-detail-columns">{permits('confirm') && <form className="portal-form workspace-panel" key={`${selected.id}:${selected.status}`} onSubmit={e => { e.preventDefault(); send('reply/', Object.fromEntries(new FormData(e.currentTarget))); }}><div><Mail size={24} /><h2>Reply to the guest</h2><p>The original itemized quote is included in the branded email.</p></div><label>Booking status<select name="status" defaultValue={selected.status === 'new' ? 'responded' : selected.status}>{['checked_in', 'checked_out', 'cancelled'].includes(selected.status) ? <option value={selected.status}>{selected.status.replaceAll('_', ' ')}</option> : <><option value="responded">Responded</option><option value="confirmed">Confirmed</option><option value="cancelled">Cancelled</option></>}</select></label><label>Message<textarea name="message" rows="6" maxLength={5000} required defaultValue={`Thank you for choosing Elparaiso.\n\nRegarding your ${selected.service} request for ${selected.start_date}, `} /></label><small>Company and owner are copied. Check availability before confirming.</small><button disabled={busy}>Send reply & update status</button></form>}

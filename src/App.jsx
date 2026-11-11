@@ -8,6 +8,10 @@ import AdminDashboard from "./pages/AdminDashboard";
 
 import { Helmet } from "react-helmet-async";
 import { lazy, Suspense } from "react";
+const Events = lazy(() => import("./pages/Events"));
+const StaffContent = lazy(() => import("./pages/StaffContent"));
+const StaffProfile = lazy(() => import("./pages/StaffProfile"));
+const MealQuotation = lazy(() => import("./pages/MealQuotation"));
 const Business = lazy(() => import("./pages/Business"));
 const StaffCustomers = lazy(() => import("./pages/GuestRequests"));
 const Booking = lazy(() => import("./pages/GuestBooking"));
@@ -70,12 +74,19 @@ export default function App() {
         <Route path="/experiences" element={<Experiences />} />
         <Route path="/booking" element={<Booking />} />
         <Route path="/review" element={<GuestReview />} />
+        <Route path="/events" element={<Events />} />
+        <Route path="/conference-meals" element={<MealQuotation />} />
         <Route path="/business" element={<Business />} />
         <Route path="/account/*" element={<Navigate to="/booking" replace />} />
         <Route path="/about" element={<About />} />
         <Route path="/staff/login" element={<StaffLogin />} />
         <Route path="/airbnb" element={<Airbnb />} />
         <Route element={<StaffLayout />}>
+          <Route path="/staff/events" element={<StaffContent key="events" kind="events" />} />
+          <Route path="/staff/event-types" element={<StaffContent key="event-types" kind="event-types" />} />
+          <Route path="/staff/contacts" element={<StaffContent key="contacts" kind="contacts" />} />
+          <Route path="/staff/profile" element={<StaffProfile />} />
+          <Route path="/staff/guest-reservations" element={<StaffCustomers reservationMode />} />
           <Route path="/staff/admin" element={<AdminDashboard />} />
           <Route path="/staff/customers" element={<StaffCustomers />} />
           <Route path="/staff/dashboard" element={<StaffDashboard />} />
