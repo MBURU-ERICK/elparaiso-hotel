@@ -3,6 +3,7 @@ export function stayNights(arrival, departure) {
   return Number.isInteger(days) && days > 0 ? days : 0;
 }
 export function estimateBooking(form, options) {
+  if (form.service === 'event') return null;
   const guests = Number(form.guests), occupancy = Number(form.occupancy);
   if (!Number.isInteger(guests) || guests < 1 || ![1, 2].includes(occupancy)) return null;
   const lines = [];

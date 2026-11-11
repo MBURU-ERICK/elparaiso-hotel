@@ -283,3 +283,18 @@ test('event form prevents past dates while keeping dates optional', () => {
     assert.doesNotMatch(input, /required/);
   }
 });
+
+test('event booking has a dedicated form without requiring a conference package', () => {
+  const html = renderToStaticMarkup(React.createElement(MemoryRouter, { initialEntries: ['/booking?service=event'] }, React.createElement(GuestBooking)));
+  assert.match(html, /Event \/ celebration/);
+  assert.match(html, /name="event_type"/);
+  assert.match(html, /name="event_name"/);
+  assert.match(html, /name="event"/);
+  assert.match(html, /Send event booking request/);
+  assert.match(html, /tailored quotation/);
+  assert.doesNotMatch(html, /name="package"/);
+  assert.doesNotMatch(html, /Total estimate/);
+});
+test('event bookings use a staff quotation rather than a zero-priced conference estimate', () => {
+  assert.equal(estimateBooking({ service: 'event', guests: '20' }, {}), null);
+});
