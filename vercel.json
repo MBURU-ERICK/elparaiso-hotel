@@ -33,6 +33,18 @@
       "destination": "/business/index.html"
     },
     {
+      "source": "/events",
+      "destination": "/events/index.html"
+    },
+    {
+      "source": "/airbnb",
+      "destination": "/airbnb/index.html"
+    },
+    {
+      "source": "/conference-meals",
+      "destination": "/conference-meals/index.html"
+    },
+    {
       "source": "/((?!api/).*)",
       "destination": "/app.html"
     }
@@ -87,19 +99,6 @@
     },
     {
       "source": "/booking/:path*",
-      "headers": [
-        {
-          "key": "X-Robots-Tag",
-          "value": "noindex, nofollow"
-        },
-        {
-          "key": "Cache-Control",
-          "value": "private, no-store"
-        }
-      ]
-    },
-    {
-      "source": "/airbnb/:path*",
       "headers": [
         {
           "key": "X-Robots-Tag",

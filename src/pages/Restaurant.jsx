@@ -34,7 +34,7 @@ const diningExperiences = [
 function WhatsAppButton({ children }) {
   return (
     <Link
-      to="/account/requests/new?service=dining"
+      to="/conference-meals"
       className="btn btn-gold"
     >
       <MessageCircle size={17} />
@@ -183,7 +183,7 @@ export default function Restaurant() {
 
         <WhatsAppButton message={enquiries.order}>
           <MessageCircle size={17} />
-          Order or Send a service request
+          Request a dining quotation
         </WhatsAppButton>
 
         <div className="restaurant-details">

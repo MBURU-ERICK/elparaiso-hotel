@@ -329,3 +329,12 @@ test('event details include the full image, unabridged description and booking a
   assert.match(html, /Open full image in a new tab/);
   assert.match(html, /service=event&amp;event=17/);
 });
+
+test('linked reservation cards use one traceable reference and the unified booking controls', () => {
+  const booking = { id: 9, request_id: 42, booking_code: 'ELP-PVT-UNIQUE', status: 'confirmed', guest_name: 'Guest', unit_name: 'Garden suite', check_in: '2026-12-20', check_out: '2026-12-22', guests: 2, total_amount: '10000.00' };
+  const html = renderToStaticMarkup(React.createElement(MemoryRouter, null, React.createElement(ReservationCard, { booking, airbnb: true }, React.createElement('button', null, 'Cancel standalone reservation'))));
+  assert.match(html, /ELP-PVT-UNIQUE/);
+  assert.match(html, /staff\/guest-reservations\?request=42/);
+  assert.match(html, /Manage website booking/);
+  assert.doesNotMatch(html, /Cancel standalone reservation/);
+});

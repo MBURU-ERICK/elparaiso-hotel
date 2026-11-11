@@ -1,3 +1,3 @@
 import PrivateStayCards from '../components/PrivateStayCards';
 import SEO from '../components/SEO';
-export default function PrivateStays() { return <main className="section"><SEO title="Private Stays & Airbnb" description="Discover private stays at Elparaiso. Compare rooms and request your stay directly with our team." path="/airbnb" /><PrivateStayCards /></main>; }
+export default function PrivateStays() { return <main className="section"><SEO title="Private Stays & Airbnb" description="Discover private stays at Elparaiso. Compare rooms and request your stay directly with our team." path="/airbnb" /><header className="explore-intro"><div><span className="eyebrow">SPACE TO MAKE YOURSELF AT HOME</span><h1>Find your private escape.</h1><p>Explore our private stays and send your preferred room, dates and guest count to our team.</p></div></header><PrivateStayCards /></main>; }

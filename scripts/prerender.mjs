@@ -1,6 +1,6 @@
 import { createServer } from 'vite';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
-const routes = ['/', '/rooms', '/restaurant', '/experiences', '/about', '/gallery', '/contact', '/business', '/events'];
+const routes = ['/', '/rooms', '/restaurant', '/experiences', '/about', '/gallery', '/contact', '/business', '/events', '/airbnb', '/conference-meals'];
 const server = await createServer({ mode: 'production', server: { middlewareMode: true, hmr: false, watch: null, ws: false } });
 try {
   const { renderPage } = await server.ssrLoadModule('/src/prerender.jsx');
