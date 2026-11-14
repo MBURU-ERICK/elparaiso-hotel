@@ -3,4 +3,4 @@ Allow: /
 Disallow: /account/
 Disallow: /staff/
 
-Sitemap: https://elparaiso-hotel.vercel.app/sitemap.xml
+Sitemap: https://www.elparaisohotelltd.com/sitemap.xml

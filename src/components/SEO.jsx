@@ -8,7 +8,7 @@ export default function SEO({
   noindex = false,
 }) {
   const siteName = "Elparaiso Hotel";
-  const baseUrl = (import.meta.env.VITE_SITE_URL || "https://elparaiso-hotel.vercel.app").replace(/\/$/, "");
+  const baseUrl = "https://www.elparaisohotelltd.com";
   const pageUrl = `${baseUrl}${path}`;
 
   return (

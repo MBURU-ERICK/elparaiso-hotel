@@ -110,5 +110,18 @@
         }
       ]
     }
+  ],
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "elparaiso-hotel.vercel.app"
+        }
+      ],
+      "destination": "https://www.elparaisohotelltd.com/:path*",
+      "permanent": true
+    }
   ]
 }
