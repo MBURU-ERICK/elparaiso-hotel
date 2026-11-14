@@ -32,3 +32,6 @@ Checks: `npm run lint`, `npm test`, `npm run build`, `npm run check:seo`. No typ
 
 ### Serene booking flow
 `/booking` uses `src/pages/StayBooking.jsx` for hotel/private stays. Conference/event query parameters retain the existing `GuestBooking` workflow. Five stages preserve entered values when moving back; only a successful API response shows request receipt. Edit semantic colours in `src/styles/serene.css`, booking layout in `src/styles/reservation.css`. Children/preferred-room numbers are requests for the team; rates remain based on existing adult occupancy rules. See `docs/SERENE-BOOKING.md` for API behavior and verification limits.
+
+### Editorial design and About content
+Edit About chapter copy in `src/data/aboutStory.js`; chapter layout is in `src/styles/about-story.css`. Shared service/contact card visuals have a single owner in `src/components/editorial-cards.css`, with category colours resolved through `serene.css`. Gallery images remain live. `LivePhoto` accepts an optional `index` and falls back to the first genuine category photo. Research, changes and review limitations are documented in `docs/REFERENCE-DESIGN.md`.

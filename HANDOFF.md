@@ -48,3 +48,6 @@ Both supplied Dribbble CDN images were inaccessible through the web tool and dir
 
 ## Serene booking flow
 See `docs/SERENE-BOOKING.md`. Hotel/private stays now use a five-stage request wizard. Verify date search, real API room counts, occupancy changes, comparisons, company details, back navigation, retry/idempotency and actual email acknowledgements on a browser-capable environment before deployment. Child pricing, preferred-room allocations and private-stay availability remain enquiries for hotel confirmation. No backend schema, finance, payment, deployment or email flow changes were made.
+
+## Four-reference editorial refinement
+About now uses chapter storytelling and a live photo journal; homepage actions are simplified and shared cards are consolidated into one component stylesheet. See `docs/REFERENCE-DESIGN.md` for research, exact scope and validation limitations. Upload varied genuine category photography for the intended presentation. Visual browser review and live booking/email checks are still required; no deployment or commits performed.

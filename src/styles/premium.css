@@ -132,35 +132,6 @@
                                                         grid-template-columns:repeat(3,minmax(0,1fr));
                                                         gap:24px;
                                                         margin-top:36px}
-                                                        .premium-card{
-                                                          background:var(--p-white);
-                                                          border:1px solid var(--p-line);
-                                                          border-radius:var(--p-radius);
-                                                          overflow:hidden;
-                                                          box-shadow:var(--p-shadow);
-                                                          transition:transform .25s}
-                                                          .premium-card:hover{
-                                                            transform:translateY(-4px)}
-                                                            .premium-card>.home-photo{
-                                                              height:auto;
-                                                              aspect-ratio:4/3}
-                                                              .premium-card-copy{
-                                                                padding:28px}
-                                                                .premium-card h3{
-                                                                  font-size:28px;
-                                                                  font-weight:400;
-                                                                  margin:12px 0}
-                                                                  .premium-card p{
-                                                                    color:var(--p-muted);
-                                                                    line-height:1.8;
-                                                                    font-size:15px}
-                                                                    .premium-card a{
-                                                                      color:var(--p-emerald);
-                                                                      text-underline-offset:5px}
-                                                                      .premium-card:nth-child(3n+2){
-                                                                        background:var(--p-blue)}
-                                                                        .premium-card:nth-child(3n+3){
-                                                                          background:var(--p-lavender)}
                                                                           .premium-split{
                                                                             display:grid;
                                                                             grid-template-columns:1fr 1fr;
@@ -307,8 +278,6 @@
                                                                                                                                                                     grid-template-columns:1fr}
                                                                                                                                                                     .premium-form .full{
                                                                                                                                                                       grid-column:auto}
-                                                                                                                                                                      .premium-card-copy{
-                                                                                                                                                                        padding:24px}
                                                                                                                                                                         .premium-hero h1{
                                                                                                                                                                           font-size:46px}
                                                                                                                                                                           .premium-hero p{
@@ -374,8 +343,6 @@
                                                                                                                                                                                                           font-size:28px}
                                                                                                                                                                                                           .premium-page .home-fine-print{
                                                                                                                                                                                                             color:var(--p-muted)}
-                                                                                                                                                                                                            .premium-card{
-                                                                                                                                                                                                              overflow-wrap:anywhere}
                                                                                                                                                                                                               .premium-hero .home-photo-empty{
                                                                                                                                                                                                                 color:var(--p-white);
                                                                                                                                                                                                                 background:var(--p-emerald)}

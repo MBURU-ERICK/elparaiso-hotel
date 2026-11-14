@@ -1,0 +1,31 @@
+.premium-card {
+  --card-surface: var(--surface-card);
+  --card-accent: var(--color-forest);
+  background: var(--card-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--motion-duration) var(--motion-ease), box-shadow var(--motion-duration) var(--motion-ease);
+}
+.premium-card[data-tone=restaurant] { --card-surface: var(--color-sand); --card-accent: var(--accent-accessible); }
+.premium-card[data-tone=garden] { --card-surface: var(--color-mist); }
+.premium-card[data-tone=airbnb] { --card-surface: var(--color-sand); }
+.premium-card[data-tone=experiences] { --card-surface: var(--color-mist); }
+.premium-card:hover { transform: translateY(-3px); }
+.premium-card > .home-photo { aspect-ratio: 4 / 3; height: auto; flex-shrink: 0; }
+.premium-card img { transition: transform 400ms var(--motion-ease); }
+.premium-card:hover img { transform: scale(1.025); }
+.premium-card-copy { padding: clamp(24px, 2.5vw, 36px); display: flex; flex-direction: column; flex: 1; align-items: flex-start; }
+.premium-card-copy .premium-pill { border: 0; border-radius: 0; border-left: 2px solid var(--border-premium); padding: 2px 0 2px 12px; color: var(--card-accent); letter-spacing: .14em; font-size: 9px; }
+.premium-card h3 { font: 400 clamp(26px, 2.4vw, 36px)/1.15 var(--font-heading); letter-spacing: -.025em; color: var(--color-forest); margin: 22px 0 12px; }
+.premium-card p { color: var(--text-secondary); font-size: 14px; line-height: 1.85; margin: 0 0 24px; }
+.premium-card a { color: var(--color-forest); text-underline-offset: 5px; }
+.premium-card .editorial-card-link { display: flex; justify-content: space-between; gap: 16px; align-items: center; width: 100%; box-sizing: border-box; font-size: 12px; min-height: 44px; margin-top: auto; border-top: 1px solid var(--border-subtle); padding-top: 16px; text-decoration: none; }
+.premium-card .editorial-card-link:hover { text-decoration: underline; }
+.premium-card .editorial-card-link svg { flex-shrink: 0; }
+.premium-card :focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 4px; }
+@media(prefers-reduced-motion: reduce) { .premium-card, .premium-card img { transition: none; } }

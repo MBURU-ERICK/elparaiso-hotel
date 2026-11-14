@@ -59,8 +59,6 @@
 .premium-page.tone-private { --page-tint: var(--color-sand); }
 .premium-page.tone-dining { --page-tint: var(--color-sand); }
 .premium-cta { background: linear-gradient(135deg, var(--button-hover), var(--color-forest)); }
-.premium-card:nth-child(3n+2) { background: var(--color-mist); }
-.premium-card:nth-child(3n+3) { background: var(--color-sand); }
 .guest-experience .premium-pill { color: inherit; }
 .home-rebuilt .home-discover, .home-rebuilt .home-closing { background: var(--color-forest); }
 .home-rebuilt .home-testimonials { background: var(--color-ivory); }
@@ -75,3 +73,25 @@
 :root { --text-accent-on-dark: #e1c796; }
 .home-rebuilt .home-discover .home-kicker { color: var(--text-accent-on-dark); }
 .guest-experience .footer-premium .footer-kicker { color: var(--text-accent-on-dark); }
+:root { --radius-card: 18px; --shadow-card: 0 8px 32px rgba(36, 77, 66, .055); }
+.home-rebuilt .home-hero-story { background: transparent; color: var(--color-ivory); font-size: 13px; text-underline-offset: 7px; padding: 14px 0; }
+.home-rebuilt .home-hero .premium-actions { align-items: center; gap: 28px; }
+.home-rebuilt .home-hero-content { max-width: 1100px; }
+.home-rebuilt .home-stays { padding-block: var(--space-section); }
+.home-rebuilt .home-stay-copy h3 { color: var(--color-forest); }
+.home-rebuilt .home-stay-copy strong { font-weight: 600; }
+.home-rebuilt .home-stays+.home-stays { background: var(--color-sand); }
+.home-rebuilt .home-discover { background: var(--color-forest); }
+.home-rebuilt .home-trust { background: var(--color-mist); }
+.premium-page.tone-private .premium-hero:after { background: linear-gradient(90deg, rgba(24,57,47,.85), rgba(24,57,47,.28)); }
+.premium-page.tone-dining .premium-section.tint { background: var(--gradient-warm); }
+.premium-page.tone-conference .premium-section.tint { background: var(--gradient-calm); }
+.guest-experience .stay-listing-shell { box-shadow: var(--shadow-card); border: 1px solid var(--border-subtle); }
+.guest-experience .stay-listing-photo img { transition: transform var(--motion-duration) var(--motion-ease); }
+.guest-experience .stay-listing:hover img { transform: scale(1.025); }
+.guest-experience .stay-card-rate { border-top: 1px solid var(--border-subtle); padding-top: 18px; color: var(--color-forest); }
+.guest-experience .package-grid>.portal-panel { border-top: 3px solid var(--border-premium); border-radius: var(--radius-card); box-shadow: var(--shadow-card); }
+.reservation-page .reservation-panel { border-top: 3px solid var(--color-forest); }
+.reservation-page .reservation-room.is-selected { background: var(--color-mist); }
+.reservation-page .reservation-summary { background: var(--gradient-warm); }
+@media(prefers-reduced-motion:reduce) { .guest-experience .stay-listing-photo img { transition: none; } }

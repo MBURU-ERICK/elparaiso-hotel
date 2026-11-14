@@ -7,7 +7,10 @@ import { galleryApi } from '../services/galleryApi';
 import { useHomeResource } from '../hooks/useHomeResource';
 const loaders = Object.fromEntries(['general', 'restaurant', 'experiences', 'garden', 'rooms', 'airbnb'].map(category => [category, () => galleryApi.list({ category })]));
 const list = data => Array.isArray(data) ? data : data?.results || [];
-export function HomePhoto({ src, thumbnail, alt, hero = false }) {
+export function HomePhoto(props) {
+  return <PhotoAsset key={props.src || 'empty'} {...props} />;
+}
+function PhotoAsset({ src, thumbnail, alt, hero = false }) {
   const [ready, setReady] = useState(false);
   const [failed, setFailed] = useState(false);
   return <div className={`home-photo ${ready ? 'is-ready' : ''}`}>
@@ -15,9 +18,9 @@ export function HomePhoto({ src, thumbnail, alt, hero = false }) {
     {src && !failed ? <img src={src} srcSet={thumbnail && thumbnail !== src ? `${thumbnail} 640w, ${src} 1920w` : undefined} sizes={hero ? '100vw' : '(min-width: 900px) 33vw, (min-width: 600px) 50vw, 100vw'} alt={alt} width="1920" height="1440" fetchPriority={hero ? 'high' : 'auto'} loading={hero ? 'eager' : 'lazy'} onLoad={() => setReady(true)} onError={() => setFailed(true)} /> : <span className="home-photo-empty">{failed ? 'Photograph unavailable' : 'Elparaiso · Rumuruti'}</span>}
   </div>;
 }
-export function LivePhoto({ category, hero = false }) {
+export function LivePhoto({ category, hero = false, index = 0 }) {
   const { data } = useHomeResource(`photos:${category}`, loaders[category]);
-  const photo = list(data)[0];
+  const photo = list(data)[index] || list(data)[0];
   return <>{hero && photo?.image_url && <link rel="preload" as="image" href={photo.image_url} />}<HomePhoto src={photo?.image_url} thumbnail={photo?.thumbnail_url} alt={photo?.alt_text || 'Elparaiso Hotel, Rumuruti'} hero={hero} /></>;
 }
 export function FeaturedStays({ privateStay = false }) {
