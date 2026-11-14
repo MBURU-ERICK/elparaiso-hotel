@@ -25,3 +25,7 @@
 - Added an editorial welcome section, refined system-font typography, staggered experience imagery, open room-card layouts, and a forest-green discovery section. No external fonts or animation libraries added.
 - On phones, featured stays use native horizontal scrolling; booking controls start collapsed and can be expanded from the hero action. Desktop booking fields remain expanded.
 - Retried a 375px Chrome screenshot using a writable temporary profile; Chrome failed with `setsockopt: Operation not permitted`. All three requested viewport reviews, screenshot inspection, runtime console and production Lighthouse remain pending in a browser-capable environment.
+
+## Contact numbers
+Director: 0724 502 872 (+254724502872). Office: 0708 231 994 (+254708231994).
+Both call and WhatsApp destinations are maintained in `src/data/contacts.js`. The floating WhatsApp control offers a labelled choice. Call/WhatsApp connectivity requires testing on a phone; responsive browser review remains blocked by the previously recorded sandbox restriction.

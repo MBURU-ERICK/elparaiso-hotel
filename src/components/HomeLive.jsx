@@ -1,3 +1,4 @@
+import ContactLinks from './ContactLinks';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getRoomTypes } from '../services/bookingApi';
@@ -23,7 +24,7 @@ export function FeaturedStays({ privateStay = false }) {
   const { data, error, retry } = useHomeResource(privateStay ? 'private-stays' : 'hotel-rooms', privateStay ? shortstayApi.units : getRoomTypes);
   const rows = list(data).slice(0, 3);
   return <section className="home-section home-stays"><header className="home-section-heading"><div><span className="home-kicker">{privateStay ? 'A LITTLE MORE SPACE' : 'SETTLE IN'}</span><h2>{privateStay ? 'A place of your own.' : 'Make yourself at home.'}</h2></div><Link to={privateStay ? '/airbnb' : '/rooms'}>Explore {privateStay ? 'private stays' : 'rooms'} ↗</Link></header>
-    {error && <p role="status">{data ? 'Showing the last retrieved rates. Refresh for current details.' : 'Our stay options are taking a moment.'} <button type="button" onClick={retry}>Try again</button> or <a href="tel:+254708231994">call our team</a>.</p>}
+    {error && <p role="status">{data ? 'Showing the last retrieved rates. Refresh for current details.' : 'Our stay options are taking a moment.'} <button type="button" onClick={retry}>Try again</button> or <ContactLinks />.</p>}
     <div className="home-stay-grid" aria-busy={!data && !error}>{!data && !error ? [1, 2, 3].map(n => <article className="home-stay-card home-skeleton" key={n} aria-label="Retrieving live stay options"><div /><span /><span /><span /></article>) : rows.map(room => {
       const rate = Number(room.nightly_rate);
       const photo = room.image_url || room.images?.[0]?.image_url || room.images?.[0];

@@ -1,3 +1,4 @@
+import { hotelContacts } from '../data/contacts';
 
 import { Helmet } from "react-helmet-async";
 
@@ -21,7 +22,7 @@ export default function SEO({
       <meta name="twitter:image" content={`${baseUrl}/images/Logo%20elparaiso.png`} />
       <link rel="canonical" href={pageUrl} />
 
-      {(path === "/" || path === "") && <script type="application/ld+json">{JSON.stringify({ "@context": "https://schema.org", "@type": "Hotel", name: siteName, url: baseUrl, image: `${baseUrl}/images/Logo%20elparaiso.png`, telephone: "+254708231994", address: { "@type": "PostalAddress", addressLocality: "Rumuruti", addressRegion: "Laikipia", addressCountry: "KE" } }).replace(/</g, "\\u003c")}</script>}
+      {(path === "/" || path === "") && <script type="application/ld+json">{JSON.stringify({ "@context": "https://schema.org", "@type": "Hotel", name: siteName, url: baseUrl, image: `${baseUrl}/images/Logo%20elparaiso.png`, telephone: hotelContacts.map(contact => contact.international), address: { "@type": "PostalAddress", addressLocality: "Rumuruti", addressRegion: "Laikipia", addressCountry: "KE" } }).replace(/</g, "\\u003c")}</script>}
       <meta property="og:type" content="website" />
       <meta property="og:site_name" content={siteName} />
       <meta property="og:title" content={`${title} | ${siteName}`} />

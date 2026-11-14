@@ -1,3 +1,4 @@
+import ContactLinks from './ContactLinks';
 import { Link } from "react-router-dom";
 import { MapPin, Phone, Mail } from "lucide-react";
 
@@ -38,7 +39,7 @@ export default function Footer() {
 
           <p>
             <Phone size={16} />
-            <a href="tel:+254708231994">+254 708 231 994</a>
+            <ContactLinks />
           </p>
 
           <p>
