@@ -9,7 +9,7 @@ This implementation supersedes the www-domain recommendations in earlier design 
 | Area | Verified finding | Implementation / remaining limit |
 | --- | --- | --- |
 | Routes | The existing router has eleven distinct indexable pages, three legacy aliases, booking, review, account and staff routes. | Retained every existing route. No speculative landing pages added. |
-| HTTPS and hosts | Live www `/rooms` returns 200; apex `/rooms` returns 308 to www. | Code now prefers apex. Existing hosting/domain redirect must be reversed during a coordinated rollout before enabling the opposite application redirect. |
+| HTTPS and hosts | Live www `/rooms` returns 200; apex `/rooms` returns 308 to www. | Code now prefers apex. Existing hosting/domain redirect must be reversed during a coordinated rollout before the canonical host can go live. Public-host redirects are now managed only in hosting to prevent loops. |
 | Canonical / social metadata | Existing canonical, OG and image URLs pointed at www. | Centralized official origin; absolute apex canonical, OG and Twitter image URLs. Queries/fragments/trailing slashes omitted from canonicals. |
 | Sitemap | Listed fourteen URLs including three duplicate aliases. | Eleven preferred indexable URLs only. Booking/review/private/404 URLs are excluded. Robots sitemap reference uses apex. |
 | Titles and descriptions | Existing page-specific metadata was present. Several titles lacked location/context; About contained an unnecessary title separator. | Improved room/gallery/events/About titles and official-site homepage description. Unique titles/descriptions remain in initial HTML. |
@@ -43,11 +43,11 @@ This implementation supersedes the www-domain recommendations in earlier design 
 
 ## Deployment prerequisite: avoid a redirect loop
 
-**Do not deploy this host redirect while the live apex-to-www redirect remains active.**
+**Public-host redirects must have one owner: Vercel Domains (or a coordinated Cloudflare rule), not an opposing rule in this application.**
 
 1. Inspect Vercel Project → Domains and Cloudflare redirect rules to locate the existing apex-to-www rule. The observed response came from Vercel, but the audit does not claim authenticated visibility into either dashboard.
 2. With production authorization, make `elparaisohotelltd.com` a served production domain with a valid certificate, rather than a domain that redirects to www. Remove any conflicting apex-to-www Cloudflare rule. Keep both hostnames attached and valid.
-3. Deploy this reviewed frontend configuration and establish **www → apex** permanently, preserving paths and query strings. Avoid duplicate rules that fight each other. `vercel.json` includes the intended www and Vercel-project-host redirects; it also normalizes trailing slashes.
+3. Deploy this reviewed frontend configuration and establish **www → apex** permanently, preserving paths and query strings. Avoid duplicate rules that fight each other. `vercel.json` deliberately omits www/apex redirects so an existing platform rule cannot cause a redirect loop. It retains the Vercel-project-host redirect and normalizes trailing slashes.
 4. Keep `VITE_API_URL=https://api.elparaisohotelltd.com`. A live booking-options GET with `Origin: https://elparaisohotelltd.com` returned matching Access-Control-Allow-Origin plus credentials support. Separately confirm Django's production `CSRF_TRUSTED_ORIGINS` includes apex before a controlled real submission test; CORS success alone does not prove POST/CSRF behavior.
 5. Run `npm run check:seo:live`. It performs public GETs only and fails on wrong-domain redirects, incorrect canonical metadata, sitemap drift, bad alias redirects and soft 404s. It does not change settings or submit URLs. A predeployment run failed as expected because production still redirects apex to www. This is a deployment prerequisite, not a passing live rollout.
 6. Check HTTPS www, HTTPS apex and HTTP apex manually for `/`, `/rooms`, a query-bearing URL and a missing URL. Expected: apex content 200, www/HTTP permanent redirects to canonical HTTPS, unknown public paths 404, private deep links still functional.
@@ -137,3 +137,11 @@ Detailed session logs are in `/tmp/elparaiso-seo-build.log`, `/tmp/elparaiso-seo
 - [Brave crawler help](https://search.brave.com/help/brave-search-crawler)
 - [Vercel configuration](https://vercel.com/docs/project-configuration/vercel-json)
 - [Vercel custom 404 behavior](https://vercel.com/kb/guide/custom-404-page)
+
+## CSS/JavaScript loading repair
+
+The deployed www-to-apex application redirect conflicted with Vercel's existing apex-to-www domain redirect. On 14 November, the real stylesheet request `/assets/index-OMR3dtdD.css` and JavaScript requests alternated between the two hosts with HTTP 308 until the redirect limit was reached. Cached homepage HTML still returned 200, disguising the failure as missing CSS.
+
+Removed the application's public-host redirect. Both the SEO build checker and unit suite now reject public-host redirect rules in `vercel.json`, preventing this configuration from fighting Vercel Domains again. The desired apex canonical remains unchanged; its eventual hosting migration is separate from restoring asset delivery. Production restoration requires deploying this repair or removing the conflicting redirect through an authorized hosting change. No DNS or production settings were changed by this repair.
+
+Repair verification: build, lint, tests, static SEO/asset checks and `git diff --check` passed. Chrome checked the repaired build's homepage, rooms, booking, About and Contact at 390px and 1440px: built stylesheet rules loaded, correct fonts/flex layout applied, no horizontal overflow and no runtime exceptions. Preview checks used directory URLs to serve the same prerendered documents selected by Vercel rewrites. Live restoration is pending deployment; local checks do not claim production is already repaired.

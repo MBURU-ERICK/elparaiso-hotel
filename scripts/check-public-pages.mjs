@@ -65,8 +65,16 @@ assert.match(shell, /noindex, nofollow/);
 assert.ok(shell.includes('<div id="root"></div>'));
 await assert.rejects(access('dist/account')); await assert.rejects(access('dist/staff'));
 assert.ok(!(await readFile('dist/index.html', 'utf8')).includes('TESTIMONIAL PLACEHOLDER'));
+for (const file of ['index.html', ...canonicalPaths.filter(path => path !== '/').map(path => `${path.slice(1)}/index.html`), 'booking/index.html', 'app.html', '404.html']) {
+  const html = await readFile(`dist/${file}`, 'utf8');
+  const stylesheets = [...html.matchAll(/<link\b[^>]*rel="stylesheet"[^>]*>/g)].map(([tag]) => attr(tag, 'href')).filter(href => href?.startsWith('/assets/'));
+  assert.ok(stylesheets.length > 0, `${file}: production stylesheet missing`);
+  const scripts = [...html.matchAll(/<script\b[^>]*src="(\/assets\/[^" ]+)"/g)].map(match => match[1]);
+  assert.ok(scripts.length > 0, `${file}: production JavaScript missing`);
+  for (const asset of [...stylesheets, ...scripts]) assert.ok((await readFile(`dist${asset}`, 'utf8')).length > 0, `${file}: empty asset ${asset}`);
+}
 const config = JSON.parse(await readFile('vercel.json', 'utf8'));
 assert.ok(!config.rewrites.some(rule => rule.source.includes('?!api')), 'Unknown URLs must not receive the SPA shell');
-assert.ok(config.redirects.some(rule => rule.has?.some(h => h.value === 'www.elparaisohotelltd.com') && rule.destination === `${site.origin}/:path*` && rule.permanent));
+assert.ok(!config.redirects.some(rule => rule.has?.some(h => ['www.elparaisohotelltd.com', 'elparaisohotelltd.com'].includes(h.value))), 'Public-host redirects belong in hosting; conflicting platform rules can loop CSS/JS requests');
 for (const [alias, target] of Object.entries(routeAliases)) assert.ok(config.redirects.some(rule => rule.source === alias && rule.destination === target && rule.permanent));
 console.log(`SEO verified: ${canonicalPaths.length} canonical pages, 3 aliases, exact sitemap, metadata in head, single schema graph, headings, internal links, image alt/local assets, noindex booking/private shell, 404 document and redirect configuration.`);

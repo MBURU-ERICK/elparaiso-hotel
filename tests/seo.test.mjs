@@ -23,3 +23,12 @@ test('every indexed/legacy route exists and private deep links retain the app sh
   assert.ok(!config.redirects.some(rule => JSON.stringify(rule).includes('elparaisohotel.co.ke')));
   assert.equal(config.trailingSlash, false);
 });
+
+test('application redirects cannot conflict with the hosting public-domain redirect', async () => {
+  const config = JSON.parse(await readFile('vercel.json', 'utf8'));
+  const hosts = new Set(['www.elparaisohotelltd.com', 'elparaisohotelltd.com']);
+  for (const rule of config.redirects) {
+    assert.ok(!rule.has?.some(condition => condition.type === 'host' && hosts.has(condition.value)), 'Keep the public-domain redirect in Vercel Domains, not duplicated in application rules');
+  }
+  for (const [alias, destination] of Object.entries(routeAliases)) assert.ok(config.redirects.some(rule => rule.source === alias && rule.destination === destination && rule.permanent));
+});

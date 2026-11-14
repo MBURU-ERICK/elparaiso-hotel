@@ -163,17 +163,6 @@
       "has": [
         {
           "type": "host",
-          "value": "www.elparaisohotelltd.com"
-        }
-      ],
-      "destination": "https://elparaisohotelltd.com/:path*",
-      "permanent": true
-    },
-    {
-      "source": "/:path*",
-      "has": [
-        {
-          "type": "host",
           "value": "elparaiso-hotel.vercel.app"
         }
       ],

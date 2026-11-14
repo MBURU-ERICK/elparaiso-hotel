@@ -51,4 +51,22 @@ await check('booking stays noindex', async () => {
   const response = await get(`${site.origin}/booking`); assert.equal(response.status, 200);
   assert.match(await response.text(), /noindex/);
 });
+await check('served HTML can load its production CSS and JavaScript', async () => {
+  // Follow the current serving host even while a canonical-domain migration is pending.
+  const response = await fetch(`${site.origin}/`, { signal: AbortSignal.timeout(20000) });
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  const css = [...html.matchAll(/<link\b[^>]*rel="stylesheet"[^>]*href="(\/assets\/[^" ]+)"/g)].map(match => ({ path: match[1], type: /text\/css/i }));
+  const js = [...html.matchAll(/<script\b[^>]*src="(\/assets\/[^" ]+)"/g)].map(match => ({ path: match[1], type: /(?:javascript|ecmascript)/i }));
+  assert.ok(css.length && js.length, 'HTML must reference built CSS and JavaScript');
+  for (const asset of [...css, ...js]) {
+    const url = new URL(asset.path, response.url);
+    let result;
+    try { result = await fetch(url, { signal: AbortSignal.timeout(20000) }); }
+    catch (error) { throw new Error(`${asset.path} could not load; check www/apex redirect loops: ${error.message}`); }
+    assert.equal(result.status, 200, `${asset.path}: expected 200`);
+    assert.match(result.headers.get('content-type') || '', asset.type, `${asset.path}: wrong MIME type`);
+    assert.ok((await result.text()).length > 0, `${asset.path}: empty response`);
+  }
+});
 if (failures) { console.error(`${failures} live SEO checks failed. This script does not deploy or repair hosting settings.`); process.exitCode = 1; }
