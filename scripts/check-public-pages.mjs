@@ -36,3 +36,9 @@ for (const route of ['/private-stays', '/events-groups', '/conferences']) {
   assert.ok(html.includes(`href="https://www.elparaisohotelltd.com${route}"`), `${route}: canonical missing`);
 }
 console.log('Three new public routes verified with primary-domain canonical URLs.');
+const restaurant = await readFile('dist/restaurant/index.html', 'utf8');
+const schemas = [...restaurant.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(match => JSON.parse(match[1]));
+assert.ok(schemas.some(schema => schema['@type'] === 'Restaurant'), 'Restaurant schema missing');
+assert.ok(schemas.some(schema => schema['@type'] === 'BreadcrumbList'), 'Breadcrumbs missing');
+assert.match(restaurant, /property="og:image" content="https:\/\/www.elparaisohotelltd.com\/images\/restaurant-dining.jpg"/);
+console.log('Restaurant schema, breadcrumbs and photographic sharing image verified.');

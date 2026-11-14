@@ -80,8 +80,8 @@
   .home-introduction { grid-template-columns: 1fr 2fr 1fr; align-items: start; }
   .home-introduction > .home-kicker { padding-top: 12px; }
   .home-introduction-note { justify-self: end; align-self: end; }
-  .home-teaser:nth-child(2) { padding-top: 64px; }
-  .home-teaser:nth-child(3) { padding-top: 128px; }
+
+
   .home-find { column-gap: clamp(40px, 7vw, 110px); }
 }
 @media (max-width: 599px) {

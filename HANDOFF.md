@@ -38,3 +38,10 @@ Required owner/browser review before production approval: check all navigation a
 ## Compact booking and footer reference pass
 Homepage booking now groups adults, children and rooms in a native expandable guest selector, alongside dates and a single action; availability and no-payment reassurance occupy a compact status line. Mobile retains the collapsible booking bar. Footer now has a large invitation, four-column navigation/contact layout and labelled Director/Office call and WhatsApp choices.
 Both supplied Dribbble CDN images were inaccessible through the web tool and direct download (DNS failure), so this is an original refinement, not a verified visual match. Attach reference images for a closer art-direction pass. Browser viewport verification remains unavailable under the previously documented Chrome sandbox restriction.
+
+## Navigation, group dining and SEO refinement
+- Navigation now owns `components/navigation.css`, uses isolated classes and removes obsolete navigation rules from the guest premium theme. Mobile drawer locks scrolling, cycles focus, closes with Escape/backdrop and restores the toggle focus. Live keyboard/browser review remains required.
+- Removed desktop stagger offsets from homepage teaser cards. Consolidated/formatted premium theme rules and extracted restaurant group dining into a dedicated component and stylesheet. Legacy staff and unrelated page styles remain intact; this is not a claim of a complete repository-wide CSS migration.
+- Group dining uses live restaurant photography, clear planning steps and existing catering quotation/Director/Office WhatsApp links.
+- Added truthful Restaurant and BreadcrumbList JSON-LD, locale and photographic social previews, with output validation. No ratings, opening hours, menu or price claims added.
+- The three new Dribbble URLs were inaccessible to the web tool; no exact-reference matching or visual validation is claimed. Browser verification remains blocked by the previously documented environment restrictions. No commits or deployment made.

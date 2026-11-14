@@ -1,0 +1,160 @@
+.hotel-header{
+  --nav-height:80px;
+  position:sticky;
+  top:0;
+  z-index:80;
+  background:var(--p-white);
+  border-bottom:1px solid var(--p-line);
+  font-family:var(--p-sans)}
+  .hotel-header-inner{
+    height:var(--nav-height);
+    max-width:1600px;
+    padding-inline:clamp(18px,3vw,48px);
+    margin:auto;
+    display:flex;
+    align-items:center;
+    gap:24px;
+    box-sizing:border-box}
+    .hotel-brand{
+      flex:0 0 auto;
+      display:flex;
+      align-items:center}
+      .hotel-brand img{
+        width:142px;
+        height:auto;
+        display:block}
+        .hotel-navigation{
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          gap:clamp(12px,1.3vw,24px);
+          margin-inline:auto}
+          .hotel-navigation>a{
+            color:var(--p-navy);
+            font-size:12px;
+            font-weight:500;
+            white-space:nowrap;
+            text-decoration:none;
+            padding-block:28px;
+            position:relative}
+            .hotel-navigation>a:after{
+              content:'';
+              position:absolute;
+              bottom:18px;
+              inset-inline:0;
+              height:2px;
+              background:var(--p-emerald);
+              transform:scaleX(0);
+              transition:transform .2s}
+              .hotel-navigation>a:hover:after,.hotel-navigation>a[aria-current=page]:after{
+                transform:scaleX(1)}
+                .hotel-header-book{
+                  display:inline-flex;
+                  align-items:center;
+                  gap:12px;
+                  justify-content:center;
+                  min-height:46px;
+                  padding:0 20px;
+                  border-radius:40px;
+                  background:var(--p-emerald);
+                  color:var(--p-white)!important;
+                  font-size:12px;
+                  font-weight:600;
+                  text-decoration:none;
+                  white-space:nowrap}
+                  .hotel-header-book:hover{
+                    background:var(--p-navy)}
+                    .hotel-menu-toggle{
+                      display:none}
+                      .hotel-nav-intro,.hotel-nav-note{
+                        display:none}
+                        .hotel-header :focus-visible{
+                          outline:3px solid var(--p-emerald);
+                          outline-offset:5px}
+                          .hotel-nav-backdrop{
+                            display:none}
+                            @media(max-width:1279px){
+                              .hotel-header{
+                                --nav-height:76px}
+                                .hotel-header-inner{
+                                  gap:14px}
+                                  .hotel-header-book{
+                                    margin-left:auto}
+                                    .hotel-menu-toggle{
+                                      display:grid;
+                                      place-items:center;
+                                      width:44px;
+                                      height:44px;
+                                      border:1px solid var(--p-line);
+                                      border-radius:50%;
+                                      color:var(--p-navy);
+                                      background:var(--p-white);
+                                      cursor:pointer;
+                                      flex-shrink:0}
+                                      .hotel-navigation{
+                                        display:none;
+                                        position:fixed;
+                                        top:var(--nav-height);
+                                        bottom:0;
+                                        right:0;
+                                        width:min(410px,100%);
+                                        box-sizing:border-box;
+                                        overflow-y:auto;
+                                        overscroll-behavior:contain;
+                                        background:var(--p-cream);
+                                        padding:32px;
+                                        z-index:82;
+                                        margin:0}
+                                        .hotel-navigation.is-open{
+                                          display:flex;
+                                          flex-direction:column;
+                                          align-items:stretch;
+                                          justify-content:flex-start;
+                                          gap:0}
+                                          .hotel-navigation>a{
+                                            font-family:var(--p-serif);
+                                            font-size:24px;
+                                            padding:13px 0;
+                                            border-bottom:1px solid var(--p-line);
+                                            white-space:normal}
+                                            .hotel-navigation>a:after{
+                                              display:none}
+                                              .hotel-navigation>a[aria-current=page]{
+                                                color:var(--p-emerald);
+                                                font-weight:600}
+                                                .hotel-nav-intro{
+                                                  display:flex;
+                                                  align-items:center;
+                                                  gap:8px;
+                                                  font-size:10px;
+                                                  letter-spacing:.15em;
+                                                  color:var(--p-muted);
+                                                  margin-bottom:20px}
+                                                  .hotel-nav-note{
+                                                    display:block;
+                                                    font:24px/1.4 var(--p-serif);
+                                                    color:var(--p-emerald);
+                                                    padding-top:28px}
+                                                    .hotel-nav-backdrop{
+                                                      display:block;
+                                                      position:fixed;
+                                                      inset:var(--nav-height) 0 0;
+                                                      border:0;
+                                                      background:rgba(23,37,30,.4);
+                                                      z-index:81;
+                                                      cursor:pointer}
+                                                    }
+                                                    @media(max-width:390px){
+                                                      .hotel-brand img{
+                                                        width:112px}
+                                                        .hotel-header-book{
+                                                          font-size:11px;
+                                                          padding-inline:14px;
+                                                          gap:6px}
+                                                          .hotel-header-inner{
+                                                            gap:10px}
+                                                          }
+                                                          @media(prefers-reduced-motion:reduce){
+                                                            .hotel-header *{
+                                                              transition:none!important}
+                                                            }

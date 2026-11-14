@@ -1,0 +1,141 @@
+.group-dining{
+  --dining-ink:var(--p-emerald);
+  --dining-bg:var(--p-cream);
+  --dining-muted:var(--p-muted);
+  --dining-line:var(--p-line);
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  margin:clamp(32px,6vw,96px) var(--p-space);
+  border-radius:28px;
+  overflow:hidden;
+  background:var(--dining-bg);
+  border:1px solid var(--dining-line);
+  box-shadow:var(--p-shadow)}
+  .group-dining-photo{
+    position:relative;
+    min-height:620px;
+    background:var(--p-sage)}
+    .group-dining-photo>.home-photo{
+      position:absolute;
+      inset:0}
+      .group-dining-caption{
+        position:absolute;
+        bottom:24px;
+        left:24px;
+        right:24px;
+        background:var(--p-white);
+        color:var(--dining-ink);
+        padding:14px 18px;
+        border-radius:40px;
+        letter-spacing:.13em;
+        font-size:9px;
+        text-align:center}
+        .group-dining-copy{
+          padding:clamp(28px,4vw,64px)}
+          .group-dining-kicker{
+            font-size:10px;
+            letter-spacing:.2em;
+            font-weight:600;
+            color:var(--dining-ink)}
+            .group-dining h2{
+              font:400 clamp(44px,5vw,72px)/1.06 var(--p-serif);
+              letter-spacing:-.04em;
+              color:var(--dining-ink);
+              margin:24px 0}
+              .group-dining h2 em{
+                font-weight:400}
+                .group-dining-intro{
+                  max-width:400px;
+                  color:var(--dining-muted);
+                  font-size:16px;
+                  line-height:1.85}
+                  .group-dining-steps{
+                    list-style:none;
+                    padding:0;
+                    margin:28px 0;
+                    display:grid;
+                    gap:18px}
+                    .group-dining-steps li{
+                      display:flex;
+                      gap:16px;
+                      align-items:flex-start}
+                      .group-dining-steps svg{
+                        color:var(--dining-ink);
+                        flex-shrink:0;
+                        margin-top:3px}
+                        .group-dining-steps strong{
+                          display:block;
+                          font-size:13px;
+                          color:var(--dining-ink)}
+                          .group-dining-steps small{
+                            display:block;
+                            font-size:12px;
+                            color:var(--dining-muted);
+                            margin-top:5px;
+                            line-height:1.7}
+                            .group-dining-button{
+                              display:inline-flex;
+                              gap:24px;
+                              justify-content:space-between;
+                              align-items:center;
+                              min-height:52px;
+                              box-sizing:border-box;
+                              padding:14px 22px;
+                              background:var(--dining-ink);
+                              color:var(--p-white)!important;
+                              border-radius:40px;
+                              font-size:13px;
+                              font-weight:600;
+                              text-decoration:none}
+                              .group-dining-button:hover{
+                                background:var(--p-navy)}
+                                .group-dining-note{
+                                  font-size:11px;
+                                  color:var(--dining-muted);
+                                  line-height:1.8;
+                                  max-width:360px}
+                                  .group-dining-contact{
+                                    margin-top:24px;
+                                    padding-top:20px;
+                                    border-top:1px solid var(--dining-line);
+                                    display:grid;
+                                    gap:12px}
+                                    .group-dining-contact>span{
+                                      font-size:12px;
+                                      color:var(--dining-muted)}
+                                      .group-dining-contact .hotel-contact-links{
+                                        font-size:12px}
+                                        .group-dining-contact a{
+                                          color:var(--dining-ink);
+                                          text-underline-offset:4px}
+                                          .group-dining :focus-visible{
+                                            outline:3px solid var(--dining-ink);
+                                            outline-offset:5px}
+                                            @media(max-width:850px){
+                                              .group-dining{
+                                                grid-template-columns:1fr}
+                                                .group-dining-photo{
+                                                  min-height:0;
+                                                  aspect-ratio:5/4}
+                                                  .group-dining h2 br{
+                                                    display:none}
+                                                    .group-dining-intro{
+                                                      max-width:none}
+                                                    }
+                                                    @media(max-width:520px){
+                                                      .group-dining{
+                                                        margin-inline:20px;
+                                                        border-radius:20px}
+                                                        .group-dining-copy{
+                                                          padding:28px 24px}
+                                                          .group-dining h2{
+                                                            font-size:46px}
+                                                            .group-dining-button{
+                                                              width:100%;
+                                                              font-size:12px}
+                                                              .group-dining-caption{
+                                                                left:16px;
+                                                                right:16px;
+                                                                bottom:16px;
+                                                                font-size:8px}
+                                                              }
