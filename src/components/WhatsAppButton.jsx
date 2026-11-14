@@ -1,7 +1,7 @@
-import { MessagesSquare } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { MessagesSquare } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
 export default function WhatsAppButton() {
   const { pathname } = useLocation();
   if (pathname.startsWith('/account') || pathname.startsWith('/staff')) return null;
-  return <Link to="/booking" className="whatsapp-float" aria-label="Request a booking or quotation"><MessagesSquare size={23} /><span>Plan your visit</span></Link>;
+  return <a href="https://wa.me/254708231994" className="whatsapp-float" aria-label="Chat with Elparaiso on WhatsApp" onClick={() => window.dispatchEvent(new CustomEvent('hotel:analytics', { detail: { event: 'whatsapp-click' } }))}><MessagesSquare size={23} /><span>WhatsApp us</span></a>;
 }

@@ -8,7 +8,7 @@
     "build": "vite build && node scripts/prerender.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "node tests/gallery.test.mjs",
+    "test": "node tests/gallery.test.mjs && node --test tests/stayDates.test.mjs",
     "check:seo": "node scripts/check-public-pages.mjs"
   },
   "dependencies": {
