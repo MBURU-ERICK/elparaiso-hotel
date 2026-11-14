@@ -5,7 +5,7 @@ import { getRoomTypes } from '../services/bookingApi';
 import { shortstayApi } from '../services/shortstayApi';
 import { galleryApi } from '../services/galleryApi';
 import { useHomeResource } from '../hooks/useHomeResource';
-const loaders = Object.fromEntries(['general', 'restaurant', 'experiences'].map(category => [category, () => galleryApi.list({ category })]));
+const loaders = Object.fromEntries(['general', 'restaurant', 'experiences', 'garden', 'rooms', 'airbnb'].map(category => [category, () => galleryApi.list({ category })]));
 const list = data => Array.isArray(data) ? data : data?.results || [];
 export function HomePhoto({ src, thumbnail, alt, hero = false }) {
   const [ready, setReady] = useState(false);

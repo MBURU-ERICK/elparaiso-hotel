@@ -6,7 +6,7 @@ export const galleryApi = {
     const params = new URLSearchParams({ page });
     if (category) params.set('category', category);
     if (featured) params.set('featured', 'true');
-    const response = await fetch(`${API_URL}/api/gallery/images/?${params}`, { signal });
+    const response = await fetch(`${API_URL}/api/gallery/images/?${params}`, { signal: signal || AbortSignal.timeout(15000) });
     if (!response.ok) throw new Error('We could not load the gallery. Please try again.');
     return response.json();
   },

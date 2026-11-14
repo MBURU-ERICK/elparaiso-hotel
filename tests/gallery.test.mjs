@@ -133,7 +133,7 @@ test('portal error and empty states are explicit and navigation uses the supplie
   assert.match(render(PortalState, { error: 'Offline' }), /role="alert"/);
   assert.match(render(PortalState, { empty: true }), /Nothing here yet/);
   const html = portalRender(Navbar);
-  assert.match(html, /Logo%20elparaiso.png/); assert.match(html, /Groups &amp; conferences/); assert.match(html, /Private stays/); assert.doesNotMatch(html, /My portal|href="\/account/);
+  assert.match(html, /Logo%20elparaiso.png/); assert.match(html, /Events &amp; Groups/); assert.match(html, /Private Stays/); assert.doesNotMatch(html, /My portal|href="\/account/);
 });
 
 test('guest navigation stays available on booking and private-stay routes', () => {
@@ -337,4 +337,20 @@ test('linked reservation cards use one traceable reference and the unified booki
   assert.match(html, /staff\/guest-reservations\?request=42/);
   assert.match(html, /Manage website booking/);
   assert.doesNotMatch(html, /Cancel standalone reservation/);
+});
+
+test('embedded event request uses the existing form with an event preset and section heading', () => {
+  const html = renderToStaticMarkup(React.createElement(MemoryRouter, { initialEntries: ['/events-groups'] }, React.createElement(GuestBooking, { initialService: 'event', embedded: true })));
+  assert.match(html, /<section class="section booking-page"/);
+  assert.match(html, /<h2>Let’s plan your visit/);
+  assert.match(html, /option value="event" selected/);
+  assert.match(html, /name="event_name"/);
+  assert.doesNotMatch(html, /<main/);
+});
+test('embedded conference enquiry starts in organisation mode without changing the booking contract', () => {
+  const html = renderToStaticMarkup(React.createElement(MemoryRouter, { initialEntries: ['/conferences'] }, React.createElement(GuestBooking, { initialService: 'conference', embedded: true, companyMode: true })));
+  assert.match(html, /option value="conference" selected/);
+  assert.match(html, /name="company"/);
+  assert.match(html, /name="package"/);
+  assert.match(html, /name="requirements"/);
 });

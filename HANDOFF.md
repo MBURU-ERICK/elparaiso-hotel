@@ -29,3 +29,8 @@
 ## Contact numbers
 Director: 0724 502 872 (+254724502872). Office: 0708 231 994 (+254708231994).
 Both call and WhatsApp destinations are maintained in `src/data/contacts.js`. The floating WhatsApp control offers a labelled choice. Call/WhatsApp connectivity requires testing on a phone; responsive browser review remains blocked by the previously recorded sandbox restriction.
+
+## Multicolour redesign review
+See `docs/PREMIUM-REDESIGN.md` for scope, file groups and limitations. New public aliases are prerendered without freezing rates/photos. Events and conferences reuse the existing request form inline, with the relevant service preselected. General contact prepares an email honestly because the legacy enquiry API requires verified authentication. All changes in this phase are left uncommitted and undeployed.
+
+Required owner/browser review before production approval: check all navigation and drawer focus, room details and filters, live rates/images, event/conference submissions and actual email receipts; review 360/390/768/1024/1440/1920px; measure Lighthouse and contrast. No such browser or delivery checks were completed in this restricted environment.

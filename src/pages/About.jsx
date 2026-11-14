@@ -1,123 +1,16 @@
-import GalleryPhoto from "../components/GalleryPhoto";
-
-import { Link } from "react-router-dom";
-import { MapPin, Utensils, BedDouble, Trees, Heart, Users } from "lucide-react";
-import SEO from "../components/SEO";
-
+import { Link } from 'react-router-dom';
+import SEO from '../components/SEO';
+import ContactLinks from '../components/ContactLinks';
+import { LivePhoto } from '../components/HomeLive';
+import { PageHero, ServiceCard, VisitCTA } from '../components/Premium';
+import { services } from '../data/services';
 export default function About() {
-  return (
-    <main>
-        <SEO
-    title="About Our Hotel in Rumuruti"
-    description="Learn about Elparaiso Hotel, our hospitality, facilities and location in Rumuruti, Laikipia."
-    path="/about"
-  />
-      <section className="about-hero">
-        <div className="about-overlay" />
-        <div className="about-hero-content">
-          <span className="eyebrow">WELCOME TO ELPARAISO</span>
-          <h1>A Place to Relax, Connect & Enjoy</h1>
-          <p>
-            Discover warm hospitality, comfortable accommodation,
-            delicious dining and memorable moments in Rumuruti.
-          </p>
-          <Link to="/contact" className="btn btn-gold">
-            Get in Touch
-          </Link>
-        </div>
-      </section>
-
-      <section className="about-story section">
-        <div className="about-story-image">
-          <GalleryPhoto category="general" />
-        </div>
-
-        <div className="about-story-content">
-          <span className="eyebrow">OUR STORY</span>
-          <h2>Hospitality That Feels Like Home</h2>
-          <p>
-            Elparaiso Hotel is a welcoming destination in Rumuruti,
-            Laikipia County, bringing together relaxation, dining
-            and experiences for individuals, families and groups.
-          </p>
-          <p>
-            Whether you are visiting for a meal, planning a stay,
-            enjoying the garden or spending time with family,
-            we look forward to welcoming you.
-          </p>
-          <Link to="/experiences" className="text-link">
-            Explore our experiences →
-          </Link>
-        </div>
-      </section>
-
-      <section className="about-values section">
-        <div className="section-heading">
-          <span className="eyebrow">WHAT MAKES US SPECIAL</span>
-          <h2>More Than Just a Stay</h2>
-          <p>Enjoy different experiences in one welcoming destination.</p>
-        </div>
-
-        <div className="about-values-grid">
-          <article className="about-value-card">
-            <div className="about-value-icon"><BedDouble /></div>
-            <h3>Comfortable Stays</h3>
-            <p>Relax and unwind with our accommodation options.</p>
-          </article>
-
-          <article className="about-value-card">
-            <div className="about-value-icon"><Utensils /></div>
-            <h3>Restaurant & Drinks</h3>
-            <p>Enjoy dining and refreshments in a welcoming setting.</p>
-          </article>
-
-          <article className="about-value-card">
-            <div className="about-value-icon"><Trees /></div>
-            <h3>Garden Experiences</h3>
-            <p>Take a break and enjoy time in our garden spaces.</p>
-          </article>
-
-          <article className="about-value-card">
-            <div className="about-value-icon"><Users /></div>
-            <h3>Family Moments</h3>
-            <p>Make memories with family-friendly activities and kids' games.</p>
-          </article>
-
-          <article className="about-value-card">
-            <div className="about-value-icon"><Heart /></div>
-            <h3>Warm Hospitality</h3>
-            <p>We aim to make every visit welcoming and memorable.</p>
-          </article>
-
-          <article className="about-value-card">
-            <div className="about-value-icon"><MapPin /></div>
-            <h3>Convenient Location</h3>
-            <p>Find us in Rumuruti, Laikipia County, Kenya.</p>
-          </article>
-        </div>
-      </section>
-
-      <section className="about-location">
-        <div className="about-location-content">
-          <span className="eyebrow">FIND US</span>
-          <h2>Experience Elparaiso in Rumuruti</h2>
-          <p>
-            Visit us in Rumuruti, Laikipia County, Kenya.
-            Contact our team for enquiries and reservations.
-          </p>
-          <Link to="/contact" className="btn btn-gold">
-            Contact Elparaiso
-          </Link>
-        </div>
-      </section>
-
-      <section className="about-final-cta">
-        <span className="eyebrow">YOUR NEXT EXPERIENCE STARTS HERE</span>
-        <h2>We Look Forward to Welcoming You</h2>
-        <Link to="/contact" className="btn btn-gold">
-          Make an Enquiry
-        </Link>
-      </section>
-    </main>
-  );
+  return <main className="premium-page"><SEO title="About Elparaiso Hotel in Rumuruti, Laikipia" description="Get to know Elparaiso Hotel & Restaurant: accommodation, dining, gardens and gatherings in Rumuruti, Laikipia County, Kenya." path="/about" /><PageHero title="Welcome to the World of Elparaiso" copy="A destination where warm hospitality, natural beauty, and memorable experiences come together." action="Discover our spaces" to="/gallery" />
+    <section className="premium-section premium-split"><LivePhoto category="garden" /><div><span className="premium-pill">OUR STORY</span><h2>A place to pause.<br />A reason to return.</h2><p>Here in Rumuruti, Elparaiso Hotel & Restaurant brings stays, dining and time together into one welcoming destination.</p><p>You might come for a night on the road through Laikipia, a meal with family, or a gathering that needs a little more space. We look forward to helping you shape your visit.</p><Link className="premium-button" to="/rooms">Find your kind of stay ↗</Link></div></section>
+    <section className="premium-section tint"><span className="premium-pill">THE ELPARAISO EXPERIENCE</span><h2>One destination.<br />Your own way to enjoy it.</h2><div className="premium-grid">{services.map(service => <ServiceCard key={service.to} {...service} />)}</div></section>
+    <section className="premium-section premium-split"><div><span className="premium-pill">OUR APPROACH TO HOSPITALITY</span><h2>Good hospitality begins<br />with listening.</h2><p>Tell us what matters to you: the people you’re travelling with, the occasion, the room arrangement or the meal you’re planning. Our team will help you understand the options.</p><p>We keep booking personal. You send a request; we reply with availability and a quotation so you can review the details before confirming.</p></div><LivePhoto category="restaurant" /></section>
+    <section className="premium-section tint"><span className="premium-pill">DISCOVER RUMURUTI, LAIKIPIA</span><h2>A Kenyan welcome.<br />A Laikipia address.</h2><p>Find us in Rumuruti, in Kenya’s Laikipia County. Whether you’re visiting the area or passing through, make Elparaiso part of your journey. Our team can help with directions and the final approach.</p><div className="premium-actions"><Link className="premium-button" to="/contact">Plan your journey</Link><a className="premium-button" href="https://www.google.com/maps/search/?api=1&query=Elparaiso+Hotel+Rumuruti+Kenya">Open map ↗</a></div></section>
+    <section className="premium-section"><span className="premium-pill">EXPLORE OUR SPACES</span><h2>A glimpse of life here.</h2><div className="premium-grid">{['rooms','garden','restaurant'].map(category => <div className="premium-card" key={category}><LivePhoto category={category} /></div>)}</div><div className="premium-actions"><Link className="premium-button" to="/gallery">Explore the gallery</Link></div></section>
+    <section className="premium-section premium-split tint"><div><span className="premium-pill">THE PEOPLE BEHIND YOUR VISIT</span><h2>A conversation.<br />A thoughtful arrangement.</h2><p>Speak with our team about your plans, from a room for the weekend to a meeting for your organisation. We’ll confirm the practical details with you directly.</p><ContactLinks /></div><div><h2>Our commitment to you.</h2><p>Clear information, a personal reply and care in planning your visit. Ask us about room options, accessibility, meal arrangements and policies before confirming your booking.</p><Link className="premium-button" to="/contact">Talk to our team</Link></div></section>
+    <section className="premium-section premium-split"><div><span className="premium-pill">OUR LOCATION</span><h2>See you in Rumuruti.</h2><p>Rumuruti, Laikipia County, Kenya.<br />Contact us for directions and your preferred arrival arrangements.</p><ContactLinks /></div><iframe className="premium-map" title="Elparaiso Hotel map search, Rumuruti" src="https://www.google.com/maps?q=Elparaiso+Hotel+Rumuruti+Kenya&output=embed" loading="lazy" referrerPolicy="no-referrer-when-downgrade" /></section><VisitCTA /></main>;
 }

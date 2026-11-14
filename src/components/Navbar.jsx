@@ -4,13 +4,10 @@ import { NavLink, Link } from "react-router-dom";
 import { Menu, X, ChevronRight } from "lucide-react";
 
 const links = [
-  { name: "Accommodation", path: "/rooms" },
-  { name: "Restaurant", path: "/restaurant" },
-  { name: "Groups & conferences", path: "/business" },
-  { name: "Events", path: "/events" },
-  { name: "Gallery", path: "/gallery" },
-  { name: "Private stays", path: "/airbnb" },
-  { name: "Contact", path: "/contact" },
+  { name: 'Home', path: '/' }, { name: 'Accommodation', path: '/rooms' },
+  { name: 'Restaurant', path: '/restaurant' }, { name: 'Private Stays', path: '/private-stays' },
+  { name: 'Experiences', path: '/experiences' }, { name: 'Events & Groups', path: '/events-groups' },
+  { name: 'Conferences', path: '/conferences' }, { name: 'About Us', path: '/about' }, { name: 'Contact', path: '/contact' },
 ];
 
 export default function Navbar() {
@@ -39,6 +36,7 @@ export default function Navbar() {
         <img className="brand-logo" src="/images/Logo%20elparaiso.png" alt="Elparaiso Hotel — Simply Amazing" width="1970" height="800" fetchPriority="high" />
       </Link>
 
+      <Link className="nav-book header-book" to="/booking">Book a stay</Link>
       <button
         className="menu-toggle"
         onClick={() => setOpen(!open)}

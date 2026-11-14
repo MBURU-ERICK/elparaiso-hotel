@@ -1,6 +1,18 @@
 {
   "rewrites": [
     {
+      "source": "/events-groups",
+      "destination": "/events-groups/index.html"
+    },
+    {
+      "source": "/private-stays",
+      "destination": "/private-stays/index.html"
+    },
+    {
+      "source": "/conferences",
+      "destination": "/conferences/index.html"
+    },
+    {
       "source": "/",
       "destination": "/index.html"
     },

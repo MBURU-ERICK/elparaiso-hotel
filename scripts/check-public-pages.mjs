@@ -12,7 +12,7 @@ for (const route of routes) {
   assert.match(head, /<link rel="canonical" href="https:\/\//);
   assert.match(head, /content="index, follow"/);
   assert.match(html, /<h1/);
-  const publicPaths = new Set([...routes, '/airbnb', '/booking', '/conference-meals', '/review']);
+  const publicPaths = new Set([...routes, '/private-stays', '/events-groups', '/conferences', '/airbnb', '/booking', '/conference-meals', '/review']);
   for (const match of html.matchAll(/<a\b[^>]*href="(\/[^" ]*)"/g)) {
     const value = match[1].replaceAll('&amp;', '&');
     const link = new URL(value, 'https://hotel.example.test');
@@ -29,3 +29,10 @@ assert.ok((await readFile('dist/app.html', 'utf8')).includes('<div id="root"></d
 await assert.rejects(access('dist/account'));
 await assert.rejects(access('dist/staff'));
 console.log('SEO output verified: 11 distinct public pages, metadata in head, visible content, Hotel structured data, no customer/staff prerendering.');
+
+for (const route of ['/private-stays', '/events-groups', '/conferences']) {
+  const html = await readFile(`dist${route}/index.html`, 'utf8');
+  assert.match(html, /<h1/);
+  assert.ok(html.includes(`href="https://www.elparaisohotelltd.com${route}"`), `${route}: canonical missing`);
+}
+console.log('Three new public routes verified with primary-domain canonical URLs.');

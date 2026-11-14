@@ -32,6 +32,7 @@ import About from "./pages/About";
 import Gallery from "./pages/Gallery";
 import Contact from "./pages/Contact";
 import WhatsAppButton from "./components/WhatsAppButton";
+import "./styles/premium.css";
 
 const StaffLogin = lazy(() => import("./pages/StaffLogin"));
 const StaffDashboard = lazy(() => import("./pages/StaffDashboard"));
@@ -69,7 +70,7 @@ export default function App() {
       <Suspense fallback={<p className="portal-state" role="status">Loading…</p>}>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/rooms" element={<Rooms />} />
+        <Route path="/private-stays" element={<Airbnb />} /><Route path="/events-groups" element={<Events />} /><Route path="/conferences" element={<Business />} /><Route path="/rooms" element={<Rooms />} />
         <Route path="/restaurant" element={<Restaurant />} />
         <Route path="/experiences" element={<Experiences />} />
         <Route path="/booking" element={<Booking />} />
