@@ -1,63 +1,9 @@
+import { Link } from 'react-router-dom';
+import { ArrowUpRight, MapPin, Mail } from 'lucide-react';
 import ContactLinks from './ContactLinks';
-import { Link } from "react-router-dom";
-import { MapPin, Phone, Mail } from "lucide-react";
-
+import './footer-premium.css';
+const explore = [['Accommodation', '/rooms'], ['Private stays', '/private-stays'], ['Restaurant', '/restaurant'], ['Experiences', '/experiences']];
+const plan = [['Events & groups', '/events-groups'], ['Conferences', '/conferences'], ['Gallery', '/gallery'], ['About Elparaiso', '/about'], ['Contact', '/contact']];
 export default function Footer() {
-  return (
-    <footer className="footer">
-      <div className="footer-main">
-        <div>
-          <Link to="/" className="brand footer-brand">
-            <img className="brand-logo" src="/images/Logo%20elparaiso.png" alt="Elparaiso Hotel" width="1970" height="800" loading="lazy" />
-          </Link>
-
-          <p>
-            Exceptional hospitality, comfortable
-            accommodation and memorable experiences
-            in Rumuruti, Laikipia.
-          </p>
-        </div>
-
-        <div>
-          <h3>Explore</h3>
-          <Link to="/rooms">Accommodation</Link>
-          <Link to="/business">Groups & conferences</Link>
-          <Link to="/booking">Request a booking</Link>
-          <Link to="/restaurant">Restaurant</Link>
-          <Link to="/experiences">Experiences</Link>
-          <Link to="/gallery">Gallery</Link>
-          <Link to="/about">About Us</Link>
-        </div>
-
-        <div>
-          <h3>Get In Touch</h3>
-
-          <p>
-            <MapPin size={16} />
-            Rumuruti, Laikipia, Kenya
-          </p>
-
-          <p>
-            <Phone size={16} />
-            <ContactLinks />
-          </p>
-
-          <p>
-            <Mail size={16} />
-            <a href="mailto:elparaisohotelltd@gmail.com">
-              elparaisohotelltd@gmail.com
-            </a>
-          </p>
-        </div>
-      </div>
-
-      <div className="footer-bottom">
-        <span>
-          © {new Date().getFullYear()} Elparaiso Hotel.
-          All rights reserved.
-        </span>
-        <span>Designed for memorable experiences.</span>
-      </div>
-    </footer>
-  );
+  return <footer className="footer footer-premium"><div className="footer-invitation"><div><span className="footer-kicker">A WARM WELCOME AWAITS</span><h2>Stay a little.<br /><em>Feel at home.</em></h2></div><Link className="footer-book" to="/booking">Plan your visit <ArrowUpRight size={22} /></Link></div><div className="footer-premium-grid"><div className="footer-identity"><Link to="/" aria-label="Elparaiso Hotel homepage"><img src="/images/Logo%20elparaiso.png" alt="Elparaiso Hotel — Simply Amazing" width="1970" height="800" loading="lazy" /></Link><p>A place to pause. A reason to return.<br />Stays, shared tables and time together<br />in Rumuruti, Laikipia.</p><span className="footer-kicker">SIMPLY AMAZING.</span></div><nav aria-label="Footer explore"><h3>Discover</h3>{explore.map(([label, url]) => <Link key={url} to={url}>{label}</Link>)}</nav><nav aria-label="Footer plan your visit"><h3>Make a plan</h3>{plan.map(([label, url]) => <Link key={url} to={url}>{label}</Link>)}</nav><div className="footer-contacts"><h3>Let’s talk</h3><ContactLinks /><a className="footer-email" href="mailto:elparaisohotelltd@gmail.com"><Mail size={16} />elparaisohotelltd@gmail.com</a><a href="https://www.google.com/maps/search/?api=1&query=Elparaiso+Hotel+Rumuruti+Kenya"><MapPin size={16} />Rumuruti, Laikipia County, Kenya ↗</a><details><summary>Chat on WhatsApp</summary><ContactLinks whatsapp /></details></div></div><div className="footer-premium-bottom"><span>© {new Date().getFullYear()} Elparaiso Hotel. All rights reserved.</span><span>Rumuruti · Laikipia · Kenya</span><Link to="/booking">Book directly with our team ↗</Link></div></footer>;
 }
