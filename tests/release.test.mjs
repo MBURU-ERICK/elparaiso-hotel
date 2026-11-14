@@ -10,3 +10,18 @@ test('missing or development API settings cannot silently ship to production', (
     assert.throws(() => validateProductionApiOrigin(value), value);
   }
 });
+
+const { analyticsPath, allowsAnalytics } = await import('../src/analytics/privacy.js');
+test('analytics excludes private routes and only records normalized public paths', () => {
+  assert.equal(analyticsPath('/staff/admin'), null);
+  assert.equal(analyticsPath('/account/profile'), null);
+  assert.equal(analyticsPath('/review'), null);
+  assert.equal(analyticsPath('/booking?email=private@example.test'), null);
+  assert.equal(analyticsPath('/airbnb/'), '/private-stays');
+  assert.equal(analyticsPath('/booking'), '/booking');
+});
+test('analytics respects browser privacy preferences without visitor identifiers', () => {
+  assert.equal(allowsAnalytics({ navigator: { doNotTrack: '1' } }), false);
+  assert.equal(allowsAnalytics({ navigator: { globalPrivacyControl: true } }), false);
+  assert.equal(allowsAnalytics({ navigator: {} }), true);
+});

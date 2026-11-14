@@ -1,3 +1,4 @@
+import WebsitePerformance from '../components/WebsitePerformance';
 import { customerApi } from '../customer/customerApi';
 import { hotelFacilities, defaultHotelFacility } from '../utils/hotelFacilities';
 import WorkspaceHeader from '../components/WorkspaceHeader';
@@ -30,6 +31,7 @@ export default function AdminDashboard() {
     finally { setBusy(false); }
   }
   return <main className="admin-dashboard"><WorkspaceHeader eyebrow="YOUR PROPERTY & PEOPLE" title="Administration" description="Grow your room collection and give your team the access they need." actions={<Link className="portal-button" to="/staff/rooms">Manage hotel rooms →</Link>} />
+    <WebsitePerformance />
     <div className="operations-tools"><Link to="/staff/rooms"><h3>Hotel room collection</h3><p>Photos, availability and room details.</p></Link><Link to="/staff/airbnb/rooms"><h3>Airbnb collection</h3><p>Add private stays and upload room photos.</p></Link><Link to="/staff/gallery"><h3>Photo library</h3><p>Curate your property photographs.</p></Link><Link to="/staff/packages"><h3>Conference packages</h3><p>Keep rates and inclusions current.</p></Link></div>
     {message && <p role="status">{message}</p>}{error && <p role="alert">{error}</p>}
     <div className="admin-grid"><form className="portal-form workspace-panel" onSubmit={e => submit(e, 'rooms')}><h2>Add a room</h2><label>Hotel facility<select name="facility_id" value={hotelFacility} onChange={e => setHotelFacility(e.target.value)} required><option value="">Select a hotel</option>{hotelFacilities(facilities).map(f => <option key={f.id} value={f.id}>{f.name}</option>)}</select></label><label>Room number<input name="room_number" required maxLength={20} /></label><label>Room type<select name="room_type" key={hotelFacility} required defaultValue=""><option value="" disabled>Select an existing room type</option>{types.filter(type => String(type.facility_id) === hotelFacility && type.is_active !== false).map(type => <option key={type.id} value={type.id}>{type.name} — KES {type.nightly_rate} · {type.facility_name || facilities.find(f => f.id === type.facility_id)?.name}</option>)}</select><Link to="/staff/room-categories">Add or edit categories and rates →</Link></label><label>Room image<input name="image" type="file" accept="image/jpeg,image/png,image/webp" /></label><label>Status<select name="status"><option value="available">Available</option><option value="maintenance">Maintenance</option><option value="inactive">Inactive</option></select></label><button disabled={busy}>Create room</button></form>

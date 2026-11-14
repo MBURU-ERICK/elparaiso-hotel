@@ -3,6 +3,7 @@ import "./styles/staff-refresh.css";
 import "./styles/workspace.css";
 import "./styles/customer.css";
 import "./styles/guest-redesign.css";
+import WebsiteTracker from "./analytics/WebsiteTracker";
 import SEO from "./components/SEO";
 import { Link } from "react-router-dom";
 import HelpChat from "./components/HelpChat";
@@ -66,6 +67,7 @@ export default function App() {
     <div className={pathname.startsWith("/staff") ? "staff-experience" : "guest-experience"}>
       {pathname === "/review" && <Helmet><meta name="referrer" content="no-referrer" /></Helmet>}
       {privatePage && <Helmet><meta name="robots" content="noindex, nofollow" /></Helmet>}
+      <WebsiteTracker />
       <a className="skip-link" href="#page-content">Skip to content</a>
       
       {!pathname.startsWith("/staff") && <Navbar />}

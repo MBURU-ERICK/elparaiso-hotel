@@ -40,6 +40,7 @@ export default function GuestBooking({ initialService = 'hotel', embedded = fals
   async function submit(event) {
     event.preventDefault(); if (!isEvent && !quote) { setError('Choose valid room/package options, occupancy, guest counts and dates to calculate your quote.'); return; }
     setBusy(true); setError('');
+    window.dispatchEvent(new CustomEvent('hotel:analytics', { detail: { event: 'booking-start', source: 'event-conference-form' } }));
     const contact = Object.fromEntries(new FormData(event.currentTarget));
     const data = { ...contact, service: form.service, facility: form.facility, guests: form.guests, start_date: form.start_date, end_date: form.end_date, occupancy: form.occupancy, company: company ? contact.company : '' };
     if (isEvent) { data.event = form.event || null; data.event_type = form.event_type || null; data.event_name = form.event_name; }
