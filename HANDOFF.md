@@ -20,3 +20,8 @@
 - Browser checks at 375, 768 and 1440 pixels were attempted but blocked by sandbox socket restrictions when launching Chrome and connecting to its local debugging endpoint. Visual appearance, overflow, runtime console and end-to-end live API integration remain unverified.
 - No Lighthouse scores were measured. Hero preload becomes available after the live gallery response; reaching the LCP target needs a measured production test and a fast image API/CDN response.
 - Rooms pages have not been redesigned in this task.
+
+## Homepage visual refinement
+- Added an editorial welcome section, refined system-font typography, staggered experience imagery, open room-card layouts, and a forest-green discovery section. No external fonts or animation libraries added.
+- On phones, featured stays use native horizontal scrolling; booking controls start collapsed and can be expanded from the hero action. Desktop booking fields remain expanded.
+- Retried a 375px Chrome screenshot using a writable temporary profile; Chrome failed with `setsockopt: Operation not permitted`. All three requested viewport reviews, screenshot inspection, runtime console and production Lighthouse remain pending in a browser-capable environment.
