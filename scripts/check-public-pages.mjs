@@ -42,3 +42,10 @@ assert.ok(schemas.some(schema => schema['@type'] === 'Restaurant'), 'Restaurant 
 assert.ok(schemas.some(schema => schema['@type'] === 'BreadcrumbList'), 'Breadcrumbs missing');
 assert.match(restaurant, /property="og:image" content="https:\/\/www.elparaisohotelltd.com\/images\/restaurant-dining.jpg"/);
 console.log('Restaurant schema, breadcrumbs and photographic sharing image verified.');
+
+const booking = await readFile('dist/booking/index.html', 'utf8');
+assert.match(booking, /When can we welcome you/);
+assert.match(booking, /noindex, nofollow/);
+assert.match(booking, /https:\/\/www.elparaisohotelltd.com\/booking/);
+assert.ok(!(await readFile('dist/index.html', 'utf8')).includes('TESTIMONIAL PLACEHOLDER'));
+console.log('Booking has visible initial content, canonical metadata and noindex; testimonial placeholder removed.');

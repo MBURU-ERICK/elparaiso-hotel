@@ -95,3 +95,39 @@
 .reservation-page .reservation-room.is-selected { background: var(--color-mist); }
 .reservation-page .reservation-summary { background: var(--gradient-warm); }
 @media(prefers-reduced-motion:reduce) { .guest-experience .stay-listing-photo img { transition: none; } }
+
+/* Editorial facility stories share a rhythm across meetings and celebrations. */
+.venue-editorial { display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,1fr); gap:clamp(28px,5vw,80px); align-items:center; max-width:1360px; margin:auto; padding:clamp(40px,6vw,88px) clamp(20px,5vw,72px); }
+.venue-editorial figure { margin:0; min-width:0; }
+.venue-editorial .home-photo { height:auto; aspect-ratio:5/4; overflow:hidden; border-radius:var(--radius-card)  var(--radius-card) 0 0; background:var(--color-sand); }
+.venue-editorial .home-photo img { width:100%; height:100%; object-fit:cover; }
+.venue-editorial figcaption { padding:16px 0; border-bottom:1px solid var(--border-subtle); font-size:12px; color:var(--text-secondary); }
+.venue-editorial h2 { font:400 clamp(34px,4vw,58px)/1.12 var(--font-heading); color:var(--color-forest); margin:20px 0; }
+.venue-editorial h2 em { font-weight:400; }
+.venue-editorial p { font:15px/1.85 var(--font-body); color:var(--text-secondary); max-width:48ch; }
+.venue-editorial .premium-button { margin-top:16px; }
+.room-amenities { display:flex; flex-wrap:wrap; gap:8px; list-style:none; padding:0; margin:16px 0; }
+.room-amenities li { border:1px solid var(--border-subtle); border-radius:30px; padding:7px 12px; font-size:12px; background:var(--color-ivory); color:var(--color-forest); }
+.room-request-link { display:flex; justify-content:space-between; align-items:center; min-height:48px; padding:12px 24px; border-top:1px solid var(--border-subtle); color:var(--color-forest); font-size:14px; text-decoration:none; background:var(--color-ivory); }
+.room-request-link:hover { background:var(--color-mist); }
+.stay-listing-photo.photo-unavailable:before { content:'Room photograph unavailable'; position:absolute; inset:0; display:grid; place-items:center; background:var(--color-sand); color:var(--color-forest); font-size:14px; }
+.guest-experience input,.guest-experience select,.guest-experience textarea { scroll-margin-top:120px; }
+.guest-experience :is(a,button,summary,input,select,textarea):focus-visible { outline:2px solid var(--focus-ring); outline-offset:4px; }
+.guest-experience .premium-form label,.guest-experience .premium-card-copy { min-width:0; }
+.guest-experience .premium-card-copy a { overflow-wrap:anywhere; }
+.guest-experience .premium-form :is(input,select,textarea) { box-sizing:border-box; min-width:0; max-width:100%; min-height:48px; }
+.guest-experience .premium-room-details summary { min-height:44px; display:flex; align-items:center; cursor:pointer; }
+@media(max-width:767px) { .venue-editorial { grid-template-columns:1fr; gap:24px; } .venue-editorial .home-photo { aspect-ratio:4/3; } .guest-experience .premium-form { grid-template-columns:minmax(0,1fr); } }
+@media(prefers-reduced-motion:reduce) { .guest-experience *, .guest-experience *:before, .guest-experience *:after { animation:none!important; transition:none!important; scroll-behavior:auto!important; } }
+.guest-experience .event-section .premium-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
+.guest-experience .event-section .stay-skeleton { min-width:0; width:100%; }
+@media(max-width:767px) { .guest-experience .event-section .premium-grid { grid-template-columns:minmax(0,1fr); } }
+.guest-experience .footer-premium .footer-identity p { color:var(--footer-muted); }
+.guest-experience .footer-premium .footer-premium-grid h3 { color:var(--color-ivory); }
+.contact-invitation { display:grid; grid-template-columns:1fr 1fr; gap:clamp(24px,5vw,72px); align-items:center; padding:var(--space-section) var(--p-space,6vw); background:var(--color-forest); color:var(--color-ivory); }
+.contact-invitation h2 { font:400 clamp(36px,4vw,58px)/1.15 var(--font-heading); margin:20px 0; }
+.contact-invitation p { color:var(--color-ivory); line-height:1.85; font-size:15px; }
+.contact-invitation .section-kicker { color:#e1c796; }
+.contact-invitation .premium-button { background:var(--color-ivory); color:var(--color-forest); }
+.contact-invitation .editorial-card-link { color:var(--color-ivory); min-height:48px; display:inline-flex; align-items:center; }
+@media(max-width:767px) { .contact-invitation { grid-template-columns:minmax(0,1fr); } }

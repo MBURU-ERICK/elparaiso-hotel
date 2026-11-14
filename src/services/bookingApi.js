@@ -23,8 +23,11 @@ async function apiRequest(endpoint, options = {}) {
   return data;
 }
 
-export function getRoomTypes() {
-  return apiRequest("/api/rooms/types/");
+export async function getRoomTypes() {
+  const data = await apiRequest("/api/rooms/types/");
+  const rooms = Array.isArray(data) ? data : data?.results;
+  if (!Array.isArray(rooms)) throw new Error("Unexpected accommodation response. Please contact our team.");
+  return rooms;
 }
 
 export function checkAvailability(checkIn, checkOut) {

@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/booking",
+      "destination": "/booking/index.html"
+    },
+    {
       "source": "/events-groups",
       "destination": "/events-groups/index.html"
     },

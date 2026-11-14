@@ -9,15 +9,17 @@ export function safeNext(value) {
 }
 export async function customerRequest(path, options = {}) {
   const method = options.method || 'GET';
+  // Limit new deadlines to public hospitality requests; staff/account operations retain their existing behavior.
+  const publicRequest = /^\/api\/(?:content|customers\/(?:booking-options|guest-reservations|conference-packages))(?:\/|$)/.test(path);
   const headers = { ...options.headers };
   if (!['GET', 'HEAD'].includes(method)) {
-    const response = await fetch(`${BASE}/api/customers/auth/csrf/`, { credentials: 'include' });
+    const response = await fetch(`${BASE}/api/customers/auth/csrf/`, { credentials: 'include', signal: publicRequest ? AbortSignal.timeout(15000) : undefined });
     if (!response.ok) throw new Error('Unable to prepare a secure request. Please try again.');
     csrf = (await response.json()).csrfToken;
     headers['X-CSRFToken'] = csrf;
     if (options.body) headers['Content-Type'] = 'application/json';
   }
-  const response = await fetch(`${BASE}${path}`, { ...options, method, headers, credentials: 'include' });
+  const response = await fetch(`${BASE}${path}`, { ...options, signal: options.signal || (publicRequest ? AbortSignal.timeout(20000) : undefined), method, headers, credentials: 'include' });
   if (!response.ok) {
     const data = await response.json().catch(() => ({}));
     const error = new Error(typeof data.detail === 'string' ? data.detail : Object.entries(data).map(([key, value]) => `${key}: ${Array.isArray(value) ? value.join(' ') : String(value)}`).join(' · ') || `Request failed (${response.status})`);

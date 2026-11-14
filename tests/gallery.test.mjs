@@ -10,12 +10,14 @@ import { validateRoomPhotos } from '../src/utils/roomPhotos.js';
 import { estimateBooking } from '../src/utils/bookingQuote.js';
 import { HelmetProvider } from 'react-helmet-async';
 let server;
-let StayBooking;
+let StayBooking, roomApi, customerRequest;
 let EventCarousel, EventDetailsDialog, StaffContent, PhotoPicker, ReservationCard, photoApi, GuestReview, GuestBooking, Card, Grid, Upload, Carousel, api, staffApi, CustomerContext, Gate, Auth, RequestForm, safeNext, PortalState, Navbar, CustomerNav, Booking, RoomFilters, FavouriteRoom, ProfileForm;
 const photo = { id: 1, image_url: '/full', thumbnail_url: '/small', title: 'Garden', alt_text: 'A shaded garden path', category: 'garden', description: 'Relax outside' };
 const render = (Component, props) => renderToStaticMarkup(React.createElement(Component, props));
 before(async () => {
   server = await createServer({ server: { middlewareMode: true, hmr: false, watch: null, ws: false } });
+  roomApi = await server.ssrLoadModule('/src/services/bookingApi.js');
+  ({ customerRequest } = await server.ssrLoadModule('/src/customer/customerApi.js'));
   ({ RoomFilters, FavouriteRoom } = await server.ssrLoadModule('/src/components/RoomPreferences.jsx'));
   EventCarousel = (await server.ssrLoadModule('/src/components/EventCarousel.jsx')).default;
   EventDetailsDialog = (await server.ssrLoadModule('/src/components/EventDetailsDialog.jsx')).default;
@@ -370,4 +372,39 @@ test('conference query keeps the existing conference form instead of the stay wi
   const html = portalRender(StayBooking, {}, undefined, '/booking?service=conference');
   assert.match(html, /name="package"/);
   assert.doesNotMatch(html, /aria-label="Booking progress"/);
+});
+
+test('room catalogue accepts list and paginated API responses and rejects malformed data', async () => {
+  const original = globalThis.fetch;
+  const rows = [{ id: 1, name: 'API room', nightly_rate: '1500.00' }];
+  try {
+    for (const payload of [rows, { results: rows }]) {
+      globalThis.fetch = async (_url, options) => {
+        assert.ok(options.signal instanceof AbortSignal, 'room retrieval must have a deadline');
+        return Response.json(payload);
+      };
+      assert.deepEqual(await roomApi.getRoomTypes(), rows);
+    }
+    globalThis.fetch = async () => Response.json({ detail: 'Unexpected response' });
+    await assert.rejects(roomApi.getRoomTypes(), /Unexpected accommodation response/);
+    globalThis.fetch = async () => Response.json({ detail: 'Unavailable' }, { status: 503 });
+    await assert.rejects(roomApi.getRoomTypes(), /Unavailable/);
+  } finally { globalThis.fetch = original; }
+});
+test('guest requests retain CSRF and credentials and bound both network stages', async () => {
+  const original = globalThis.fetch;
+  const calls = [];
+  try {
+    globalThis.fetch = async (url, options) => {
+      calls.push({ url, options });
+      assert.ok(options.signal instanceof AbortSignal);
+      assert.equal(options.credentials, 'include');
+      return Response.json(url.endsWith('/csrf/') ? { csrfToken: 'test-csrf' } : { reference: 'test-response' });
+    };
+    const result = await customerRequest('/api/customers/guest-reservations/', { method: 'POST', body: JSON.stringify({ name: 'Test guest' }) });
+    assert.equal(calls.length, 2);
+    assert.equal(calls[1].options.headers['X-CSRFToken'], 'test-csrf');
+    assert.equal(calls[1].options.headers['Content-Type'], 'application/json');
+    assert.equal(result.reference, 'test-response');
+  } finally { globalThis.fetch = original; }
 });

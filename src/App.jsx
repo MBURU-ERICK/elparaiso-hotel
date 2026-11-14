@@ -4,7 +4,7 @@ import "./styles/workspace.css";
 import "./styles/customer.css";
 import "./styles/guest-redesign.css";
 import HelpChat from "./components/HelpChat";
-import AdminDashboard from "./pages/AdminDashboard";
+const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 
 import { Helmet } from "react-helmet-async";
 import { lazy, Suspense } from "react";

@@ -11,6 +11,6 @@ export function useGallery({ category = '', featured = false, page = 1 } = {}) {
       .catch(error => { if (!controller.signal.aborted) setState({ images: [], count: 0, loading: false, error: error.message, key: queryKey }); });
     return () => controller.abort();
   }, [category, featured, page, revision, queryKey]);
-  const visible = state.key === queryKey ? state : { images: [], count: 0, loading: true, error: '' };
+  const visible = state.key === queryKey ? { images: state.images, count: state.count, loading: state.loading, error: state.error } : { images: [], count: 0, loading: true, error: '' };
   return { ...visible, retry: () => setRevision(n => n + 1) };
 }
