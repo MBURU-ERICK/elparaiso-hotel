@@ -29,3 +29,6 @@ The guest frontend remains React + Vite + React Router. Run `npm run dev` locall
 - API origin remains configured with `VITE_API_URL`; no credentials belong in client environment variables.
 
 Checks: `npm run lint`, `npm test`, `npm run build`, `npm run check:seo`. No typecheck script is currently defined. See `HANDOFF.md` and `docs/PREMIUM-REDESIGN.md` for content and review requirements.
+
+### Serene booking flow
+`/booking` uses `src/pages/StayBooking.jsx` for hotel/private stays. Conference/event query parameters retain the existing `GuestBooking` workflow. Five stages preserve entered values when moving back; only a successful API response shows request receipt. Edit semantic colours in `src/styles/serene.css`, booking layout in `src/styles/reservation.css`. Children/preferred-room numbers are requests for the team; rates remain based on existing adult occupancy rules. See `docs/SERENE-BOOKING.md` for API behavior and verification limits.

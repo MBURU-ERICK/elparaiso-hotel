@@ -1,0 +1,77 @@
+:root {
+  --color-forest: #244d42;
+  --color-sage: #a8bda5;
+  --color-ivory: #faf7f0;
+  --color-champagne: #c5a46d;
+  --color-terracotta: #c98370;
+  --color-mist: #dceae9;
+  --color-sand: #ede2d1;
+  --color-charcoal: #292d2a;
+  --color-white: #fff;
+  --surface-page: var(--color-ivory);
+  --surface-card: var(--color-white);
+  --surface-soft: var(--color-mist);
+  --text-primary: var(--color-charcoal);
+  --text-secondary: #515d55;
+  --text-on-dark: var(--color-ivory);
+  --border-subtle: #cdd4ca;
+  --border-premium: var(--color-champagne);
+  --button-primary: var(--color-forest);
+  --button-hover: #18392f;
+  --focus-ring: #35695a;
+  --accent-accessible: #765b2f;
+  --gradient-warm: linear-gradient(135deg, var(--color-ivory), var(--color-sand));
+  --gradient-calm: linear-gradient(135deg, var(--color-mist), var(--color-ivory));
+  --shadow-card: 0 12px 40px rgba(36, 77, 66, .08);
+  --radius-card: 22px;
+  --radius-control: 12px;
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 40px;
+  --space-section: clamp(48px, 7vw, 96px);
+  --font-heading: 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+  --font-body: 'Avenir Next', 'Segoe UI', sans-serif;
+  --motion-duration: 180ms;
+  --motion-ease: ease-out;
+  /* Compatibility aliases keep existing guest components on one palette. */
+  --p-emerald: var(--color-forest);
+  --p-navy: var(--button-hover);
+  --p-gold: var(--color-champagne);
+  --p-terra: var(--color-terracotta);
+  --p-coral: var(--color-terracotta);
+  --p-blue: var(--color-mist);
+  --p-cream: var(--color-ivory);
+  --p-sage: var(--color-mist);
+  --p-lavender: var(--color-sand);
+  --p-white: var(--color-white);
+  --p-ink: var(--color-charcoal);
+  --p-muted: var(--text-secondary);
+  --p-line: var(--border-subtle);
+  --p-shadow: var(--shadow-card);
+  --p-radius: var(--radius-card);
+  --p-serif: var(--font-heading);
+  --p-sans: var(--font-body);
+}
+.guest-experience { background: var(--surface-page); color: var(--text-primary); }
+.guest-experience :focus-visible { outline-color: var(--focus-ring); }
+.home-rebuilt { --forest: var(--color-forest); --cream: var(--color-ivory); --sand: var(--color-mist); --gold: var(--color-champagne); --ink: var(--text-primary); --muted: var(--text-secondary); --line: var(--border-subtle); }
+.premium-page.tone-private { --page-tint: var(--color-sand); }
+.premium-page.tone-dining { --page-tint: var(--color-sand); }
+.premium-cta { background: linear-gradient(135deg, var(--button-hover), var(--color-forest)); }
+.premium-card:nth-child(3n+2) { background: var(--color-mist); }
+.premium-card:nth-child(3n+3) { background: var(--color-sand); }
+.guest-experience .premium-pill { color: inherit; }
+.home-rebuilt .home-discover, .home-rebuilt .home-closing { background: var(--color-forest); }
+.home-rebuilt .home-testimonials { background: var(--color-ivory); }
+.guest-experience .explore-intro { background: var(--gradient-calm); }
+.guest-experience .explore-categories .selected { background: var(--color-forest); color: var(--color-white); }
+@media(prefers-reduced-motion: reduce) { :root { --motion-duration: 0ms; } }
+.guest-experience .portal-panel, .guest-experience .booking-quote { background: var(--surface-card); border-color: var(--border-subtle); color: var(--text-primary); }
+.guest-experience .portal-form input, .guest-experience .portal-form select, .guest-experience .portal-form textarea { background: var(--surface-page); color: var(--text-primary); border-color: var(--border-subtle); }
+.guest-experience .portal-form button:not([type=button]) { background: var(--button-primary); color: var(--color-white); }
+.guest-experience .business-benefits article { background: var(--surface-card); }
+.guest-experience .gathering-promo { background: var(--gradient-calm); color: var(--text-primary); }
+:root { --text-accent-on-dark: #e1c796; }
+.home-rebuilt .home-discover .home-kicker { color: var(--text-accent-on-dark); }
+.guest-experience .footer-premium .footer-kicker { color: var(--text-accent-on-dark); }

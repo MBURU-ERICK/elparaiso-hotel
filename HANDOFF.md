@@ -45,3 +45,6 @@ Both supplied Dribbble CDN images were inaccessible through the web tool and dir
 - Group dining uses live restaurant photography, clear planning steps and existing catering quotation/Director/Office WhatsApp links.
 - Added truthful Restaurant and BreadcrumbList JSON-LD, locale and photographic social previews, with output validation. No ratings, opening hours, menu or price claims added.
 - The three new Dribbble URLs were inaccessible to the web tool; no exact-reference matching or visual validation is claimed. Browser verification remains blocked by the previously documented environment restrictions. No commits or deployment made.
+
+## Serene booking flow
+See `docs/SERENE-BOOKING.md`. Hotel/private stays now use a five-stage request wizard. Verify date search, real API room counts, occupancy changes, comparisons, company details, back navigation, retry/idempotency and actual email acknowledgements on a browser-capable environment before deployment. Child pricing, preferred-room allocations and private-stay availability remain enquiries for hotel confirmation. No backend schema, finance, payment, deployment or email flow changes were made.

@@ -14,7 +14,7 @@ const StaffProfile = lazy(() => import("./pages/StaffProfile"));
 const MealQuotation = lazy(() => import("./pages/MealQuotation"));
 const Business = lazy(() => import("./pages/Business"));
 const StaffCustomers = lazy(() => import("./pages/GuestRequests"));
-const Booking = lazy(() => import("./pages/GuestBooking"));
+const Booking = lazy(() => import("./pages/StayBooking"));
 const StaffLayout = lazy(() => import("./components/StaffLayout"));
 const GalleryManager = lazy(() => import("./components/GalleryManager"));
 const StaffRoomCategories = lazy(() => import("./pages/StaffRoomCategories"));
@@ -33,6 +33,7 @@ import Gallery from "./pages/Gallery";
 import Contact from "./pages/Contact";
 import WhatsAppButton from "./components/WhatsAppButton";
 import "./styles/premium.css";
+import "./styles/serene.css";
 
 const StaffLogin = lazy(() => import("./pages/StaffLogin"));
 const StaffDashboard = lazy(() => import("./pages/StaffDashboard"));

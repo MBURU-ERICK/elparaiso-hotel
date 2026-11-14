@@ -10,6 +10,7 @@ import { validateRoomPhotos } from '../src/utils/roomPhotos.js';
 import { estimateBooking } from '../src/utils/bookingQuote.js';
 import { HelmetProvider } from 'react-helmet-async';
 let server;
+let StayBooking;
 let EventCarousel, EventDetailsDialog, StaffContent, PhotoPicker, ReservationCard, photoApi, GuestReview, GuestBooking, Card, Grid, Upload, Carousel, api, staffApi, CustomerContext, Gate, Auth, RequestForm, safeNext, PortalState, Navbar, CustomerNav, Booking, RoomFilters, FavouriteRoom, ProfileForm;
 const photo = { id: 1, image_url: '/full', thumbnail_url: '/small', title: 'Garden', alt_text: 'A shaded garden path', category: 'garden', description: 'Relax outside' };
 const render = (Component, props) => renderToStaticMarkup(React.createElement(Component, props));
@@ -23,6 +24,7 @@ before(async () => {
   ReservationCard = (await server.ssrLoadModule('/src/components/StaffReservationCard.jsx')).default;
   photoApi = (await server.ssrLoadModule('/src/services/airbnbPhotos.js')).airbnbPhotos;
   GuestReview = (await server.ssrLoadModule('/src/pages/GuestReview.jsx')).default;
+  StayBooking = (await server.ssrLoadModule('/src/pages/StayBooking.jsx')).default;
   GuestBooking = (await server.ssrLoadModule('/src/pages/GuestBooking.jsx')).default;
   ProfileForm = (await server.ssrLoadModule('/src/customer/CustomerProfileForm.jsx')).default;
   CustomerNav = (await server.ssrLoadModule('/src/customer/CustomerNav.jsx')).default;
@@ -353,4 +355,19 @@ test('embedded conference enquiry starts in organisation mode without changing t
   assert.match(html, /name="company"/);
   assert.match(html, /name="package"/);
   assert.match(html, /name="requirements"/);
+});
+
+test('stay wizard preserves search parameters and labels the request flow honestly', () => {
+  const html = portalRender(StayBooking, {}, undefined, '/booking?check_in=2027-01-02&check_out=2027-01-04&adults=3&children=1&rooms=2');
+  assert.match(html, /Your Perfect Stay Begins Here/);
+  assert.match(html, /aria-label="Booking progress"/);
+  assert.match(html, /value="2027-01-02"/);
+  assert.match(html, /value="2027-01-04"/);
+  assert.match(html, /Child arrangements and preferred room counts are requests/);
+  assert.doesNotMatch(html, /Your booking is confirmed!/);
+});
+test('conference query keeps the existing conference form instead of the stay wizard', () => {
+  const html = portalRender(StayBooking, {}, undefined, '/booking?service=conference');
+  assert.match(html, /name="package"/);
+  assert.doesNotMatch(html, /aria-label="Booking progress"/);
 });
