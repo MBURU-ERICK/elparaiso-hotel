@@ -41,3 +41,7 @@ Edit About chapter copy in `src/data/aboutStory.js`; chapter layout is in `src/s
 The canonical origin is `https://elparaisohotelltd.com` (without www), centralized in `src/config/site.js`. `public/sitemap.xml` lists only preferred indexable routes. Run `npm run check:seo` after a build, and `npm run check:seo:live` after an authorized deployment. Optional genuine Google/Bing verification values are documented in `.env.example`.
 
 **Hosting prerequisite:** production currently redirects apex to www. Public-host redirects are managed in Vercel Domains rather than application rules, so CSS and JavaScript cannot loop between opposing redirects. Reverse the hosting redirect only during an approved canonical-domain rollout. See [technical SEO audit and indexing handoff](docs/TECHNICAL-SEO.md) for evidence, safeguards, verification and owner account steps. No control of the previous `.co.ke` domain is assumed.
+
+### Production readiness and Windows hosting
+
+Use Node 24 LTS (`.nvmrc`) and set `VITE_API_URL` before production builds. Missing/development API origins now fail the build. See [production-readiness results](docs/PRODUCTION-READINESS.md) and [the Windows migration/deployment guide](docs/WINDOWS-DEPLOYMENT.md) for moving Django/PostgreSQL to an always-on Windows computer while keeping the existing Vercel frontend. Run `deploy/windows/Test-WindowsRelease.ps1` on Windows after recreating both environments. Source, database, media and secrets have separate transfer steps; do not copy Linux virtual environments or commit database dumps.
