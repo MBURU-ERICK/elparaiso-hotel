@@ -19,7 +19,7 @@ export default function Events({ embedded = false }) {
   const Heading = 'h2';
   const Container = embedded ? 'div' : 'main';
   return <Container className="premium-page">{!embedded && <PageHero title="Celebrate Every Moment at Elparaiso" copy="From meaningful gatherings to memorable celebrations, discover a welcoming setting for your next occasion." category="celebrations" to="/booking?service=event" action="Plan your occasion" />}<section className="section event-section">
-    {!embedded && <SEO title="Events & Celebrations" description="Discover events and celebrations at Elparaiso Hotel in Rumuruti." path="/events-groups" />}
+    {!embedded && <SEO title="Events & Celebrations in Rumuruti" description="Discover events and celebrations at Elparaiso Hotel in Rumuruti." path="/events-groups" />}
     <header className="explore-intro"><div><span className="eyebrow">MAKE IT AN OCCASION</span><Heading>What’s happening at Elparaiso</Heading><p>Discover gatherings, celebrations and experiences worth coming together for.</p></div></header>
     {error && <div className="explorer-state" role="alert"><p>{error}</p><button onClick={() => { setError(''); setRevision(n => n + 1); }}>Try again</button></div>}
     {!events && !error && <div className="premium-grid" aria-label="Retrieving events" aria-busy="true">{[1,2,3].map(id => <div key={id} className="stay-skeleton" />)}</div>}

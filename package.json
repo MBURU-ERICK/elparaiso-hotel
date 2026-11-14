@@ -8,8 +8,9 @@
     "build": "vite build && node scripts/prerender.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "node tests/gallery.test.mjs && node --test tests/stayDates.test.mjs",
-    "check:seo": "node scripts/check-public-pages.mjs"
+    "test": "node tests/gallery.test.mjs && node --test tests/stayDates.test.mjs tests/seo.test.mjs",
+    "check:seo": "node scripts/check-public-pages.mjs",
+    "check:seo:live": "node scripts/check-live-seo.mjs"
   },
   "dependencies": {
     "lucide-react": "^1.66.0",

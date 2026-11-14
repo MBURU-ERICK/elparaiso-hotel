@@ -8,7 +8,7 @@ import { aboutChapters, storyChapters } from '../data/aboutStory';
 import '../styles/about-story.css';
 export default function About() {
   return <main className="premium-page about-story-page">
-    <SEO title="The Elparaiso Story | Hotel in Rumuruti, Laikipia" description="Get to know Elparaiso Hotel & Restaurant: a warm welcome, rooms, shared tables and garden time in Rumuruti, Laikipia County, Kenya." path="/about" />
+    <SEO title="Our Story & Hospitality in Rumuruti" description="Get to know Elparaiso Hotel & Restaurant: a warm welcome, rooms, shared tables and garden time in Rumuruti, Laikipia County, Kenya." path="/about" />
     <PageHero title="Welcome to the World of Elparaiso" copy="A place to pause. A reason to return. Discover a warmer way to spend time in Rumuruti, Laikipia." action="Find your kind of stay" to="/rooms" category="garden" label="OUR PLACE. YOUR PACE." />
     <nav className="about-chapters" aria-label="Explore our story">{aboutChapters.map((chapter, index) => <a key={chapter.id} href={`#${chapter.id}`}><span>0{index + 1}</span>{chapter.label}</a>)}</nav>
     <section className="about-prologue"><span className="about-eyebrow">SIMPLY AMAZING.</span><h2>Not every visit needs<br />a full itinerary.</h2><p>A comfortable room. A meal with the people you love.<br />A little time to settle into the moment.</p><span className="about-prologue-rule" aria-hidden="true" /></section>

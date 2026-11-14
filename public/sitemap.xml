@@ -1,31 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://www.elparaisohotelltd.com/</loc>
-  </url>
-  <url>
-    <loc>https://www.elparaisohotelltd.com/rooms</loc>
-  </url>
-  <url>
-    <loc>https://www.elparaisohotelltd.com/restaurant</loc>
-  </url>
-  <url>
-    <loc>https://www.elparaisohotelltd.com/experiences</loc>
-  </url>
-  <url>
-    <loc>https://www.elparaisohotelltd.com/gallery</loc>
-  </url>
-  <url>
-    <loc>https://www.elparaisohotelltd.com/about</loc>
-  </url>
-  <url>
-    <loc>https://www.elparaisohotelltd.com/contact</loc>
-  </url>
-  <url><loc>https://www.elparaisohotelltd.com/business</loc></url>
-  <url><loc>https://www.elparaisohotelltd.com/events</loc></url>
-  <url><loc>https://www.elparaisohotelltd.com/airbnb</loc></url>
-  <url><loc>https://www.elparaisohotelltd.com/conference-meals</loc></url>
-<url><loc>https://www.elparaisohotelltd.com/private-stays</loc></url>
-<url><loc>https://www.elparaisohotelltd.com/events-groups</loc></url>
-<url><loc>https://www.elparaisohotelltd.com/conferences</loc></url>
+  <url><loc>https://elparaisohotelltd.com/</loc></url>
+  <url><loc>https://elparaisohotelltd.com/rooms</loc></url>
+  <url><loc>https://elparaisohotelltd.com/private-stays</loc></url>
+  <url><loc>https://elparaisohotelltd.com/restaurant</loc></url>
+  <url><loc>https://elparaisohotelltd.com/experiences</loc></url>
+  <url><loc>https://elparaisohotelltd.com/events-groups</loc></url>
+  <url><loc>https://elparaisohotelltd.com/conferences</loc></url>
+  <url><loc>https://elparaisohotelltd.com/about</loc></url>
+  <url><loc>https://elparaisohotelltd.com/contact</loc></url>
+  <url><loc>https://elparaisohotelltd.com/gallery</loc></url>
+  <url><loc>https://elparaisohotelltd.com/conference-meals</loc></url>
 </urlset>

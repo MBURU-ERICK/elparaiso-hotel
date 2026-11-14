@@ -3,4 +3,4 @@ Allow: /
 Disallow: /account/
 Disallow: /staff/
 
-Sitemap: https://www.elparaisohotelltd.com/sitemap.xml
+Sitemap: https://elparaisohotelltd.com/sitemap.xml

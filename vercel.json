@@ -61,7 +61,15 @@
       "destination": "/conference-meals/index.html"
     },
     {
-      "source": "/((?!api/).*)",
+      "source": "/staff/:path*",
+      "destination": "/app.html"
+    },
+    {
+      "source": "/account/:path*",
+      "destination": "/app.html"
+    },
+    {
+      "source": "/review",
       "destination": "/app.html"
     }
   ],
@@ -125,6 +133,28 @@
           "value": "private, no-store"
         }
       ]
+    },
+    {
+      "source": "/review",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "private, no-store"
+        }
+      ]
+    },
+    {
+      "source": "/assets/:path*",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
     }
   ],
   "redirects": [
@@ -133,11 +163,39 @@
       "has": [
         {
           "type": "host",
+          "value": "www.elparaisohotelltd.com"
+        }
+      ],
+      "destination": "https://elparaisohotelltd.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
           "value": "elparaiso-hotel.vercel.app"
         }
       ],
-      "destination": "https://www.elparaisohotelltd.com/:path*",
+      "destination": "https://elparaisohotelltd.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/airbnb",
+      "destination": "/private-stays",
+      "permanent": true
+    },
+    {
+      "source": "/business",
+      "destination": "/conferences",
+      "permanent": true
+    },
+    {
+      "source": "/events",
+      "destination": "/events-groups",
       "permanent": true
     }
-  ]
+  ],
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "trailingSlash": false
 }

@@ -17,7 +17,7 @@ If you are developing a production application, we recommend using TypeScript wi
 
 ## Premium guest frontend
 
-The guest frontend remains React + Vite + React Router. Run `npm run dev` locally; `npm run build` produces Vercel-ready assets and 14 prerendered public page shells. Dynamic rates, photos and availability are never snapshotted.
+The guest frontend remains React + Vite + React Router. Run `npm run dev` locally; `npm run build` produces Vercel-ready assets and 15 prerendered route documents plus a custom 404 page. Dynamic rates, photos and availability are never snapshotted.
 
 - Design tokens and responsive guest-page styling: `src/styles/premium.css`; homepage-specific layout: `src/styles/home.css`.
 - Shared page hero, service card, FAQ and closing CTA: `src/components/Premium.jsx`.
@@ -35,3 +35,9 @@ Checks: `npm run lint`, `npm test`, `npm run build`, `npm run check:seo`. No typ
 
 ### Editorial design and About content
 Edit About chapter copy in `src/data/aboutStory.js`; chapter layout is in `src/styles/about-story.css`. Shared service/contact card visuals have a single owner in `src/components/editorial-cards.css`, with category colours resolved through `serene.css`. Gallery images remain live. `LivePhoto` accepts an optional `index` and falls back to the first genuine category photo. Research, changes and review limitations are documented in `docs/REFERENCE-DESIGN.md`.
+
+### Technical SEO and official domain
+
+The canonical origin is `https://elparaisohotelltd.com` (without www), centralized in `src/config/site.js`. `public/sitemap.xml` lists only preferred indexable routes. Run `npm run check:seo` after a build, and `npm run check:seo:live` after an authorized deployment. Optional genuine Google/Bing verification values are documented in `.env.example`.
+
+**Hosting prerequisite:** production currently redirects apex to www. Remove that conflicting hosting redirect during the approved canonical-domain rollout before deploying this configuration's www-to-apex rule. See [technical SEO audit and indexing handoff](docs/TECHNICAL-SEO.md) for evidence, safeguards, verification and owner account steps. No control of the previous `.co.ke` domain is assumed.

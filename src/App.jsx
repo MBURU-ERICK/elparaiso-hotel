@@ -3,6 +3,8 @@ import "./styles/staff-refresh.css";
 import "./styles/workspace.css";
 import "./styles/customer.css";
 import "./styles/guest-redesign.css";
+import SEO from "./components/SEO";
+import { Link } from "react-router-dom";
 import HelpChat from "./components/HelpChat";
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 
@@ -49,8 +51,10 @@ const StaffReconciliation = lazy(() => import("./pages/StaffReconciliation"));
 function NotFound() {
   return (
     <main className="section" style={{ textAlign: "center" }}>
-      <h1>404</h1>
-      <p>Sorry, this page could not be found.</p>
+      <SEO title="Page not found" description="This page could not be found. Explore Elparaiso Hotel accommodation, dining and contact details." noindex canonical={false} />
+      <h1>Page not found</h1>
+      <p>The address may have changed. Let’s help you find your way.</p>
+      <div className="premium-actions"><Link className="premium-button" to="/">Return home</Link><Link className="premium-button" to="/rooms">Explore rooms</Link><Link to="/contact">Contact the hotel</Link></div>
     </main>
   );
 }

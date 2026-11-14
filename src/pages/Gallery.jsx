@@ -13,7 +13,7 @@ function GalleryResults({ category }) {
 }
 export default function Gallery() {
   const [category, setCategory] = useState('');
-  return <main><SEO title="Gallery" description="Explore Elparaiso Hotel accommodation, dining and outdoor spaces in Rumuruti." path="/gallery" />
+  return <main><SEO title="Hotel, Restaurant & Garden Photo Gallery" description="Explore Elparaiso Hotel accommodation, dining and outdoor spaces in Rumuruti." path="/gallery" />
     <section className="gallery-hero"><div className="gallery-overlay" /><div className="gallery-hero-content">
       <span className="eyebrow">A GLIMPSE OF ELPARAISO</span><h1>Moments Worth Remembering</h1><p>Explore the spaces and experiences waiting for you.</p></div></section>
     <section className="gallery-section section"><div className="section-heading"><span className="eyebrow">OUR GALLERY</span><h2>Explore Elparaiso</h2></div>
