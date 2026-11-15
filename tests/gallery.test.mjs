@@ -10,12 +10,13 @@ import { validateRoomPhotos } from '../src/utils/roomPhotos.js';
 import { estimateBooking } from '../src/utils/bookingQuote.js';
 import { HelmetProvider } from 'react-helmet-async';
 let server;
-let StayBooking, roomApi, customerRequest;
+let StayBooking, roomApi, customerRequest, GuestStoryCard;
 let EventCarousel, EventDetailsDialog, StaffContent, PhotoPicker, ReservationCard, photoApi, GuestReview, GuestBooking, Card, Grid, Upload, Carousel, api, staffApi, CustomerContext, Gate, Auth, RequestForm, safeNext, PortalState, Navbar, CustomerNav, Booking, RoomFilters, FavouriteRoom, ProfileForm;
 const photo = { id: 1, image_url: '/full', thumbnail_url: '/small', title: 'Garden', alt_text: 'A shaded garden path', category: 'garden', description: 'Relax outside' };
 const render = (Component, props) => renderToStaticMarkup(React.createElement(Component, props));
 before(async () => {
   server = await createServer({ server: { middlewareMode: true, hmr: false, watch: null, ws: false } });
+  ({ GuestStoryCard } = await server.ssrLoadModule('/src/components/PublishedReviews.jsx'));
   roomApi = await server.ssrLoadModule('/src/services/bookingApi.js');
   ({ customerRequest } = await server.ssrLoadModule('/src/customer/customerApi.js'));
   ({ RoomFilters, FavouriteRoom } = await server.ssrLoadModule('/src/components/RoomPreferences.jsx'));
@@ -407,4 +408,17 @@ test('guest requests retain CSRF and credentials and bound both network stages',
     assert.equal(calls[1].options.headers['Content-Type'], 'application/json');
     assert.equal(result.reference, 'test-response');
   } finally { globalThis.fetch = original; }
+});
+
+test('public guest story cards escape feedback and expose accessible ratings and full long reviews', () => {
+  const review = { display_name: 'Jane W.', facility_name: 'Garden hotel', rating: 4, comment: '<script>unsafe</script>', created_at: '2026-11-15T10:00:00Z' };
+  const html = render(GuestStoryCard, { review });
+  assert.match(html, /4 out of 5 stars/);
+  assert.match(html, /Jane W\./);
+  assert.match(html, /&lt;script&gt;unsafe&lt;\/script&gt;/);
+  assert.doesNotMatch(html, /<script>/);
+  const longComment = 'Wonderful gardens. '.repeat(30);
+  const expanded = render(GuestStoryCard, { review: { ...review, comment: longComment } });
+  assert.match(expanded, /<details><summary>Read full review<\/summary>/);
+  assert.ok(expanded.includes(longComment));
 });

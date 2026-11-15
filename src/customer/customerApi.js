@@ -10,7 +10,7 @@ export function safeNext(value) {
 export async function customerRequest(path, options = {}) {
   const method = options.method || 'GET';
   // Limit new deadlines to public hospitality requests; staff/account operations retain their existing behavior.
-  const publicRequest = /^\/api\/(?:content|customers\/(?:booking-options|guest-reservations|conference-packages))(?:\/|$)/.test(path);
+  const publicRequest = /^\/api\/(?:content|customers\/(?:booking-options|guest-reservations|conference-packages|published-reviews))(?:\/|$)/.test(path);
   const headers = { ...options.headers };
   if (!['GET', 'HEAD'].includes(method)) {
     const response = await fetch(`${BASE}/api/customers/auth/csrf/`, { credentials: 'include', signal: publicRequest ? AbortSignal.timeout(15000) : undefined });
