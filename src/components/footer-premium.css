@@ -1,19 +1,19 @@
-.guest-experience .footer.footer-premium{--footer-muted:#70675b;--footer-gold:#896324;background:#faf7f0;color:#302a23;border-top:1px solid #d8c69d;padding:0 var(--p-space,6vw);margin:0}
+.guest-experience .footer.footer-premium{--footer-muted:#53665d;--footer-gold:#785823;background:#fffdf7;color:#233c3b;border-top:1px solid #d8c69d;padding:0 var(--p-space,6vw);margin:0}
 .footer-compact-inner{max-width:1360px;margin:auto;min-width:0}
 .footer-compact-main{display:flex;align-items:center;justify-content:space-between;gap:2rem;padding:1.6rem 0 1rem}
-.footer-compact-brand{display:flex;flex-direction:column;gap:.4rem;flex-shrink:0}.footer-compact-brand img{display:block;width:132px;height:auto}.footer-compact-brand>span{font-size:.65rem;color:#70675b}
+.footer-compact-brand{display:flex;flex-direction:column;gap:.4rem;flex-shrink:0}.footer-compact-brand img{display:block;width:132px;height:auto}.footer-compact-brand>span{font-size:.65rem;color:#53665d}
 .footer-compact-nav{display:flex;flex-wrap:wrap;gap:.1rem 1.25rem;align-items:center;justify-content:center}
-.guest-experience .footer.footer-premium a{color:#4f473a;text-decoration:none;font-size:.75rem;line-height:1.6;overflow-wrap:anywhere}
-.guest-experience .footer.footer-premium a:hover{color:#896324;text-decoration:underline;text-underline-offset:4px}
+.guest-experience .footer.footer-premium a{color:#354f47;text-decoration:none;font-size:.75rem;line-height:1.6;overflow-wrap:anywhere}
+.guest-experience .footer.footer-premium a:hover{color:#785823;text-decoration:underline;text-underline-offset:4px}
 .footer-compact-nav a{display:inline-flex;align-items:center;min-height:36px}
 .guest-experience .footer.footer-premium .footer-compact-book{display:inline-flex;align-items:center;justify-content:center;gap:1.1rem;flex-shrink:0;padding:.7rem 1.1rem;border:1px solid #b18b46;border-radius:4px;background:#efe4cd;color:#563e17;font-size:.73rem;min-height:42px;box-sizing:border-box}
 .footer-compact-book:hover{background:#e5d4b2}
 .footer-compact-contact{display:flex;align-items:center;flex-wrap:wrap;gap:.1rem 1.5rem;padding:0 0 .8rem}
-.footer-compact-contact>a{display:inline-flex;align-items:center;gap:.4rem;min-height:34px;min-width:0}.footer-compact-contact svg{color:#896324;flex-shrink:0}
+.footer-compact-contact>a{display:inline-flex;align-items:center;gap:.4rem;min-height:34px;min-width:0}.footer-compact-contact svg{color:#785823;flex-shrink:0}
 .footer-compact-contact .hotel-contact-links{flex-direction:row;flex-wrap:wrap;gap:.1rem 1.1rem}.footer-compact-contact .hotel-contact-links a{display:inline-flex;align-items:center;min-height:34px}
 .footer-compact-contact>details{position:relative;margin-left:auto}.footer-compact-contact summary{display:flex;align-items:center;gap:.4rem;min-height:36px;font-size:.73rem;color:#5c4b2c;cursor:pointer;list-style:none}.footer-compact-contact summary::-webkit-details-marker{display:none}
-.footer-compact-contact>details[open] .hotel-contact-links{position:absolute;bottom:100%;right:0;z-index:5;min-width:245px;background:#fffdf8;padding:.75rem 1rem;border:1px solid #d8c69d;border-radius:8px;box-shadow:0 8px 30px #382b1514;flex-direction:column}
-.footer-compact-bottom{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;padding:.8rem 0;border-top:1px solid #e6ddcb;font-size:.6rem;color:#70675b}.footer-compact-bottom>span:nth-child(2){letter-spacing:.18em;color:#896324;font-size:.52rem}.guest-experience .footer.footer-premium .footer-compact-bottom a{display:inline-flex;align-items:center;gap:.3rem;font-size:.65rem;min-height:28px}
-.footer-premium :focus-visible{outline:2px solid #896324;outline-offset:4px}
+.footer-compact-contact>details[open] .hotel-contact-links{position:absolute;bottom:100%;right:0;z-index:5;min-width:245px;background:#fffdf7;padding:.75rem 1rem;border:1px solid #d8c69d;border-radius:8px;box-shadow:0 8px 30px #382b1514;flex-direction:column}
+.footer-compact-bottom{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;padding:.8rem 0;border-top:1px solid #e6ddcb;font-size:.6rem;color:#53665d}.footer-compact-bottom>span:nth-child(2){letter-spacing:.18em;color:#785823;font-size:.52rem}.guest-experience .footer.footer-premium .footer-compact-bottom a{display:inline-flex;align-items:center;gap:.3rem;font-size:.65rem;min-height:28px}
+.footer-premium :focus-visible{outline:2px solid #785823;outline-offset:4px}
 @media(max-width:1000px){.footer-compact-main{flex-wrap:wrap;gap:.8rem 1.5rem}.footer-compact-brand{flex:1}.footer-compact-nav{order:3;justify-content:flex-start;width:100%;gap:.1rem 1.3rem}.footer-compact-contact{gap:.1rem 1rem}.footer-compact-contact>details{margin-left:0}}
 @media(max-width:599px){.footer-compact-main{padding-top:1.2rem;gap:.8rem}.footer-compact-brand img{width:115px}.footer-compact-brand>span{font-size:.58rem}.footer-compact-nav{gap:0 1rem}.footer-compact-nav a{min-height:40px}.footer-compact-contact{gap:0 .9rem}.footer-compact-contact .hotel-contact-links a{min-height:40px}.footer-compact-bottom{gap:.3rem}.footer-compact-bottom>span:nth-child(2){display:none}.footer-compact-contact>details[open] .hotel-contact-links{position:static;min-width:0;padding:.5rem .8rem;margin-bottom:.5rem;max-width:100%;box-sizing:border-box}.footer-compact-contact>details[open]{width:100%}}

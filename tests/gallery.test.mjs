@@ -11,12 +11,13 @@ import { estimateBooking } from '../src/utils/bookingQuote.js';
 import { privateStayMap, stayRate, unitBookingUrl, unitPhotos } from '../src/utils/privateStays.js';
 import { HelmetProvider } from 'react-helmet-async';
 let server;
-let StayBooking, roomApi, customerRequest, GuestStoryCard, GalleryLightbox, PrivateStayCard, PageHero, ServiceCard, PlanningFAQ;
+let StayBooking, roomApi, customerRequest, GuestStoryCard, GalleryLightbox, PrivateStayCard, PageHero, ServiceCard, PlanningFAQ, HotelAmenitiesView;
 let EventCarousel, EventDetailsDialog, StaffContent, PhotoPicker, ReservationCard, photoApi, GuestReview, GuestBooking, Card, Grid, Upload, Carousel, api, staffApi, CustomerContext, Gate, Auth, RequestForm, safeNext, PortalState, Navbar, CustomerNav, Booking, RoomFilters, FavouriteRoom, ProfileForm;
 const photo = { id: 1, image_url: '/full', thumbnail_url: '/small', title: 'Garden', alt_text: 'A shaded garden path', category: 'garden', description: 'Relax outside' };
 const render = (Component, props) => renderToStaticMarkup(React.createElement(Component, props));
 before(async () => {
   server = await createServer({ server: { middlewareMode: true, hmr: false, watch: null, ws: false } });
+  ({ HotelAmenitiesView } = await server.ssrLoadModule('/src/components/HotelAmenities.jsx'));
   ({ PageHero, ServiceCard, PlanningFAQ } = await server.ssrLoadModule('/src/components/Premium.jsx'));
   ({ PrivateStayCard } = await server.ssrLoadModule('/src/pages/PrivateStays.jsx'));
   GalleryLightbox = (await server.ssrLoadModule('/src/components/GalleryLightbox.jsx')).default;
@@ -502,4 +503,16 @@ test('service cards keep photo viewing separate from navigation and retain a cle
   const faq = render(PlanningFAQ);
   assert.match(faq, /<summary>How do I confirm my visit\?<\/summary>/);
   assert.match(faq, /when our team confirms it/);
+});
+
+test('advertised room amenities retain room-specific scope and provide a useful empty state', () => {
+  const rooms = [{ amenities: ['Wi-Fi', 'Balcony'] }, { amenities: ['Wi-Fi'] }];
+  const html = renderToStaticMarkup(React.createElement(MemoryRouter, {}, React.createElement(HotelAmenitiesView, { rooms })));
+  assert.match(html, /Wi-Fi/);
+  assert.match(html, /Balcony/);
+  assert.match(html, /selected hotel rooms/);
+  assert.match(html, /Check your chosen room/);
+  assert.doesNotMatch(html, /Swimming pool|Spa|Gym/);
+  const empty = renderToStaticMarkup(React.createElement(MemoryRouter, {}, React.createElement(HotelAmenitiesView, { rooms: [] })));
+  assert.match(empty, /ask our team about what you need/);
 });

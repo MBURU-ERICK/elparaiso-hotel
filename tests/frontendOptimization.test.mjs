@@ -56,3 +56,32 @@ test('room photo thumbnails use only the known gallery endpoint and retain exter
   assert.equal(local.image_url, 'https://api.example.test/api/gallery/files/42/full/');
   assert.equal(external.thumbnail_url, external.image_url);
 });
+
+const { summarizeRoomAmenities } = await import('../src/utils/roomAmenities.js');
+test('amenity summaries count room types once per feature and exclude invalid values', () => {
+  const features = summarizeRoomAmenities([
+    { amenities: [' Wi-Fi ', 'wi-fi', 'Balcony', null, '', {}] },
+    { amenities: ['Wi-Fi', 'Kitchen'] },
+    { amenities: null },
+  ]);
+  assert.deepEqual(features, [{ name: 'Wi-Fi', categories: 2 }, { name: 'Balcony', categories: 1 }, { name: 'Kitchen', categories: 1 }]);
+  assert.deepEqual(summarizeRoomAmenities([]), []);
+});
+
+test('garden identity text, action and field-boundary colors meet contrast targets', async () => {
+  const { readFile } = await import('node:fs/promises');
+  const css = await readFile('src/styles/hotel-elegance.css', 'utf8');
+  const color = name => css.match(new RegExp(`--garden-${name}:(#[0-9a-f]{6})`))[1];
+  function luminance(hex) {
+    const linear = hex.slice(1).match(/../g).map(value => parseInt(value, 16) / 255).map(value => value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4);
+    return linear[0] * 0.2126 + linear[1] * 0.7152 + linear[2] * 0.0722;
+  }
+  function ratio(first, second) {
+    const a = luminance(color(first)), b = luminance(color(second));
+    return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+  }
+  assert.ok(ratio('ink', 'porcelain') >= 4.5);
+  assert.ok(ratio('muted', 'eucalyptus') >= 4.5);
+  assert.ok(ratio('gold', 'ivory') >= 4.5);
+  assert.ok(ratio('control', 'ivory') >= 3);
+});
