@@ -1,6 +1,6 @@
+import EditorialPhoto from '../components/EditorialPhoto';
 import { isCurrentEvent } from '../utils/eventDates';
 import { useNairobiToday } from '../hooks/useNairobiToday';
-import { LivePhoto } from '../components/HomeLive';
 import GuestBooking from './GuestBooking';
 import { PageHero, PlanningFAQ, VisitCTA } from '../components/Premium';
 import { useEffect, useState } from 'react';
@@ -32,7 +32,7 @@ export default function Events({ embedded = false }) {
     {!events && !error && <div className="premium-grid" aria-label="Retrieving events" aria-busy="true">{[1,2,3].map(id => <div key={id} className="stay-skeleton" />)}</div>}
     {currentEvents?.length === 0 && <div className="explorer-state"><h2>Make your next occasion special.</h2><p>Talk to us about hosting your next event.</p></div>}
     {currentEvents?.length > 0 && <EventCarousel events={currentEvents} />}
-    {!embedded && <section className="venue-editorial"><figure><LivePhoto category="celebrations" /><figcaption>A gathering setup at Elparaiso</figcaption></figure><div><span className="section-kicker">YOUR OCCASION, THOUGHTFULLY PLANNED</span><h2>Make room<br /><em>for a celebration.</em></h2><p>Start with the people who matter. Tell us your occasion, preferred date and guest count, and let’s discuss a setting, meals and accommodation that fit.</p><p>Layouts, capacity and services are agreed with our team before you confirm.</p><Link className="premium-button" to="/booking?service=event">Share your plans ↗</Link></div></section>}
+    {!embedded && <section className="venue-editorial"><figure><EditorialPhoto category="celebrations" /><figcaption>A gathering setup at Elparaiso</figcaption></figure><div><span className="section-kicker">YOUR OCCASION, THOUGHTFULLY PLANNED</span><h2>Make room<br /><em>for a celebration.</em></h2><p>Start with the people who matter. Tell us your occasion, preferred date and guest count, and let’s discuss a setting, meals and accommodation that fit.</p><p>Layouts, capacity and services are agreed with our team before you confirm.</p><Link className="premium-button" to="/booking?service=event">Share your plans ↗</Link></div></section>}
     <div className="event-plan"><h2>Have an occasion in mind?</h2><p>Bring your people. We’ll help with the details.</p><Link className="portal-button" to="/booking?service=event">Plan your own event →</Link></div>
   </section>{!embedded && <><GuestBooking initialService="event" embedded /><PlanningFAQ /><VisitCTA title="Bring your people. We’ll help with the details." /></>}</Container>;
 }

@@ -37,6 +37,7 @@ import Contact from "./pages/Contact";
 import WhatsAppButton from "./components/WhatsAppButton";
 import "./styles/premium.css";
 import "./styles/serene.css";
+import "./styles/hotel-elegance.css";
 
 const StaffLogin = lazy(() => import("./pages/StaffLogin"));
 const StaffDashboard = lazy(() => import("./pages/StaffDashboard"));
@@ -64,7 +65,7 @@ export default function App() {
   const { pathname } = useLocation();
   const privatePage = /^\/(account|staff|booking|review)(\/|$)/.test(pathname);
   return (
-    <div className={pathname.startsWith("/staff") ? "staff-experience" : "guest-experience"}>
+    <div className={pathname.startsWith("/staff") ? "staff-experience" : "guest-experience hotel-elegance"}>
       {pathname === "/review" && <Helmet><meta name="referrer" content="no-referrer" /></Helmet>}
       {privatePage && <Helmet><meta name="robots" content="noindex, nofollow" /></Helmet>}
       <WebsiteTracker />

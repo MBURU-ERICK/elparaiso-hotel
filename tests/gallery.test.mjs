@@ -11,12 +11,13 @@ import { estimateBooking } from '../src/utils/bookingQuote.js';
 import { privateStayMap, stayRate, unitBookingUrl, unitPhotos } from '../src/utils/privateStays.js';
 import { HelmetProvider } from 'react-helmet-async';
 let server;
-let StayBooking, roomApi, customerRequest, GuestStoryCard, GalleryLightbox, PrivateStayCard;
+let StayBooking, roomApi, customerRequest, GuestStoryCard, GalleryLightbox, PrivateStayCard, PageHero, ServiceCard, PlanningFAQ;
 let EventCarousel, EventDetailsDialog, StaffContent, PhotoPicker, ReservationCard, photoApi, GuestReview, GuestBooking, Card, Grid, Upload, Carousel, api, staffApi, CustomerContext, Gate, Auth, RequestForm, safeNext, PortalState, Navbar, CustomerNav, Booking, RoomFilters, FavouriteRoom, ProfileForm;
 const photo = { id: 1, image_url: '/full', thumbnail_url: '/small', title: 'Garden', alt_text: 'A shaded garden path', category: 'garden', description: 'Relax outside' };
 const render = (Component, props) => renderToStaticMarkup(React.createElement(Component, props));
 before(async () => {
   server = await createServer({ server: { middlewareMode: true, hmr: false, watch: null, ws: false } });
+  ({ PageHero, ServiceCard, PlanningFAQ } = await server.ssrLoadModule('/src/components/Premium.jsx'));
   ({ PrivateStayCard } = await server.ssrLoadModule('/src/pages/PrivateStays.jsx'));
   GalleryLightbox = (await server.ssrLoadModule('/src/components/GalleryLightbox.jsx')).default;
   ({ GuestStoryCard } = await server.ssrLoadModule('/src/components/PublishedReviews.jsx'));
@@ -481,4 +482,22 @@ test('grounds gallery requests retain the facility filter', async () => {
     assert.equal(requested.searchParams.get('category'), 'garden');
     assert.equal(requested.searchParams.get('page'), '2');
   } finally { globalThis.fetch = original; }
+});
+
+test('editorial page headers retain booking destinations and provide accessible photograph viewing', () => {
+  const html = renderToStaticMarkup(React.createElement(MemoryRouter, {}, React.createElement(PageHero, { title: 'A beautiful occasion', copy: 'Bring your people.', category: 'conference', to: '/booking?service=conference', action: 'Plan a meeting' })));
+  assert.match(html, /<h1>A beautiful occasion<\/h1>/);
+  assert.match(html, /href="\/booking\?service=conference"/);
+  assert.match(html, /aria-haspopup="dialog"/);
+  assert.match(html, /View The conference hall photographs/);
+  assert.match(html, /alt="Conference hall at Elparaiso Hotel"/);
+});
+test('service cards keep photo viewing separate from navigation and retain a clear booking process', () => {
+  const html = renderToStaticMarkup(React.createElement(MemoryRouter, {}, React.createElement(ServiceCard, { title: 'Time around the table', copy: 'Plan your meal.', category: 'restaurant', to: '/restaurant', label: 'DINING' })));
+  assert.match(html, /href="\/restaurant"/);
+  assert.match(html, /aria-haspopup="dialog"/);
+  assert.doesNotMatch(html, /<a[^>]*>[^<]*<button/);
+  const faq = render(PlanningFAQ);
+  assert.match(faq, /<summary>How do I confirm my visit\?<\/summary>/);
+  assert.match(faq, /when our team confirms it/);
 });

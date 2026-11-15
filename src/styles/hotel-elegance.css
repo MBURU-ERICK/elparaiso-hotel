@@ -1,0 +1,164 @@
+/* Shared visitor design system. Operational workspace styles retain their own scope. */
+.guest-experience.hotel-elegance{
+  --color-forest:#654c27;--color-sage:#c9b78e;--color-ivory:#fbf9f4;--color-champagne:#b18c4e;--color-mist:#f3eee3;--color-sand:#eee5d4;--color-charcoal:#353028;--color-white:#fffefa;
+  --surface-page:#fbf9f4;--surface-card:#fffefa;--surface-soft:#f3eee3;--text-primary:#353028;--text-secondary:#736b5f;--text-on-dark:#fff9ef;--border-subtle:#e3dac8;--border-premium:#c5a66b;
+  --button-primary:#8c672c;--button-hover:#735120;--focus-ring:#936a2c;--accent-accessible:#856025;--gradient-warm:linear-gradient(135deg,#fbf9f4,#f0e7d5);--gradient-calm:linear-gradient(135deg,#f4efe4,#fbf9f4);
+  --shadow-card:0 10px 36px #59401c06;--radius-card:10px;--radius-control:5px;--space-section:clamp(44px,6vw,80px);
+  --p-emerald:#8c672c;--p-navy:#4c3c27;--p-gold:#b18c4e;--p-cream:#fbf9f4;--p-sage:#f3eee3;--p-lavender:#eee5d4;--p-blue:#f3eee3;--p-white:#fffefa;--p-ink:#353028;--p-muted:#736b5f;--p-line:#e3dac8;--p-radius:10px;--p-shadow:0 10px 36px #59401c06;
+  --gold:#8c672c;--gold-light:#e8d6b1;--dark:#403425;--cream:#fbf9f4;--heading:var(--font-heading);--body:var(--font-body);
+  background:var(--surface-page);color:var(--text-primary);font-family:var(--font-body);-webkit-font-smoothing:antialiased;
+}
+.hotel-elegance #page-content{min-width:0}.hotel-elegance main{min-width:0}
+.hotel-elegance :is(h1,h2,h3){font-weight:400}.hotel-elegance :is(a,button,input,select,textarea,summary):focus-visible{outline-color:var(--focus-ring)}
+.hotel-elegance :is(.eyebrow,.section-kicker,.home-kicker,.about-eyebrow){color:#89652b;font-size:10px;letter-spacing:.16em;font-weight:600}
+.hotel-elegance :is(button,input,select,textarea){font-family:inherit}
+.guest-experience.hotel-elegance :is(.premium-button,.portal-button,.btn-gold,.home-button){display:inline-flex;justify-content:center;align-items:center;gap:.7rem;background:#8c672c;color:#fffdf8;border:1px solid #8c672c;border-radius:4px;min-height:44px;padding:.85rem 1.15rem;font-size:12px;font-weight:500;letter-spacing:.015em;text-decoration:none;box-sizing:border-box;line-height:1.5}
+.guest-experience.hotel-elegance :is(.premium-button,.portal-button,.btn-gold,.home-button):hover{background:#735120;color:#fffdf8;border-color:#735120}
+.hotel-elegance .premium-actions{display:flex;align-items:center;flex-wrap:wrap;gap:1rem}
+.hotel-elegance .elegant-text-link{display:inline-flex;align-items:center;gap:1rem;font-size:12px;color:#856025;text-decoration:none;min-height:40px;border-bottom:1px solid #cbb587;padding:.4rem 0}
+.hotel-elegance .elegant-text-link:hover{text-decoration:underline;text-underline-offset:5px}
+/* Navigation */
+.hotel-elegance .hotel-header{background:#fffdf8f5;border-color:#e4d7be;backdrop-filter:blur(14px)}
+.hotel-elegance .hotel-brand img{width:136px}.hotel-elegance .hotel-navigation>a{color:#5c5140;font-size:11px}.hotel-elegance .hotel-navigation>a:after{background:#a27c3c;height:1px}
+.hotel-elegance .hotel-header-book{background:#8c672c;border-radius:4px;font-size:11px;min-height:42px;gap:.6rem}.hotel-elegance .hotel-header-book:hover{background:#735120}.hotel-elegance .hotel-menu-toggle{color:#795c2f;border-color:#dacbae;border-radius:5px}
+/* Editorial photography can be opened from heroes, cards and stories. */
+.editorial-photo{position:relative;min-width:0;width:100%;overflow:hidden;background:#eee5d4;border-radius:8px}
+.editorial-photo-open{display:block;position:relative;width:100%;height:100%;min-height:inherit;padding:0;border:0;background:transparent;color:white;cursor:zoom-in;text-align:left;overflow:hidden}
+.editorial-photo-open:disabled{cursor:default}.editorial-photo-open>img{display:block;object-fit:cover;width:100%;height:100%;transition:transform .7s cubic-bezier(.2,.6,.3,1)}
+.editorial-photo-open:hover>img{transform:scale(1.035)}
+.editorial-photo-caption{position:absolute;inset:auto 0 0;display:flex;align-items:center;justify-content:space-between;gap:1rem;color:#fffaf0;background:linear-gradient(transparent,#332718b5);padding:3rem 1.1rem 1rem;font-size:10px;letter-spacing:.03em;pointer-events:none}
+.editorial-photo-caption>span:last-child{display:flex;align-items:center;gap:.4rem;font-size:9px;white-space:nowrap}.editorial-photo-empty{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem;min-height:260px;height:100%;padding:2rem;color:#8b744a;background:#eee5d4;font-size:.8rem;text-align:center}
+/* Public page headers */
+.guest-experience.hotel-elegance .elegant-hero{display:grid;grid-template-columns:1fr 1.08fr;gap:clamp(2rem,5vw,5rem);align-items:center;min-height:0;max-width:1500px;margin:auto;background:#fbf9f4;color:#353028;padding:clamp(2.5rem,5vw,4.7rem) var(--p-space);text-align:left;isolation:auto;border-radius:0}
+.hotel-elegance .elegant-hero::after{display:none}
+.hotel-elegance .elegant-hero .premium-hero-copy{max-width:none;width:100%;padding:0;text-shadow:none}
+.hotel-elegance .elegant-hero .premium-pill{border:0;border-radius:0;padding:0;color:#89652b;font-size:9px;letter-spacing:.16em;line-height:1.8}
+.guest-experience.hotel-elegance .elegant-hero h1{font:400 clamp(2.65rem,4.6vw,4.6rem)/1.09 var(--font-heading);letter-spacing:-.04em;margin:1.3rem 0 1.4rem;color:#353028}
+.hotel-elegance .elegant-hero h1 em{color:#9a7c47;font-weight:400}
+.hotel-elegance .elegant-hero p{color:#736b5f;max-width:440px;font-size:14px;line-height:1.95;margin:0 0 1.7rem}
+.hotel-elegance .elegant-hero .premium-actions{justify-content:flex-start;gap:1rem}
+.hotel-elegance .elegant-hero-contact{display:inline-flex;align-items:center;gap:.5rem;font-size:11px;color:#856025;text-decoration:none;min-height:44px}
+.hotel-elegance .elegant-hero-contact:hover{text-decoration:underline;text-underline-offset:5px}
+.hotel-elegance .elegant-hero-location{display:flex;align-items:center;gap:.4rem;font-size:8px;letter-spacing:.13em;color:#8b7b61;margin-top:2rem}
+.hotel-elegance .elegant-hero>.editorial-photo{height:clamp(340px,34vw,490px);border-radius:8px 55px 8px 8px;box-shadow:12px 12px 0 #f0e7d5}
+/* Consistent collection cards and content spacing. */
+.hotel-elegance .premium-section{padding:var(--space-section) var(--p-space)}
+.hotel-elegance .premium-section.tint{background:#f3eee3}
+.hotel-elegance .premium-section>p{max-width:760px;color:#736b5f;line-height:1.9;font-size:14px}
+.guest-experience.hotel-elegance :is(.premium-section,.section)>h2{font:400 clamp(2rem,3.4vw,3.25rem)/1.17 var(--font-heading);letter-spacing:-.035em;color:#403629}
+.hotel-elegance .premium-grid{gap:24px}
+.hotel-elegance .premium-card{background:#fffefa;border:1px solid #e3dac8;border-radius:10px;box-shadow:0 8px 30px #58421e05}
+.hotel-elegance .premium-card>.editorial-photo{height:270px;flex-shrink:0;border-radius:0}
+.hotel-elegance .premium-card-copy{padding:1.65rem;min-width:0}.hotel-elegance .premium-card-copy .premium-pill{color:#8b672d;border-left:1px solid #c4a36c;font-size:8px;letter-spacing:.15em}
+.hotel-elegance .premium-card h3{font:400 clamp(1.6rem,2.2vw,2.2rem)/1.17 var(--font-heading);color:#463a29;margin:1.1rem 0 .9rem;letter-spacing:-.03em}
+.hotel-elegance .premium-card p{color:#736b5f;font-size:13px;line-height:1.9}.hotel-elegance .premium-card a{color:#856025}
+.hotel-elegance .premium-card .editorial-card-link{font-size:11px;border-color:#e3dac8}
+.hotel-elegance .premium-pill{color:#89652b}
+.hotel-elegance .elegant-section-heading{display:flex;align-items:end;justify-content:space-between;gap:2rem;margin-bottom:2.2rem}
+.hotel-elegance .elegant-section-heading h2{font:400 clamp(2rem,3.4vw,3.25rem)/1.15 var(--font-heading);margin:.8rem 0 0;color:#403629;letter-spacing:-.035em}
+.hotel-elegance .elegant-section-heading>p{font-size:13px;line-height:1.9;color:#736b5f;margin:0}
+/* A lighter homepage, with live room rates and a private-stay feature. */
+.hotel-elegance .elegant-home{--forest:#654c27;--cream:#fbf9f4;--sand:#f3eee3;--gold:#b18c4e;--ink:#353028;--muted:#736b5f;--line:#e3dac8;--white:#fffefa;font-family:var(--font-body)}
+.hotel-elegance .elegant-home .elegant-hero h1{font-size:clamp(3rem,4.9vw,5rem)}
+.hotel-elegance .elegant-home .direct-booking{position:relative;top:auto;z-index:12;background:#f5f0e6;border-top:1px solid #e4d7be;border-bottom:1px solid #e4d7be;box-shadow:none;padding:1.2rem var(--p-space)}
+.hotel-elegance .elegant-home .booking-disclosure>form{border-radius:6px;border-color:#ded1b7;background:#fffefa}.hotel-elegance .elegant-home .booking-disclosure input{background:#fffefa;color:#55452f}
+.hotel-elegance .elegant-home .booking-disclosure .home-button{border-radius:4px;margin-left:10px;font-size:12px}.hotel-elegance .booking-summary-action{color:#856025}
+.hotel-elegance .elegant-welcome{display:grid;grid-template-columns:1fr 1.2fr auto;gap:3rem;align-items:center;padding:var(--space-section) var(--p-space);max-width:1500px;margin:auto}
+.hotel-elegance .elegant-welcome h2{font:400 clamp(2rem,3.4vw,3rem)/1.14 var(--font-heading);letter-spacing:-.035em;margin:.8rem 0 0}.hotel-elegance .elegant-welcome h2 em{color:#9a7c47;font-weight:400}
+.hotel-elegance .elegant-welcome>p{font-size:14px;line-height:2;color:#736b5f;max-width:480px;margin:0}.hotel-elegance .elegant-welcome>.elegant-text-link{white-space:nowrap}
+.hotel-elegance .elegant-home-collection{background:#f3eee3}
+.hotel-elegance .home-stays{padding-block:var(--space-section)}
+.hotel-elegance .home-stay-card{background:#fffefa;border-color:#e3dac8;border-radius:10px;min-height:0;box-shadow:0 8px 30px #58421e05}
+.hotel-elegance .home-stay-card .home-photo{aspect-ratio:4/3}.hotel-elegance .home-stay-copy{padding:1.5rem}.hotel-elegance .home-stay-copy h3{font-size:28px;color:#463a29}.hotel-elegance .home-stay-copy p{font-size:13px;color:#736b5f}
+.hotel-elegance .home-stay-copy strong{color:#775621;font-size:14px}.hotel-elegance .home-card-link{font-size:12px;color:#856025}
+.hotel-elegance .elegant-private-feature{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(2rem,6vw,5rem);align-items:center;padding:0 var(--p-space) var(--space-section);max-width:1500px;margin:auto}
+.hotel-elegance .elegant-private-feature>.editorial-photo{height:440px;border-radius:8px 8px 55px 8px}
+.hotel-elegance .elegant-private-feature h2{font:400 clamp(2.4rem,4vw,4rem)/1.12 var(--font-heading);letter-spacing:-.035em;margin:1rem 0 1.5rem}.hotel-elegance .elegant-private-feature h2 em{color:#9a7c47;font-weight:400}
+.hotel-elegance .elegant-private-feature p{font-size:14px;line-height:1.95;color:#736b5f;margin-bottom:1.5rem;max-width:420px}
+.hotel-elegance .elegant-direct{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3rem;padding:3rem var(--p-space);border-block:1px solid #e3dac8;max-width:1500px;margin:auto}
+.hotel-elegance .elegant-direct svg{color:#9a773e}.hotel-elegance .elegant-direct h3{font:400 24px var(--font-heading);margin:1rem 0 .7rem}.hotel-elegance .elegant-direct p{font-size:12px;line-height:1.9;color:#736b5f;max-width:300px;margin:0}
+.hotel-elegance .home-find{background:#f3eee3;padding:var(--space-section) var(--p-space)}.hotel-elegance .home-find h2{font-size:clamp(2.2rem,3.7vw,3.7rem)}.hotel-elegance .home-find p{font-size:14px;color:#736b5f;line-height:1.95}.hotel-elegance .home-find iframe{border-radius:10px;min-width:0}
+.hotel-elegance .home-find a{color:#856025;font-size:12px}
+/* Hotel room catalogue */
+.hotel-elegance .explore-page{padding:0 0 var(--space-section);background:#fbf9f4;color:#353028;max-width:none}
+.hotel-elegance .explore-page>.elegant-hero{padding-bottom:2.5rem}.hotel-elegance .explore-page>:is(.stay-search,.explore-categories,.stay-listings,.explore-collection,.explore-assurance){margin-inline:var(--p-space);max-width:none}
+.hotel-elegance .stay-search{background:#fffefa;border:1px solid #d9c9aa;border-radius:7px;box-shadow:0 8px 28px #59401c07;color:#5b4a31}
+.hotel-elegance .stay-search input,.hotel-elegance .stay-search select{background:#fffefa;color:#5b4a31}.hotel-elegance .stay-search button{background:#8c672c;color:#fffdfa;border-radius:4px}
+.hotel-elegance .explore-categories{border-color:#e3dac8;gap:1.8rem;overflow-x:auto}.hotel-elegance .explore-categories a{color:#7d6c4f;white-space:nowrap;font-size:11px}.hotel-elegance .explore-categories .selected{background:transparent;color:#856025;border-color:#a27c3c}
+.hotel-elegance .listing-heading h2{font:400 clamp(2rem,3vw,3rem)/1.15 var(--font-heading);color:#403629;letter-spacing:-.035em}.hotel-elegance .listing-heading>span{color:#857661;font-size:11px}
+.hotel-elegance .stay-card-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:26px}
+.hotel-elegance .stay-listing-shell{border:1px solid #e3dac8;background:#fffefa;border-radius:10px;box-shadow:0 8px 30px #58421e05;padding:0;min-width:0;position:relative}
+.hotel-elegance .stay-listing-shell .stay-listing{display:block;padding:0;color:#353028;text-decoration:none}
+.hotel-elegance .stay-listing-shell .stay-listing-photo{height:280px;aspect-ratio:auto;border:0;border-radius:0;display:block;width:100%;padding:0;background:#eee5d4;color:#856025;cursor:zoom-in;overflow:hidden;position:relative}
+.hotel-elegance .stay-listing-shell .stay-listing-photo>img{width:100%;height:100%;object-fit:cover;display:block}
+.hotel-elegance .stay-listing-shell .stay-photo-arrow{color:#856025;background:#fffdf3e8}.hotel-elegance .stay-listing-shell .stay-photo-label{background:#fffdf3e8;color:#775621;font-size:9px}
+.hotel-elegance .stay-listing-shell .stay-card-heading{padding:1.3rem 1.3rem 0;display:block}.hotel-elegance .stay-card-heading h3{font:400 29px/1.17 var(--font-heading);color:#463a29}.hotel-elegance .stay-card-heading>span{font-size:10px;color:#8a7858}
+.hotel-elegance .stay-listing-shell .stay-listing>p{margin-inline:1.3rem;color:#736b5f;font-size:12px;line-height:1.8}.hotel-elegance .stay-listing-shell .stay-card-description{display:block!important;min-height:42px}
+.hotel-elegance .stay-card-rate strong{color:#775621;font-size:17px;font-weight:500}
+.hotel-elegance .stay-listing-shell .premium-room-details{margin:0 1.3rem;color:#736b5f;border-color:#e3dac8;font-size:12px}.hotel-elegance .stay-listing-shell .premium-room-details img{object-fit:cover;border-radius:5px;max-width:100%;height:auto}
+.hotel-elegance .stay-listing-shell .room-request-link{margin:.5rem 1.3rem 1.2rem;display:flex;align-items:center;justify-content:space-between;color:#856025;border-top:1px solid #e3dac8;padding-top:1rem;font-size:12px;text-decoration:none}
+.hotel-elegance .room-favourite{z-index:2;color:#8c672c;background:#fffdfaeb}.hotel-elegance .room-favourites-filter{color:#856025;border-color:#dac9a7;border-radius:5px;background:#fffefa}.hotel-elegance .room-favourites-filter[aria-pressed=true]{background:#f0e4cc;color:#775621}
+.hotel-elegance .room-preferences select,.hotel-elegance .premium-rate-filter input{border-color:#d9ccb3;background:#fffefa;border-radius:4px;color:#5e4a2b}
+.hotel-elegance .explore-collection{background:#f3eee3;border:1px solid #e3dac8;border-radius:10px;overflow:hidden}.hotel-elegance .collection-copy h2{font:400 clamp(2rem,3vw,3rem)/1.15 var(--font-heading)}.hotel-elegance .collection-copy a{color:#856025}.hotel-elegance .collection-copy p{color:#736b5f}
+.hotel-elegance .explore-assurance{border-color:#e3dac8}.hotel-elegance .explore-assurance h3{font-family:var(--font-heading);font-size:23px}.hotel-elegance .explore-assurance p{color:#736b5f}
+/* Story, gatherings, dining and contact pages */
+.hotel-elegance .about-story-page{--story-space:clamp(48px,6vw,88px);--story-gutter:var(--p-space)}
+.hotel-elegance .about-chapters{background:#f3eee3;border-color:#e3dac8}.hotel-elegance .about-chapters a{color:#856025}
+.hotel-elegance .about-chapter figure>.editorial-photo{height:500px;border-radius:8px 8px 40px 8px}.hotel-elegance .about-photo-grid .editorial-photo{height:340px}
+.hotel-elegance .about-interlude{background:#f0e8d9;color:#463a29}.hotel-elegance .about-interlude h2{color:#463a29}.hotel-elegance .about-interlude :is(.about-eyebrow,h2 em){color:#89652b}.hotel-elegance .about-interlude>p{color:#736b5f}.hotel-elegance .about-interlude a{color:#856025}
+.hotel-elegance .about-location-story{background:#f3eee3;color:#463a29}.hotel-elegance .about-location-story p{color:#736b5f}
+.hotel-elegance .venue-editorial{background:#fbf9f4;gap:clamp(2rem,5vw,5rem)}.hotel-elegance .venue-editorial figure>.editorial-photo{height:440px}.hotel-elegance .venue-editorial h2{color:#463a29}.hotel-elegance .venue-editorial h2 em{color:#9a7c47}.hotel-elegance .venue-editorial p{color:#736b5f}
+.hotel-elegance .business-benefits article{background:#fffefa;border:1px solid #e3dac8;border-radius:10px;padding:1.6rem;color:#665235}.hotel-elegance .business-benefits h3{font:400 25px var(--font-heading);color:#463a29}.hotel-elegance .business-benefits p{color:#736b5f;font-size:13px;line-height:1.9}
+.hotel-elegance .gathering-promo{background:#f3eee3;color:#463a29;border-radius:10px}.hotel-elegance .gathering-promo p{color:#736b5f}
+.hotel-elegance .business-process ol{background:#fffefa;border-color:#e3dac8;border-radius:8px}.hotel-elegance .business-process li{color:#736b5f}.hotel-elegance .business-process strong{color:#6f542d}
+.hotel-elegance .package-grid .portal-panel{border:1px solid #e3dac8;border-radius:10px;box-shadow:0 8px 30px #58421e05;background:#fffefa}
+.hotel-elegance .group-dining{border-radius:10px;border-color:#e3dac8;box-shadow:none;background:#fffefa}.hotel-elegance .group-dining-photo>.editorial-photo{height:100%;min-height:580px;border-radius:0}.hotel-elegance .group-dining-caption{display:none}
+.hotel-elegance .group-dining-copy h2{color:#463a29}.hotel-elegance .group-dining-copy h2 em{color:#9a7c47}.hotel-elegance .group-dining-copy p{color:#736b5f}.hotel-elegance .group-dining-steps svg{color:#9a773e}
+.hotel-elegance .group-dining-button{background:#8c672c;color:#fffdf8;border-radius:4px}.hotel-elegance .group-dining-contact a{color:#856025}
+.hotel-elegance .contact-card-icon{color:#9a773e;margin-bottom:.25rem}.hotel-elegance .contact-invitation{background:#f0e8d9;color:#463a29}.hotel-elegance .contact-invitation :is(p,h2){color:#463a29}.hotel-elegance .contact-invitation :is(h2 em,.section-kicker){color:#89652b}
+.hotel-elegance .contact-invitation .premium-button{background:#8c672c;color:#fffdf8}.hotel-elegance .contact-invitation .editorial-card-link{color:#856025}
+.hotel-elegance :is(.premium-map,.home-find iframe){border-radius:10px;border:1px solid #e3dac8;min-width:0}
+/* Events remain date-filtered and display full posters in their existing viewer. */
+.hotel-elegance .event-section{padding-top:1rem}.hotel-elegance .event-section .explore-intro{background:#f3eee3;border:1px solid #e3dac8;border-radius:8px;color:#463a29;padding:1.7rem}
+.hotel-elegance .event-section .explore-intro h2{font:400 clamp(1.8rem,3vw,2.7rem) var(--font-heading);color:#463a29}.hotel-elegance .event-section .explore-intro p{color:#736b5f}
+.hotel-elegance .event-listing{border:1px solid #e3dac8;background:#fffefa;border-radius:10px;padding-bottom:1rem}.hotel-elegance .event-listing .stay-card-heading{padding:1rem 1rem 0}.hotel-elegance .event-listing>p{padding-inline:1rem;color:#736b5f}.hotel-elegance .event-listing .event-type{color:#89652b}.hotel-elegance .event-book-link{color:#856025;margin-inline:1rem}
+.hotel-elegance .event-plan{border:1px solid #dfcfaf;border-radius:8px;background:#f3ecde}.hotel-elegance .event-carousel-controls button{color:#856025;border-color:#dac9a7;background:#fffefa}
+.hotel-elegance .event-dialog{background:#fbf9f4;color:#463a29;border-radius:10px}.hotel-elegance .event-dialog-image{background:#eee5d4}.hotel-elegance .event-dialog-close{color:#856025}
+/* Guest stories and gallery retain their interactive layouts in the same palette. */
+.hotel-elegance .experience-reviews{background:#f7f2e8;color:#403629}.hotel-elegance .guest-stories-heading h2 em{color:#9a7c47}.hotel-elegance .guest-stories-heading p{color:#736b5f}.hotel-elegance .guest-stories-seal{color:#856025}
+.hotel-elegance .guest-story-card{background:#fffefa;border-color:#e3dac8;border-radius:10px}.hotel-elegance .guest-story-card::before{background:#b9965c}.hotel-elegance .guest-story-card blockquote p{color:#5e5140}.hotel-elegance .guest-story-card footer{border-color:#e3dac8}.hotel-elegance .guest-story-avatar{background:#f0e4cc;color:#856025}.hotel-elegance .guest-story-verified{color:#a17b3b}.hotel-elegance .guest-story-card footer span:not(.guest-story-avatar){color:#736b5f}.hotel-elegance .guest-story-card details summary{color:#856025}
+.hotel-elegance .guest-stories-pages button,.hotel-elegance .guest-stories-state button{background:#8c672c;color:#fffdf8;border-radius:4px}.hotel-elegance .elegant-more-stories{margin-top:1.5rem}
+.hotel-elegance .gallery-journal{--journal-ink:#403629;--journal-muted:#736b5f;--journal-paper:#fbf9f4}.hotel-elegance .journal-hero h1 em{color:#9a7c47}.hotel-elegance .journal-filters button{border-color:#d9ccb3;color:#79613a}.hotel-elegance .journal-filters button[aria-pressed=true]{background:#8c672c;border-color:#8c672c;color:#fffdf8}
+.hotel-elegance .journal-kicker>span{background:#b18c4e;box-shadow:0 0 0 5px #b18c4e15}.hotel-elegance .journal-collage-note{color:#9a7c47}.hotel-elegance .journal-closing{background:#f0e8d9}.hotel-elegance .journal-closing h2 em{color:#9a7c47}.hotel-elegance .journal-closing>a,.hotel-elegance .journal-pagination button,.hotel-elegance .guest-stories-state button{background:#8c672c;color:#fffdf8;border-color:#8c672c}.hotel-elegance .journal-closing p{color:#736b5f}
+.hotel-elegance .gallery-lightbox{background:#211c16}.hotel-elegance .gallery-viewer-brand>span{color:#c8b797}.hotel-elegance .gallery-viewer-caption>div>span{color:#d4bd8c}.hotel-elegance .gallery-viewer-caption p{color:#d0c5b2}
+/* Guest-facing forms, confirmations and help match the marketing pages. */
+.hotel-elegance :is(.portal-panel,.reservation-panel,.booking-quote){background:#fffefa;border:1px solid #e3dac8;border-radius:9px;box-shadow:0 8px 30px #58421e05;color:#463a29}
+.hotel-elegance :is(.premium-form,.portal-form,.reservation-panel) :is(input,select,textarea){border-color:#d9ccb3;background:#fffdfa;color:#55452f;border-radius:4px;min-width:0;max-width:100%}
+.hotel-elegance .premium-form{border:1px solid #e3dac8;background:#fffefa;padding:clamp(1.3rem,3vw,2.8rem);border-radius:10px;box-shadow:0 8px 30px #58421e05}
+.hotel-elegance :is(.portal-form,.reservation-form) button:not([type=button]),.hotel-elegance .premium-form button{background:#8c672c;color:#fffdf8;border-radius:4px;border-color:#8c672c}
+.hotel-elegance .meal-enquiry-body{max-width:1000px;margin:auto}.hotel-elegance .meal-enquiry-body>p{font-size:14px;color:#736b5f;line-height:1.9}.hotel-elegance .meal-enquiry-body>.portal-form{max-width:760px}
+.hotel-elegance .checkout-review-page{padding-top:3rem;padding-bottom:4rem}.hotel-elegance .checkout-review-intro>svg{color:#a17b3b}.hotel-elegance .checkout-review-intro p,.hotel-elegance .booking-page-heading p{color:#736b5f}
+.hotel-elegance .reservation-summary{background:#f4ede0;border-color:#d9c6a2;border-radius:8px}.hotel-elegance .reservation-progress [aria-current=step]{color:#856025}.hotel-elegance .reservation-progress .is-complete>span{background:#8c672c;border-color:#8c672c;color:white}
+.hotel-elegance .reservation-room.is-selected{border-color:#9b7536}.hotel-elegance .reservation-panel h2,.hotel-elegance .reservation-room h3,.hotel-elegance .reservation-summary h3{color:#5f4825}
+.hotel-elegance .quote-grand-total{background:#8c672c;color:#fffdf8;border-radius:4px}.hotel-elegance .booking-page legend{color:#856025}
+.hotel-elegance .hotel-whatsapp-picker{--contact-forest:#8c672c;--contact-cream:#fffdf8;--contact-gold:#e1c796;border-radius:7px!important;box-shadow:0 4px 18px #57401a15}
+.hotel-elegance .help-toggle{background:#f8f1e2;color:#71521f;border:1px solid #cfb783;border-radius:5px}.hotel-elegance .help-chat>section{background:#fffefa;color:#463a29;border:1px solid #d9c9aa;border-radius:10px}.hotel-elegance .help-chat>section header{background:#eee4cf;color:#5f4825}.hotel-elegance .help-topics button{border-color:#d9c9aa;color:#856025;background:#faf6ed}
+/* Closing invitation and useful details. */
+.guest-experience.hotel-elegance .elegant-closing{display:flex;justify-content:space-between;align-items:center;gap:3rem;background:#f0e8d9;color:#463a29;border-top:1px solid #e0d2b7;text-align:left}
+.hotel-elegance .elegant-closing .premium-pill{padding:0;border:0;border-radius:0;font-size:9px;color:#89652b}.hotel-elegance .elegant-closing h2{font:400 clamp(2rem,3.6vw,3.5rem)/1.13 var(--font-heading);letter-spacing:-.035em;max-width:680px;color:#463a29;margin:1rem 0}
+.hotel-elegance .elegant-closing p{color:#736b5f;font-size:13px;line-height:1.9}.hotel-elegance .elegant-closing .premium-actions{flex-direction:column;align-items:flex-start;flex-shrink:0}
+.hotel-elegance .elegant-faq{display:grid;grid-template-columns:.8fr 1.2fr;gap:clamp(2rem,6vw,5rem);background:#fbf9f4}.hotel-elegance .elegant-faq h2{font:400 clamp(2rem,3vw,3rem)/1.15 var(--font-heading);letter-spacing:-.035em;margin:1rem 0;color:#463a29}.hotel-elegance .elegant-faq h2 em{font-weight:400;color:#9a7c47}.hotel-elegance .elegant-faq>div>p{font-size:13px;color:#736b5f;line-height:1.9}.hotel-elegance .premium-faq details{background:transparent;border:0;border-bottom:1px solid #dccdb1;border-radius:0;color:#63543d}.hotel-elegance .premium-faq summary{font-size:13px;line-height:1.7;min-height:50px;cursor:pointer}.hotel-elegance .premium-faq p{font-size:13px;line-height:1.9;color:#736b5f}
+@media(min-width:1600px){.hotel-elegance .premium-section,.hotel-elegance .elegant-direct,.hotel-elegance .home-find{padding-inline:max(var(--p-space),calc((100% - 1280px)/2))}}
+@media(max-width:1100px){.hotel-elegance .elegant-welcome{grid-template-columns:1fr 1.2fr;gap:2rem}.hotel-elegance .elegant-welcome>.elegant-text-link{grid-column:2;justify-self:start}.hotel-elegance .stay-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hotel-elegance .elegant-private-feature>.editorial-photo{height:390px}.hotel-elegance .elegant-closing{gap:2rem}}
+@media(max-width:900px){.guest-experience.hotel-elegance .elegant-hero{grid-template-columns:1fr 1fr;gap:1.8rem}.guest-experience.hotel-elegance .elegant-hero h1{font-size:2.8rem}.hotel-elegance .elegant-hero>.editorial-photo{height:380px}.hotel-elegance .elegant-hero .premium-actions{gap:.4rem}.hotel-elegance .elegant-hero p{font-size:13px}.hotel-elegance .elegant-direct{gap:1.5rem}.hotel-elegance .elegant-closing{flex-direction:column;align-items:flex-start}.hotel-elegance .elegant-closing .premium-actions{flex-direction:row;align-items:center}.hotel-elegance .about-chapter figure>.editorial-photo{height:400px}}
+@media(max-width:700px){.guest-experience.hotel-elegance .elegant-hero{grid-template-columns:1fr;padding-block:2rem 2.5rem;gap:1.8rem}.guest-experience.hotel-elegance .elegant-hero h1{font-size:clamp(2.65rem,8.5vw,3.7rem);margin:1rem 0 1.2rem}.hotel-elegance .elegant-hero>.editorial-photo{height:330px;box-shadow:7px 7px 0 #f0e7d5;border-radius:7px 38px 7px 7px}.hotel-elegance .elegant-hero-location{margin-top:1rem}.hotel-elegance .elegant-hero p{max-width:none;font-size:13px}.hotel-elegance .elegant-hero-contact{font-size:10px}.hotel-elegance .elegant-hero .premium-actions{gap:.7rem}
+.hotel-elegance .elegant-section-heading{align-items:flex-start;flex-direction:column;gap:1rem}.hotel-elegance .elegant-section-heading>p{font-size:12px}.hotel-elegance .elegant-welcome{grid-template-columns:1fr;gap:1.3rem}.hotel-elegance .elegant-welcome>.elegant-text-link{grid-column:auto}.hotel-elegance .elegant-welcome>p{font-size:13px}
+.hotel-elegance .premium-grid{grid-template-columns:1fr;gap:20px}.hotel-elegance .premium-card>.editorial-photo{height:290px}.hotel-elegance .premium-card-copy{padding:1.4rem}.hotel-elegance .elegant-private-feature{grid-template-columns:1fr;gap:1.7rem}.hotel-elegance .elegant-private-feature>.editorial-photo{height:340px}.hotel-elegance .elegant-private-feature p{font-size:13px}.hotel-elegance .elegant-direct{grid-template-columns:1fr;gap:1.6rem;padding-block:2rem}.hotel-elegance .elegant-direct>div+div{border-top:1px solid #e3dac8;padding-top:1.5rem}
+.hotel-elegance .home-stay-grid{display:grid;grid-template-columns:1fr;grid-auto-flow:row;grid-auto-columns:auto;overflow:visible}.hotel-elegance .home-stay-card{min-height:0}.hotel-elegance .home-section-heading h2{font-size:2.25rem}.hotel-elegance .home-find iframe{height:320px}.hotel-elegance .elegant-home .booking-disclosure>form{border:0;border-radius:0}.hotel-elegance .elegant-home .booking-disclosure .home-button{margin-left:0}
+.hotel-elegance .stay-card-grid{grid-template-columns:1fr;gap:22px}.hotel-elegance .stay-listing-shell .stay-listing-photo{height:300px}.hotel-elegance .stay-listing-shell .stay-card-description{min-height:0}.hotel-elegance .listing-heading{align-items:flex-start;gap:1rem}.hotel-elegance .stay-search{border-radius:6px}.hotel-elegance .explore-categories{gap:1.4rem}.hotel-elegance .explore-categories a{font-size:10px}
+.hotel-elegance .about-chapter figure>.editorial-photo{height:380px}.hotel-elegance .about-photo-grid .editorial-photo{height:310px}.hotel-elegance .venue-editorial figure>.editorial-photo{height:320px}.hotel-elegance .group-dining-photo>.editorial-photo{min-height:0;height:320px}.hotel-elegance .elegant-faq{grid-template-columns:1fr;gap:1.5rem}.hotel-elegance .elegant-closing{gap:1.3rem}.hotel-elegance .meal-enquiry-body{padding-inline:var(--p-space)}
+.hotel-elegance .journal-hero-photo>span{font-size:10px}.hotel-elegance .hotel-brand img{width:120px}.hotel-elegance .hotel-navigation>a{font-size:24px}.hotel-elegance .hotel-header-book{font-size:10px;padding-inline:12px}.hotel-elegance .hotel-menu-toggle{flex-shrink:0}
+}
+@media(prefers-reduced-motion:reduce){.hotel-elegance *,.hotel-elegance *::before,.hotel-elegance *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+.hotel-elegance .journal-hero-placeholder{background:#eee5d4;color:#8b744a}.hotel-elegance .journal-explore{color:#856025;border-color:#c4a36c}.hotel-elegance .journal-location{color:#897b65}.hotel-elegance .guest-stories-state{border-color:#d9c9aa}.hotel-elegance .guest-stories-count{color:#85765e}
+@media(max-width:1279px){.hotel-elegance .hotel-navigation>a{font-size:24px;min-height:44px}.hotel-elegance .hotel-navigation{background:#fffdf8}.hotel-elegance .hotel-nav-backdrop{background:#30241570}}

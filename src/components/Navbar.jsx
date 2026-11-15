@@ -4,7 +4,7 @@ import { ArrowUpRight, Menu, X, MapPin } from 'lucide-react';
 import './navigation.css';
 const links = [
   ['Home', '/'], ['Accommodation', '/rooms'], ['Restaurant', '/restaurant'],
-  ['Private Stays', '/private-stays'], ['Experiences', '/experiences'],
+  ['Private Stays', '/private-stays'], ['Experiences', '/experiences'], ['Gallery', '/gallery'],
   ['Events & Groups', '/events-groups'], ['Conferences', '/conferences'],
   ['About Us', '/about'], ['Contact', '/contact'],
 ];

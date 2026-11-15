@@ -1,9 +1,10 @@
+import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { BadgeCheck, Quote, Star, ArrowLeft, ArrowRight } from 'lucide-react';
 import { customerRequest } from '../customer/customerApi';
 import '../styles/experience-reviews.css';
 
-export default function PublishedReviews() {
+export default function PublishedReviews({ compact = false }) {
   const [data, setData] = useState(null);
   const [page, setPage] = useState(1);
   const [error, setError] = useState('');
@@ -22,7 +23,8 @@ export default function PublishedReviews() {
     {loading && <p className="guest-stories-state" role="status">Gathering guest stories…</p>}
     {error && <div className="guest-stories-state" role="alert"><p>{error}</p><button type="button" onClick={() => { setLoading(true); setRevision(n => n + 1); }}>Try again</button></div>}
     {!loading && !error && data?.count === 0 && <div className="guest-stories-state"><Quote size={30} aria-hidden="true" /><h3>A little room for your story.</h3><p>Guest stories will appear here as our guests share their experiences. We look forward to welcoming you.</p></div>}
-    {!loading && !error && data?.results?.length > 0 && <><p className="guest-stories-count">A selection of {data.count} published guest {data.count === 1 ? 'story' : 'stories'}</p><div className="guest-stories-grid">{data.results.map(review => <GuestStoryCard key={review.id} review={review} />)}</div>{data.count > 12 && <nav className="guest-stories-pages" aria-label="Guest story pages"><button type="button" disabled={!data.previous} onClick={() => changePage(page - 1)}><ArrowLeft size={16} /> Previous</button><span>Page {page} of {Math.ceil(data.count / 12)}</span><button type="button" disabled={!data.next} onClick={() => changePage(page + 1)}>Next <ArrowRight size={16} /></button></nav>}</>}
+    {!loading && !error && data?.results?.length > 0 && <><p className="guest-stories-count">A selection of {data.count} published guest {data.count === 1 ? 'story' : 'stories'}</p><div className="guest-stories-grid">{(compact ? data.results.slice(0, 3) : data.results).map(review => <GuestStoryCard key={review.id} review={review} />)}</div>{!compact && data.count > 12 && <nav className="guest-stories-pages" aria-label="Guest story pages"><button type="button" disabled={!data.previous} onClick={() => changePage(page - 1)}><ArrowLeft size={16} /> Previous</button><span>Page {page} of {Math.ceil(data.count / 12)}</span><button type="button" disabled={!data.next} onClick={() => changePage(page + 1)}>Next <ArrowRight size={16} /></button></nav>}</>}
+    {compact && data?.count > 0 && <Link className="elegant-text-link elegant-more-stories" to="/experiences">More guest experiences <ArrowRight size={16} aria-hidden="true" /></Link>}
   </section>;
 }
 
