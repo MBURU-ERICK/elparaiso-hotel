@@ -8,5 +8,5 @@ export default defineConfig(({ command, mode }) => {
     const env = loadEnv(mode, process.cwd(), 'VITE_')
     validateProductionApiOrigin(process.env.VITE_API_URL || env.VITE_API_URL)
   }
-  return { plugins: [react()] }
+  return { plugins: [react()], build: { manifest: true } }
 })

@@ -5,12 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node scripts/prerender.mjs",
+    "build": "vite build && node scripts/prerender.mjs && node scripts/check-build-assets.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "node tests/gallery.test.mjs && node --test tests/stayDates.test.mjs tests/seo.test.mjs tests/release.test.mjs",
     "check:seo": "node scripts/check-public-pages.mjs",
-    "check:seo:live": "node scripts/check-live-seo.mjs"
+    "check:seo:live": "node scripts/check-live-seo.mjs",
+    "check:assets": "node scripts/check-build-assets.mjs"
   },
   "dependencies": {
     "lucide-react": "^1.66.0",

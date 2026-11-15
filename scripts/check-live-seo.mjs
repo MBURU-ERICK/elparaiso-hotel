@@ -1,5 +1,6 @@
 // Read-only deployment verification. It never submits indexing or changes hosting.
 import assert from 'node:assert/strict';
+import { documentAssets, assetContentType } from './asset-references.mjs';
 import { site, canonicalPaths, canonicalUrl, routeAliases } from '../src/config/site.js';
 let failures = 0;
 async function check(label, run) {
@@ -56,10 +57,10 @@ await check('served HTML can load its production CSS and JavaScript', async () =
   const response = await fetch(`${site.origin}/`, { signal: AbortSignal.timeout(20000) });
   assert.equal(response.status, 200);
   const html = await response.text();
-  const css = [...html.matchAll(/<link\b[^>]*rel="stylesheet"[^>]*href="(\/assets\/[^" ]+)"/g)].map(match => ({ path: match[1], type: /text\/css/i }));
-  const js = [...html.matchAll(/<script\b[^>]*src="(\/assets\/[^" ]+)"/g)].map(match => ({ path: match[1], type: /(?:javascript|ecmascript)/i }));
-  assert.ok(css.length && js.length, 'HTML must reference built CSS and JavaScript');
-  for (const asset of [...css, ...js]) {
+  const assets = documentAssets(html);
+  assert.ok(assets.some(path => /\.css$/.test(path)) && assets.some(path => /\.js$/.test(path)), 'HTML must reference built CSS and JavaScript');
+  for (const path of assets) {
+    const asset = { path, type: assetContentType(path) };
     const url = new URL(asset.path, response.url);
     let result;
     try { result = await fetch(url, { signal: AbortSignal.timeout(20000) }); }
