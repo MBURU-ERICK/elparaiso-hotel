@@ -2,9 +2,10 @@ import { staffApi, staffRequest } from './staffApi';
 const API_URL = (import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000').trim().replace(/\/+$/, '');
 export const galleryCategories = ['rooms', 'restaurant', 'garden', 'airbnb', 'experiences', 'general'];
 export const galleryApi = {
-  async list({ category = '', featured = false, page = 1, signal } = {}) {
+  async list({ category = '', featured = false, facility = '', page = 1, signal } = {}) {
     const params = new URLSearchParams({ page });
     if (category) params.set('category', category);
+    if (facility) params.set('facility', facility);
     if (featured) params.set('featured', 'true');
     const response = await fetch(`${API_URL}/api/gallery/images/?${params}`, { signal: signal || AbortSignal.timeout(15000) });
     if (!response.ok) throw new Error('We could not load the gallery. Please try again.');

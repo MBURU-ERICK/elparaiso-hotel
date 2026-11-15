@@ -8,14 +8,16 @@ import { todayInNairobi } from '../src/utils/stayDates.js';
 import { hotelFacilities, defaultHotelFacility } from '../src/utils/hotelFacilities.js';
 import { validateRoomPhotos } from '../src/utils/roomPhotos.js';
 import { estimateBooking } from '../src/utils/bookingQuote.js';
+import { privateStayMap, stayRate, unitBookingUrl, unitPhotos } from '../src/utils/privateStays.js';
 import { HelmetProvider } from 'react-helmet-async';
 let server;
-let StayBooking, roomApi, customerRequest, GuestStoryCard, GalleryLightbox;
+let StayBooking, roomApi, customerRequest, GuestStoryCard, GalleryLightbox, PrivateStayCard;
 let EventCarousel, EventDetailsDialog, StaffContent, PhotoPicker, ReservationCard, photoApi, GuestReview, GuestBooking, Card, Grid, Upload, Carousel, api, staffApi, CustomerContext, Gate, Auth, RequestForm, safeNext, PortalState, Navbar, CustomerNav, Booking, RoomFilters, FavouriteRoom, ProfileForm;
 const photo = { id: 1, image_url: '/full', thumbnail_url: '/small', title: 'Garden', alt_text: 'A shaded garden path', category: 'garden', description: 'Relax outside' };
 const render = (Component, props) => renderToStaticMarkup(React.createElement(Component, props));
 before(async () => {
   server = await createServer({ server: { middlewareMode: true, hmr: false, watch: null, ws: false } });
+  ({ PrivateStayCard } = await server.ssrLoadModule('/src/pages/PrivateStays.jsx'));
   GalleryLightbox = (await server.ssrLoadModule('/src/components/GalleryLightbox.jsx')).default;
   ({ GuestStoryCard } = await server.ssrLoadModule('/src/components/PublishedReviews.jsx'));
   roomApi = await server.ssrLoadModule('/src/services/bookingApi.js');
@@ -445,4 +447,38 @@ test('gallery viewer starts at the selected photograph and exposes navigation an
   const single = render(GalleryLightbox, { images: [photo], onClose() {} });
   assert.doesNotMatch(single, /Previous photograph|Next photograph|Play slideshow/);
   assert.match(single, /Open original photograph in a new tab/);
+});
+
+test('private stay photographs normalize both API formats without repeating images', () => {
+  const photos = unitPhotos({ id: 4, name: 'Garden studio', images: ['/one.jpg', { image_url: '/two.jpg', thumbnail_url: '/two-small.jpg', alt_text: 'Bedroom' }, '/one.jpg', null] });
+  assert.equal(photos.length, 2);
+  assert.equal(photos[1].thumbnail_url, '/two-small.jpg');
+  assert.equal(photos[1].alt_text, 'Bedroom');
+  assert.deepEqual(unitPhotos({ id: 1, name: 'No photos' }), []);
+  assert.equal(stayRate(0), null);
+  assert.equal(stayRate('invalid'), null);
+  assert.equal(stayRate('6500.00'), 'KES 6,500');
+  const url = new URL(unitBookingUrl({ id: 7, facility: 3 }), 'https://hotel.test');
+  assert.equal(url.searchParams.get('unit'), '7');
+  assert.equal(url.searchParams.get('facility'), '3');
+  assert.equal(url.searchParams.get('service'), 'airbnb');
+  assert.equal(new URL(unitBookingUrl({ id: 8, max_guests: 1 }), 'https://hotel.test').searchParams.get('adults'), '1');
+  assert.equal(privateStayMap, 'https://maps.app.goo.gl/vsrm5SShh67vWCde9');
+});
+test('private stay cards show actual room details, clickable photography and room-specific enquiries', () => {
+  const unit = { id: 7, facility: 3, property_name: 'Private grounds', name: 'Garden studio', max_guests: 2, bedrooms: 0, bathrooms: 1, nightly_rate: '6500', description: 'Your own little hideaway.', amenities: ['Wi-Fi', 'Kitchen'], images: ['/one.jpg', '/two.jpg'] };
+  const html = renderToStaticMarkup(React.createElement(MemoryRouter, {}, React.createElement(PrivateStayCard, { unit, property: { check_in_time: '14:00:00', check_out_time: '10:00:00', house_rules: 'No smoking indoors.' }, onView() {} })));
+  for (const content of ['Garden studio', 'Up to 2 guests', 'Studio', '1 bathroom', 'KES 6,500', 'Kitchen', 'No smoking indoors.', '14:00', '10:00', 'aria-haspopup="dialog"']) assert.ok(html.includes(content), content);
+  assert.match(html, /service=airbnb&amp;unit=7&amp;facility=3/);
+});
+test('grounds gallery requests retain the facility filter', async () => {
+  const original = globalThis.fetch;
+  try {
+    let requested;
+    globalThis.fetch = async url => { requested = new URL(url); return { ok: true, json: async () => ({ count: 0, results: [] }) }; };
+    await api.list({ facility: 8, category: 'garden', page: 2 });
+    assert.equal(requested.searchParams.get('facility'), '8');
+    assert.equal(requested.searchParams.get('category'), 'garden');
+    assert.equal(requested.searchParams.get('page'), '2');
+  } finally { globalThis.fetch = original; }
 });
