@@ -10,12 +10,13 @@ import { validateRoomPhotos } from '../src/utils/roomPhotos.js';
 import { estimateBooking } from '../src/utils/bookingQuote.js';
 import { HelmetProvider } from 'react-helmet-async';
 let server;
-let StayBooking, roomApi, customerRequest, GuestStoryCard;
+let StayBooking, roomApi, customerRequest, GuestStoryCard, GalleryLightbox;
 let EventCarousel, EventDetailsDialog, StaffContent, PhotoPicker, ReservationCard, photoApi, GuestReview, GuestBooking, Card, Grid, Upload, Carousel, api, staffApi, CustomerContext, Gate, Auth, RequestForm, safeNext, PortalState, Navbar, CustomerNav, Booking, RoomFilters, FavouriteRoom, ProfileForm;
 const photo = { id: 1, image_url: '/full', thumbnail_url: '/small', title: 'Garden', alt_text: 'A shaded garden path', category: 'garden', description: 'Relax outside' };
 const render = (Component, props) => renderToStaticMarkup(React.createElement(Component, props));
 before(async () => {
   server = await createServer({ server: { middlewareMode: true, hmr: false, watch: null, ws: false } });
+  GalleryLightbox = (await server.ssrLoadModule('/src/components/GalleryLightbox.jsx')).default;
   ({ GuestStoryCard } = await server.ssrLoadModule('/src/components/PublishedReviews.jsx'));
   roomApi = await server.ssrLoadModule('/src/services/bookingApi.js');
   ({ customerRequest } = await server.ssrLoadModule('/src/customer/customerApi.js'));
@@ -421,4 +422,27 @@ test('public guest story cards escape feedback and expose accessible ratings and
   const expanded = render(GuestStoryCard, { review: { ...review, comment: longComment } });
   assert.match(expanded, /<details><summary>Read full review<\/summary>/);
   assert.ok(expanded.includes(longComment));
+});
+
+test('gallery photographs open through labeled buttons while staff previews retain their static layout', () => {
+  const html = render(Grid, { images: [photo] });
+  assert.match(html, /aria-haspopup="dialog"/);
+  assert.match(html, /aria-label="View Garden photograph"/);
+  assert.match(html, /View photo/);
+  assert.doesNotMatch(render(Card, { image: photo }), /<button/);
+});
+test('gallery viewer starts at the selected photograph and exposes navigation and zoom controls', () => {
+  const second = { ...photo, id: 2, title: 'Quiet room', alt_text: 'A quiet hotel room' };
+  const html = render(GalleryLightbox, { images: [photo, second], initialIndex: 1, onClose() {} });
+  assert.match(html, /<dialog[^>]*aria-labelledby="gallery-viewer-title"/);
+  assert.match(html, /alt="A quiet hotel room"/);
+  assert.match(html, /Previous photograph/);
+  assert.match(html, /Next photograph/);
+  assert.match(html, /Zoom photograph/);
+  assert.match(html, /Play slideshow/);
+  assert.match(html, /Close photograph viewer/);
+  assert.match(html, /2 \/ 2/);
+  const single = render(GalleryLightbox, { images: [photo], onClose() {} });
+  assert.doesNotMatch(single, /Previous photograph|Next photograph|Play slideshow/);
+  assert.match(single, /Open original photograph in a new tab/);
 });
