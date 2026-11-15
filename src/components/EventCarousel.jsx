@@ -47,6 +47,6 @@ export default function EventCarousel({ events = [] }) {
       </article>)}
     </div>
     {events.length > 1 && <p className="event-carousel-status" role="status">Browsing event {Math.min(position.first + 1, events.length)} of {events.length} · Swipe or use the arrows to explore</p>}
-    {selected && <EventDetailsDialog event={selected} onDismiss={() => setSelected(null)} />}
+    {selected && events.some(event => event.id === selected.id) && <EventDetailsDialog event={selected} onDismiss={() => setSelected(null)} />}
   </section>;
 }

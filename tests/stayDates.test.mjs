@@ -43,3 +43,18 @@ test('guest details reject blank names, invalid emails and invalid phone numbers
   for (const phone of ['+254', 'not-a-number', '+254+708231994']) assert.ok(validateGuestDetails({ ...guest, phone }).phone);
   assert.ok(validateGuestDetails(guest, true).company);
 });
+
+import { isCurrentEvent, requestIsExpired } from '../src/utils/eventDates.js';
+test('the November 11–12 birthday event is hidden after its end date', () => {
+  assert.equal(isCurrentEvent({ start_date: '2026-11-11', end_date: '2026-11-12' }, '2026-11-14'), false);
+  assert.equal(isCurrentEvent({ start_date: '2026-11-11', end_date: '2026-11-12' }, '2026-11-12'), true);
+  assert.equal(isCurrentEvent({ start_date: '2026-11-11' }, '2026-11-14'), false);
+  assert.equal(isCurrentEvent({ start_date: null, end_date: null }, '2026-11-14'), true);
+  assert.equal(isCurrentEvent({ start_date: '2026-02-30' }, '2026-01-01'), false);
+});
+test('stale API data cannot keep past-date quotes active or expire checked-in stays', () => {
+  assert.equal(requestIsExpired({ status: 'new', start_date: '2026-11-12', is_expired: false }, '2026-11-14'), true);
+  assert.equal(requestIsExpired({ status: 'responded', start_date: '2026-11-14' }, '2026-11-14'), false);
+  assert.equal(requestIsExpired({ status: 'confirmed', end_date: '2026-11-12' }, '2026-11-14'), true);
+  assert.equal(requestIsExpired({ status: 'checked_in', end_date: '2026-11-12' }, '2026-11-14'), false);
+});

@@ -17,3 +17,5 @@
 /* Date-expired enquiries remain readable in the archive on direct navigation. */
 .booking-status.status-expired{background:#ece6dc;color:#665035}
 .booking-expired-note{border-left:3px solid #a07b48;background:#faf7f0;padding:18px;line-height:1.7}
+
+.quote-cleanup-tools{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin:20px 0}.quote-cleanup-tools p{font-size:13px;color:#58665c;line-height:1.7;max-width:64ch}.booking-status.status-archived{background:#e5e8e1;color:#3e5146}.booking-expired-note .portal-button{min-height:44px}

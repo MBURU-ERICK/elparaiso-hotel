@@ -1,3 +1,5 @@
+import { isCurrentEvent } from '../utils/eventDates';
+import { useNairobiToday } from '../hooks/useNairobiToday';
 import { useEffect, useRef, useState } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { customerRequest } from '../customer/customerApi';
@@ -6,6 +8,7 @@ import { estimateBooking } from '../utils/bookingQuote';
 import BookingQuote from '../components/BookingQuote';
 const emptyOptions = { facilities: [], rooms: [], packages: [], units: [], events: [], event_types: [] };
 export default function GuestBooking({ initialService = 'hotel', embedded = false, companyMode = false }) {
+  const today = useNairobiToday();
   const Container = embedded ? 'section' : 'main';
   const Heading = embedded ? 'h2' : 'h1';
   const [params] = useSearchParams();
@@ -18,21 +21,23 @@ export default function GuestBooking({ initialService = 'hotel', embedded = fals
     let active = true;
     customerRequest('/api/customers/booking-options/').then(data => {
       if (!active) return;
-      setOptions({ ...emptyOptions, ...data }); setError('');
+      const currentEvents = (data.events || []).filter(event => isCurrentEvent(event, today));
+      setOptions({ ...emptyOptions, ...data, events: currentEvents }); setError('');
       setForm(old => {
         if (old.service === 'event') {
-          const event = data.events?.find(item => String(item.id) === old.event);
-          return event ? { ...old, event_type: String(event.event_type), event_name: event.title, start_date: (event.start_date && event.start_date >= todayInNairobi() ? event.start_date : old.start_date), end_date: event.end_date || (event.start_date && event.start_date >= todayInNairobi() ? event.start_date : old.end_date) } : { ...old, event: '' };
+          const event = currentEvents.find(item => String(item.id) === old.event);
+          return event ? { ...old, event_type: String(event.event_type), event_name: event.title, start_date: (event.start_date && event.start_date >= todayInNairobi() ? event.start_date : old.start_date), end_date: event.end_date || (event.start_date && event.start_date >= todayInNairobi() ? event.start_date : old.end_date) } : old.event ? { ...old, event: '', event_type: '', event_name: '' } : old;
         }
         const selected = old.service === 'hotel' ? data.rooms.find(r => String(r.id) === old.room_type || r.name === params.get('selection')) : old.service === 'airbnb' ? data.units.find(u => String(u.id) === old.unit || u.name === params.get('selection')) : data.packages.find(p => String(p.id) === old.package);
         return selected ? { ...old, facility: String(selected.facility), ...(old.service === 'hotel' ? { room_type: String(selected.id) } : old.service === 'airbnb' ? { unit: String(selected.id) } : {}) } : old;
       });
     }).catch(e => { if (active) setError(e.message); }).finally(() => { if (active) setLoading(false); });
     return () => { active = false; };
-  }, [revision, params]);
+  }, [revision, params, today]);
   function update(key, value) { setForm(old => ({ ...old, [key]: value, ...(['service', 'facility'].includes(key) ? { room_type: '', unit: '', package: '' } : {}) })); }
   function input(key, extra = {}) { return { name: key, value: form[key], onChange: e => update(key, e.target.value), ...extra }; }
   const isEvent = form.service === 'event';
+  const currentEvents = options.events.filter(event => isCurrentEvent(event, today));
   const quote = isEvent ? null : estimateBooking(form, options);
   const hotelStay = form.service === 'hotel' || (form.service === 'conference' && form.add_accommodation);
   const rooms = options.rooms.filter(r => form.service === 'conference' || String(r.facility) === form.facility);
@@ -59,7 +64,7 @@ export default function GuestBooking({ initialService = 'hotel', embedded = fals
   return <Container className="section booking-page"><header className="booking-page-heading"><span className="eyebrow">YOUR NEXT GOOD MEMORY</span><Heading>Let’s plan your visit.</Heading><p>{isEvent ? 'No account needed. Share your event plans and our team will prepare a tailored quotation.' : 'No account needed. Select your experience and see the estimate before sending your request.'}</p></header>{result ? <div className="booking-page-grid"><div className="portal-panel" role="status"><h2>Your request is with us.</h2><p>Booking: {result.booking_code || result.reference}</p><p>{isEvent ? 'Your event request has been queued by email. Our team will confirm availability and prepare a tailored quotation.' : 'Your itemized quote has been queued by email. Our team will confirm availability.'}</p><Link to="/">Explore Elparaiso →</Link></div>{!isEvent && <BookingQuote quote={result.quote} />}</div> : <div className="booking-page-grid"><form className="portal-form portal-panel" onSubmit={submit}>
     {error && <p className="portal-alert" role="alert">{error}</p>}{loading && <p role="status">Loading booking options…</p>}{!loading && !options.facilities.length && <button type="button" onClick={() => { setLoading(true); setRevision(n => n + 1); }}>Retry booking options</button>}
     <fieldset><legend>01 · Choose your experience</legend><div className="portal-form-grid"><label>Experience<select {...input('service')}><option value="hotel">Elparaiso hotel stay</option><option value="airbnb">Airbnb / private stay</option><option value="conference">Conference</option><option value="event">Event / celebration</option></select></label><label>Facility<select {...input('facility')} required><option value="">Choose a facility</option>{facilityOptions.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}</select></label></div>
-    {isEvent && <fieldset><legend>Your event</legend><label>Advertised event (optional)<select {...input('event')} onChange={e => { const event = options.events.find(item => String(item.id) === e.target.value); setForm(old => ({ ...old, event: e.target.value, event_type: event ? String(event.event_type) : '', event_name: event?.title || '', start_date: event?.start_date && event.start_date >= todayInNairobi() ? event.start_date : old.start_date, end_date: event?.end_date || (event?.start_date && event.start_date >= todayInNairobi() ? event.start_date : old.end_date) })); }}><option value="">Plan my own event</option>{options.events.map(event => <option key={event.id} value={event.id}>{event.title}</option>)}</select></label><label>Event type<select {...input('event_type')} required disabled={Boolean(form.event)}><option value="">Choose an event type</option>{options.event_types.map(type => <option key={type.id} value={type.id}>{type.name}</option>)}</select></label><label>Event name / occasion<input {...input('event_name')} maxLength={180} required readOnly={Boolean(form.event)} /></label><p>Share your preferred dates and guest count below. Our team will prepare a quotation for your event.</p></fieldset>}
+    {isEvent && <fieldset><legend>Your event</legend><label>Advertised event (optional)<select {...input('event')} onChange={e => { const event = currentEvents.find(item => String(item.id) === e.target.value); setForm(old => ({ ...old, event: e.target.value, event_type: event ? String(event.event_type) : '', event_name: event?.title || '', start_date: event?.start_date && event.start_date >= todayInNairobi() ? event.start_date : old.start_date, end_date: event?.end_date || (event?.start_date && event.start_date >= todayInNairobi() ? event.start_date : old.end_date) })); }}><option value="">Plan my own event</option>{currentEvents.map(event => <option key={event.id} value={event.id}>{event.title}</option>)}</select></label><label>Event type<select {...input('event_type')} required disabled={Boolean(form.event)}><option value="">Choose an event type</option>{options.event_types.map(type => <option key={type.id} value={type.id}>{type.name}</option>)}</select></label><label>Event name / occasion<input {...input('event_name')} maxLength={180} required readOnly={Boolean(form.event)} /></label><p>Share your preferred dates and guest count below. Our team will prepare a quotation for your event.</p></fieldset>}
     {form.service === 'conference' && <label>Conference package<select {...input('package')} required><option value="">Select a package</option>{options.packages.filter(p => String(p.facility) === form.facility).map(p => <option key={p.id} value={p.id}>{p.duration === 'full' ? 'Full day' : 'Half day'} · KES {Number(p.price_per_guest).toLocaleString()}/guest/day</option>)}</select></label>}
     {form.service === 'airbnb' && <label>Airbnb room<select {...input('unit')} required><option value="">Select a room</option>{options.units.filter(u => String(u.facility) === form.facility).map(u => <option key={u.id} value={u.id}>{u.name} · up to {u.max_guests} guests · KES {Number(u.nightly_rate).toLocaleString()}/night</option>)}</select></label>}
     <div className="portal-form-grid"><label>Number of guests expected<input {...input('guests')} type="number" min="1" max="10000" required /></label><label>{(isEvent || form.service === 'conference') ? 'Event start date' : 'Arrival'}<input {...input('start_date')} type="date" min={todayInNairobi()} required /></label><label>{(isEvent || form.service === 'conference') ? 'Event end date (inclusive)' : 'Departure'}<input {...input('end_date')} type="date" min={(isEvent || form.service === 'conference') ? (form.start_date > todayInNairobi() ? form.start_date : todayInNairobi()) : nextStayDate(form.start_date)} required /></label></div>
