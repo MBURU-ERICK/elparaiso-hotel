@@ -1,24 +1,20 @@
-import { useEffect, useState } from 'react';
-const cache = new Map();
-/** Public catalogue only. Stale data is retained during refresh; never used to confirm availability. */
+import { useCallback, useEffect, useSyncExternalStore } from 'react';
+import { createPublicResourceCache } from '../utils/publicResourceCache';
+const cache = createPublicResourceCache();
+/** Shared public catalogue only; submission endpoints always validate current data. */
 export function useHomeResource(key, loader) {
-  const [state, setState] = useState(() => ({ data: cache.get(key)?.data, error: false }));
-  const [revision, setRevision] = useState(0);
+  const subscribe = useCallback(listener => cache.subscribe(key, listener), [key]);
+  const getSnapshot = useCallback(() => cache.getSnapshot(key), [key]);
+  const state = useSyncExternalStore(subscribe, getSnapshot, cache.getServerSnapshot);
   useEffect(() => {
-    let active = true;
-    const refresh = () => {
-      const cached = cache.get(key);
-      if (!cached?.pending) {
-        const pending = Promise.resolve().then(loader).then(data => { cache.set(key, { data }); return data; }, error => { cache.set(key, { data: cached?.data }); throw error; });
-        cache.set(key, { data: cached?.data, pending });
-      }
-      cache.get(key).pending.then(data => { if (active) setState({ data, error: false }); }, () => { if (active) setState(old => ({ ...old, error: true })); });
-    };
+    const refresh = () => { if (!document.hidden) cache.load(key, loader); };
     refresh();
     window.addEventListener('online', refresh);
     window.addEventListener('focus', refresh);
-    const timer = setInterval(refresh, 60000);
-    return () => { active = false; clearInterval(timer); window.removeEventListener('online', refresh); window.removeEventListener('focus', refresh); };
-  }, [key, loader, revision]);
-  return { ...state, retry: () => setRevision(n => n + 1) };
+    document.addEventListener('visibilitychange', refresh);
+    const timer = window.setInterval(refresh, 60000);
+    return () => { window.clearInterval(timer); window.removeEventListener('online', refresh); window.removeEventListener('focus', refresh); document.removeEventListener('visibilitychange', refresh); };
+  }, [key, loader]);
+  const retry = useCallback(() => cache.load(key, loader, { force: true }), [key, loader]);
+  return { ...state, retry };
 }

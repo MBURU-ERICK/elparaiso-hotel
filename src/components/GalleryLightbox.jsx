@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight, ExternalLink, Pause, Play, X, ZoomIn, ZoomOut } from 'lucide-react';
 import '../styles/gallery-journal.css';
 
 export default function GalleryLightbox({ images, initialIndex = 0, onClose }) {
   const dialog = useRef(null);
+  const titleId = useId();
   const touch = useRef(null);
   const stage = useRef(null);
   const thumbnails = useRef(null);
@@ -15,10 +16,8 @@ export default function GalleryLightbox({ images, initialIndex = 0, onClose }) {
   useEffect(() => {
     const element = dialog.current;
     const opener = document.activeElement;
-    const overflow = document.body.style.overflow;
     element.showModal();
-    document.body.style.overflow = 'hidden';
-    return () => { element.close(); document.body.style.overflow = overflow; if (opener?.isConnected) opener.focus(); };
+    return () => { element.close(); if (opener?.isConnected) opener.focus(); };
   }, []);
   useEffect(() => {
     stage.current?.scrollTo({ top: 0, left: 0 });
@@ -33,7 +32,7 @@ export default function GalleryLightbox({ images, initialIndex = 0, onClose }) {
     const timer = window.setInterval(() => { if (!document.hidden) setIndex(old => (old + 1) % images.length); }, 5000);
     return () => window.clearInterval(timer);
   }, [playing, zoomed, images.length]);
-  return <dialog ref={dialog} className="gallery-lightbox" aria-labelledby="gallery-viewer-title" onCancel={onClose} onClick={e => { if (e.target === e.currentTarget) onClose(); }} onKeyDown={e => {
+  return <dialog ref={dialog} className="gallery-lightbox" aria-labelledby={titleId} onCancel={onClose} onClick={e => { if (e.target === e.currentTarget) onClose(); }} onKeyDown={e => {
     if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key) && !zoomed) {
       e.preventDefault(); select(e.key === 'Home' ? 0 : e.key === 'End' ? images.length - 1 : index + (e.key === 'ArrowLeft' ? -1 : 1));
     }
@@ -57,7 +56,7 @@ export default function GalleryLightbox({ images, initialIndex = 0, onClose }) {
         </div>
         {images.length > 1 && <button className="gallery-viewer-next" type="button" aria-label="Next photograph" onClick={() => select(index + 1)}><ArrowRight size={23} /></button>}
       </div>
-      <div className="gallery-viewer-caption"><div><span>{image.category}</span><h2 id="gallery-viewer-title">{image.title}</h2>{image.description && <p>{image.description}</p>}</div><span role="status" aria-live={playing ? 'off' : 'polite'}>{index + 1} / {images.length}</span></div>
+      <div className="gallery-viewer-caption"><div><span>{image.category}</span><h2 id={titleId}>{image.title}</h2>{image.description && <p>{image.description}</p>}</div><span role="status" aria-live={playing ? 'off' : 'polite'}>{index + 1} / {images.length}</span></div>
       {images.length > 1 && <nav ref={thumbnails} className="gallery-viewer-thumbnails" aria-label="Choose a photograph">{images.map((photo, n) => <button key={photo.id} type="button" aria-label={`View ${photo.title}`} aria-current={index === n ? 'true' : undefined} onClick={() => select(n)}><img src={photo.thumbnail_url || photo.image_url} alt="" loading="lazy" /></button>)}</nav>}
     </div>
   </dialog>;

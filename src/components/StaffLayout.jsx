@@ -1,3 +1,4 @@
+import '../styles/staff-refresh.css';
 import { useEffect, useState } from 'react';
 import { Link, NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { LayoutDashboard, BedDouble, DoorOpen, Building2, Images, Users, Wallet, LogOut, Menu, X, ArrowUpRight, ChevronRight, Star, CalendarDays } from 'lucide-react';

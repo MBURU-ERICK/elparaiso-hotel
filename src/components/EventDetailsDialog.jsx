@@ -8,13 +8,10 @@ export default function EventDetailsDialog({ event, onDismiss }) {
   useEffect(() => {
     const element = dialog.current;
     const opener = document.activeElement;
-    const previousOverflow = document.body.style.overflow;
     element.showModal();
-    document.body.style.overflow = 'hidden';
     return () => {
       element.close();
-      document.body.style.overflow = previousOverflow;
-      opener?.focus();
+      if (opener?.isConnected) opener.focus();
     };
   }, []);
 

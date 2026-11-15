@@ -9,7 +9,7 @@
 
 /* 2. DESIGN TOKENS */
 :root {
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Avenir Next', 'Segoe UI', Arial, sans-serif;
 
   --dark: #191b17;
   --dark-soft: #252920;
@@ -24,8 +24,8 @@
   --muted: #77766e;
   --border: #dedbd1;
 
-  --heading: 'Playfair Display', serif;
-  --body: 'DM Sans', sans-serif;
+  --heading: 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+  --body: 'Avenir Next', 'Segoe UI', Arial, sans-serif;
 
   --container: 1200px;
   --nav-height: 88px;

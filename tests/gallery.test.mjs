@@ -80,7 +80,7 @@ test('carousel renders accessible controls and gives first image loading priorit
   assert.match(html, /Next photograph/);
   assert.match(html, /Pause slideshow/);
   assert.match(html, /loading="eager" fetchPriority="high"/);
-  assert.match(html, /loading="lazy" fetchPriority="auto"/);
+  assert.match(html, /loading="lazy" fetchPriority="low"/);
   assert.match(html, /hidden=""/);
 });
 test('carousel shows a branded empty state and no controls for a single image', () => {
@@ -437,7 +437,9 @@ test('gallery photographs open through labeled buttons while staff previews reta
 test('gallery viewer starts at the selected photograph and exposes navigation and zoom controls', () => {
   const second = { ...photo, id: 2, title: 'Quiet room', alt_text: 'A quiet hotel room' };
   const html = render(GalleryLightbox, { images: [photo, second], initialIndex: 1, onClose() {} });
-  assert.match(html, /<dialog[^>]*aria-labelledby="gallery-viewer-title"/);
+  const labelledBy = html.match(/<dialog[^>]*aria-labelledby="([^"]+)"/)?.[1];
+  assert.ok(labelledBy);
+  assert.ok(html.includes(`id="${labelledBy}"`));
   assert.match(html, /alt="A quiet hotel room"/);
   assert.match(html, /Previous photograph/);
   assert.match(html, /Next photograph/);

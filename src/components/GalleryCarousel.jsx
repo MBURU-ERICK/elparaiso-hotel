@@ -32,7 +32,7 @@ export function GalleryCarouselView({ images = [], loading, error, retry }) {
     {!loading && !error && !count && <p className="carousel-message">Welcome to Elparaiso Hotel · Rumuruti</p>}
     {images.map((image, n) => <div key={image.id} hidden={n !== active} className="carousel-slide" role="group" aria-roledescription="slide" aria-label={`${n + 1} of ${count}`}>
       <img src={image.image_url} srcSet={`${image.thumbnail_url} 640w, ${image.image_url} 1920w`} sizes="100vw"
-        alt={image.alt_text} loading={n === 0 ? 'eager' : 'lazy'} fetchPriority={n === 0 ? 'high' : 'auto'} />
+        alt={image.alt_text} loading={n === 0 ? 'eager' : 'lazy'} fetchPriority={n === 0 ? 'high' : 'low'} />
     </div>)}
     {count > 1 && <div className="carousel-thumbnails" aria-label="Choose a photograph">{images.map((photo, n) => <button key={photo.id} aria-label={`Show photograph ${n + 1}`} aria-pressed={active === n} onClick={() => setIndex(n)}><img src={photo.thumbnail_url || photo.image_url} alt="" loading="lazy" /></button>)}</div>}
     {count > 1 && <div className="carousel-controls"><button aria-label="Previous photograph" onClick={() => move(-1)}>←</button>

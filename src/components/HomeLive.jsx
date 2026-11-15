@@ -15,8 +15,7 @@ function PhotoAsset({ src, thumbnail, alt, hero = false }) {
   const [ready, setReady] = useState(false);
   const [failed, setFailed] = useState(false);
   return <div className={`home-photo ${ready ? 'is-ready' : ''}`}>
-    {thumbnail && <img className="home-photo-blur" src={thumbnail} alt="" aria-hidden="true" width="960" height="720" loading={hero ? 'eager' : 'lazy'} decoding="async" />}
-    {src && !failed ? <img ref={node => { if (node?.complete && node.naturalWidth > 0) setReady(true); }} src={src} srcSet={thumbnail && thumbnail !== src ? `${thumbnail} 640w, ${src} 1920w` : undefined} sizes={hero ? '100vw' : '(min-width: 900px) 33vw, (min-width: 600px) 50vw, 100vw'} alt={alt} width="1920" height="1440" decoding="async" fetchPriority={hero ? 'high' : 'auto'} loading={hero ? 'eager' : 'lazy'} onLoad={() => setReady(true)} onError={() => setFailed(true)} /> : <span className="home-photo-empty">{failed ? 'Photograph unavailable' : 'Elparaiso · Rumuruti'}</span>}
+    {src && !failed ? <img ref={node => { if (node?.complete && node.naturalWidth > 0) setReady(true); }} src={src} srcSet={thumbnail && thumbnail !== src ? `${thumbnail} 640w, ${src} 1920w` : undefined} sizes={hero ? '100vw' : '(min-width: 900px) 33vw, (min-width: 600px) 50vw, 100vw'} alt={alt} width="1920" height="1440" decoding="async" fetchPriority={hero ? 'high' : undefined} loading={hero ? 'eager' : 'lazy'} onLoad={() => setReady(true)} onError={() => setFailed(true)} /> : <span className="home-photo-empty">{failed ? 'Photograph unavailable' : 'Elparaiso · Rumuruti'}</span>}
   </div>;
 }
 export function LivePhoto({ category, hero = false, index = 0 }) {

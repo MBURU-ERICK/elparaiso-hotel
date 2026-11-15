@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowDown, ArrowLeft, ArrowRight, Camera, Expand, Images, MapPin } from 'lucide-react';
 import SEO from '../components/SEO';
 import GalleryGrid from '../components/GalleryGrid';
-import GalleryLightbox from '../components/GalleryLightbox';
+import GalleryLightbox from '../components/LazyGalleryLightbox';
 import { useGallery } from '../hooks/useGallery';
 import { galleryCategories } from '../services/galleryApi';
 import '../styles/gallery-journal.css';
@@ -21,7 +21,7 @@ function GallerySpotlight() {
   const [selected, setSelected] = useState(null);
   const photos = images.slice(0, 3);
   return <div data-photo-count={photos.length} className={`journal-hero-collage${!photos.length ? ' is-empty' : ''}`}>
-    {photos.map((photo, index) => <button type="button" key={photo.id} className={`journal-hero-photo journal-hero-photo-${index + 1}`} aria-label={`View ${photo.title} photograph`} aria-haspopup="dialog" onClick={() => setSelected(index)}><img src={photo.image_url} srcSet={`${photo.thumbnail_url || photo.image_url} 640w, ${photo.image_url} 1920w`} sizes={index === 0 ? '(min-width: 900px) 40vw, 85vw' : '25vw'} alt={photo.alt_text || photo.title} loading={index === 0 ? 'eager' : 'lazy'} fetchPriority={index === 0 ? 'high' : 'auto'} /><span><Expand size={17} /> {photo.title}</span></button>)}
+    {photos.map((photo, index) => <button type="button" key={photo.id} className={`journal-hero-photo journal-hero-photo-${index + 1}`} aria-label={`View ${photo.title} photograph`} aria-haspopup="dialog" onClick={() => setSelected(index)}><img src={photo.image_url} srcSet={`${photo.thumbnail_url || photo.image_url} 640w, ${photo.image_url} 1920w`} sizes={index === 0 ? '(min-width: 900px) 40vw, 85vw' : '25vw'} alt={photo.alt_text || photo.title} loading={index === 0 ? 'eager' : 'lazy'} fetchPriority={index === 0 ? 'high' : undefined} /><span><Expand size={17} /> {photo.title}</span></button>)}
     {!photos.length && <div className="journal-hero-placeholder"><Camera size={48} strokeWidth={1} /><span>{loading ? 'A little glimpse is on its way…' : 'Your next memory begins here.'}</span></div>}
     <span className="journal-collage-note">Stay a little. Look a little closer.</span>
     {selected !== null && <GalleryLightbox images={images} initialIndex={selected} onClose={() => setSelected(null)} />}

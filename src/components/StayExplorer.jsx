@@ -1,5 +1,5 @@
 import { PageHero } from './Premium';
-import GalleryLightbox from './GalleryLightbox';
+import GalleryLightbox from './LazyGalleryLightbox';
 import { useRoomPreferences } from '../hooks/useRoomPreferences';
 import { RoomFilters, FavouriteRoom } from './RoomPreferences';
 import { todayInNairobi, nextStayDate } from '../utils/stayDates';

@@ -1,5 +1,4 @@
 import "./styles/hospitality.css";
-import "./styles/staff-refresh.css";
 import "./styles/workspace.css";
 import "./styles/customer.css";
 import "./styles/guest-redesign.css";
@@ -7,6 +6,7 @@ import WebsiteTracker from "./analytics/WebsiteTracker";
 import SEO from "./components/SEO";
 import { Link } from "react-router-dom";
 import HelpChat from "./components/HelpChat";
+import PageLoadBoundary from "./components/PageLoadBoundary";
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 
 import { Helmet } from "react-helmet-async";
@@ -28,12 +28,12 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
 import Home from "./pages/Home";
-import Rooms from "./pages/Rooms";
-import Restaurant from "./pages/Restaurant";
-import Experiences from "./pages/Experiences";
-import About from "./pages/About";
-import Gallery from "./pages/Gallery";
-import Contact from "./pages/Contact";
+const Rooms = lazy(() => import("./pages/Rooms"));
+const Restaurant = lazy(() => import("./pages/Restaurant"));
+const Experiences = lazy(() => import("./pages/Experiences"));
+const About = lazy(() => import("./pages/About"));
+const Gallery = lazy(() => import("./pages/Gallery"));
+const Contact = lazy(() => import("./pages/Contact"));
 import WhatsAppButton from "./components/WhatsAppButton";
 import "./styles/premium.css";
 import "./styles/serene.css";
@@ -75,7 +75,7 @@ export default function App() {
       
       <div id="page-content" tabIndex={-1}>
 
-      <Suspense fallback={<p className="portal-state" role="status">Loading…</p>}>
+      <PageLoadBoundary key={pathname}><Suspense fallback={<p className="portal-state" role="status">Loading…</p>}>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/private-stays" element={<Airbnb />} /><Route path="/events-groups" element={<Events />} /><Route path="/conferences" element={<Business />} /><Route path="/rooms" element={<Rooms />} />
@@ -113,7 +113,7 @@ export default function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
-      </Suspense>
+      </Suspense></PageLoadBoundary>
       </div>
 
       {!pathname.startsWith("/staff") && <Footer />}

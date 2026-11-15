@@ -162,3 +162,8 @@
 @media(prefers-reduced-motion:reduce){.hotel-elegance *,.hotel-elegance *::before,.hotel-elegance *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 .hotel-elegance .journal-hero-placeholder{background:#eee5d4;color:#8b744a}.hotel-elegance .journal-explore{color:#856025;border-color:#c4a36c}.hotel-elegance .journal-location{color:#897b65}.hotel-elegance .guest-stories-state{border-color:#d9c9aa}.hotel-elegance .guest-stories-count{color:#85765e}
 @media(max-width:1279px){.hotel-elegance .hotel-navigation>a{font-size:24px;min-height:44px}.hotel-elegance .hotel-navigation{background:#fffdf8}.hotel-elegance .hotel-nav-backdrop{background:#30241570}}
+/* Native modal containment retains the page scrollbar and sticky layout. */
+.gallery-lightbox:modal,.event-dialog:modal{overscroll-behavior:contain}
+.gallery-lightbox::backdrop,.event-dialog::backdrop{overflow:hidden;overscroll-behavior:contain}
+.gallery-viewer-notice{position:fixed;z-index:100;left:50%;bottom:2rem;transform:translateX(-50%);width:max-content;max-width:calc(100vw - 2rem);display:flex;align-items:center;gap:1rem;flex-wrap:wrap;padding:1rem 1.25rem;border:1px solid #c5a66b;border-radius:7px;background:#fffefa;color:#55452d;box-shadow:0 6px 24px #40302020;font-size:.8rem}
+.gallery-viewer-notice button,.gallery-viewer-notice a{font:inherit;color:#79591f;min-height:36px;padding:.4rem .7rem;border:1px solid #d9c9aa;border-radius:4px;background:#fbf9f4;text-decoration:none;cursor:pointer}
