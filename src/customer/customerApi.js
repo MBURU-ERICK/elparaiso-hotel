@@ -36,6 +36,7 @@ export const customerApi = {
   favourite: (room, saved) => customerRequest('/api/customers/favourite-rooms/', { method: saved ? 'POST' : 'DELETE', body: JSON.stringify({ room }) }),
   catalogue: () => customerRequest('/api/customers/catalogue/'),
   packages: () => customerRequest('/api/customers/staff/packages/'),
+  createPackage: data => customerRequest('/api/customers/staff/packages/', { method: 'POST', body: JSON.stringify(data) }),
   savePackage: (id, data) => customerRequest(`/api/customers/staff/packages/${id}/`, { method: 'PATCH', body: JSON.stringify(data) }),
   me: () => customerRequest('/api/customers/auth/me/'),
   auth: (action, data = {}) => post(`auth/${action}`, data),

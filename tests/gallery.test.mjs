@@ -11,12 +11,13 @@ import { estimateBooking } from '../src/utils/bookingQuote.js';
 import { privateStayMap, stayRate, unitBookingUrl, unitPhotos } from '../src/utils/privateStays.js';
 import { HelmetProvider } from 'react-helmet-async';
 let server;
-let StayBooking, roomApi, customerRequest, GuestStoryCard, GalleryLightbox, PrivateStayCard, PageHero, ServiceCard, PlanningFAQ, HotelAmenitiesView;
+let StayBooking, roomApi, customerRequest, GuestStoryCard, GalleryLightbox, PrivateStayCard, PageHero, ServiceCard, PlanningFAQ, HotelAmenitiesView, FacilityEditor;
 let EventCarousel, EventDetailsDialog, StaffContent, PhotoPicker, ReservationCard, photoApi, GuestReview, GuestBooking, Card, Grid, Upload, Carousel, api, staffApi, CustomerContext, Gate, Auth, RequestForm, safeNext, PortalState, Navbar, CustomerNav, Booking, RoomFilters, FavouriteRoom, ProfileForm;
 const photo = { id: 1, image_url: '/full', thumbnail_url: '/small', title: 'Garden', alt_text: 'A shaded garden path', category: 'garden', description: 'Relax outside' };
 const render = (Component, props) => renderToStaticMarkup(React.createElement(Component, props));
 before(async () => {
   server = await createServer({ server: { middlewareMode: true, hmr: false, watch: null, ws: false } });
+  ({ FacilityEditor } = await server.ssrLoadModule('/src/pages/StaffFacilities.jsx'));
   ({ HotelAmenitiesView } = await server.ssrLoadModule('/src/components/HotelAmenities.jsx'));
   ({ PageHero, ServiceCard, PlanningFAQ } = await server.ssrLoadModule('/src/components/Premium.jsx'));
   ({ PrivateStayCard } = await server.ssrLoadModule('/src/pages/PrivateStays.jsx'));
@@ -515,4 +516,17 @@ test('advertised room amenities retain room-specific scope and provide a useful 
   assert.doesNotMatch(html, /Swimming pool|Spa|Gym/);
   const empty = renderToStaticMarkup(React.createElement(MemoryRouter, {}, React.createElement(HotelAmenitiesView, { rooms: [] })));
   assert.match(empty, /ask our team about what you need/);
+});
+
+test('facility editor keeps accommodation selection independent of conference availability', () => {
+  const html = render(FacilityEditor, { facility: { id: 4, name: 'Private retreat', code: 'private-retreat', facility_type: 'airbnb', has_conference: true, is_active: true }, onSave() {}, onCancel() {} });
+  assert.match(html, /Edit Private retreat/);
+  const inputs = [...html.matchAll(/<input\b[^>]*>/g)].map(match => match[0]);
+  assert.match(inputs.find(input => input.includes('type="radio"') && input.includes('value="airbnb"')), /checked/);
+  assert.match(inputs.find(input => input.includes('name="has_conference"')), /checked/);
+  assert.match(html, /Hotel rooms/);
+  assert.match(html, /Conference only/);
+  assert.match(html, /Existing bookings and records are retained/);
+  assert.match(html, /Save facility changes/);
+  assert.match(html, /<fieldset/);
 });

@@ -41,7 +41,7 @@ export default function GuestBooking({ initialService = 'hotel', embedded = fals
   const quote = isEvent ? null : estimateBooking(form, options);
   const hotelStay = form.service === 'hotel' || (form.service === 'conference' && form.add_accommodation);
   const rooms = options.rooms.filter(r => form.service === 'conference' || String(r.facility) === form.facility);
-  const facilityOptions = options.facilities.filter(f => form.service === 'hotel' ? options.rooms.some(r => r.facility === f.id) : form.service === 'airbnb' ? options.units.some(u => u.facility === f.id) : isEvent ? f.facility_type !== 'airbnb' : options.packages.some(p => p.facility === f.id));
+  const facilityOptions = options.facilities.filter(f => form.service === 'hotel' ? options.rooms.some(r => r.facility === f.id) : form.service === 'airbnb' ? options.units.some(u => u.facility === f.id) : isEvent ? (f.has_conference || ['hotel', 'mixed', 'conference'].includes(f.facility_type)) : options.packages.some(p => p.facility === f.id));
   async function submit(event) {
     event.preventDefault(); if (!isEvent && !quote) { setError('Choose valid room/package options, occupancy, guest counts and dates to calculate your quote.'); return; }
     setBusy(true); setError('');

@@ -30,6 +30,7 @@ export default function StaffLayout() {
     ['/staff/event-types', 'Event types', CalendarDays, user.is_superuser],
     ['/staff/contacts', 'Contact configuration', Users, user.is_superuser],
     ['/staff/guest-reservations', 'All guest reservations', BedDouble, permits('view')],
+    ['/staff/facilities', 'Facilities', Building2, user.is_superuser],
     ['/staff/admin', 'Administration', Users, user.is_superuser],
     ['/staff/dashboard', 'Overview', LayoutDashboard, true],
     ['/staff/reservations', 'Reservations', BedDouble, permits('view')],
