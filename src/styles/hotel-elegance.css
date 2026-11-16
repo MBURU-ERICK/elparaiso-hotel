@@ -162,7 +162,7 @@
 }
 @media(prefers-reduced-motion:reduce){.hotel-elegance *,.hotel-elegance *::before,.hotel-elegance *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 .hotel-elegance .journal-hero-placeholder{background:#dfe9df;color:#8b744a}.hotel-elegance .journal-explore{color:#785823;border-color:#c4a36c}.hotel-elegance .journal-location{color:#53665d}.hotel-elegance .guest-stories-state{border-color:#738676}.hotel-elegance .guest-stories-count{color:#53665d}
-@media(max-width:1279px){.hotel-elegance .hotel-navigation>a{font-size:24px;min-height:44px}.hotel-elegance .hotel-navigation{background:#fffdf7}.hotel-elegance .hotel-nav-backdrop{background:#30241570}}
+@media(max-width:1279px){.hotel-elegance .hotel-header{backdrop-filter:none}.hotel-elegance .hotel-navigation>a{font-size:24px;min-height:44px}.hotel-elegance .hotel-navigation{background:#fffdf7}.hotel-elegance .hotel-nav-backdrop{background:#30241570}}
 /* Native modal containment retains the page scrollbar and sticky layout. */
 .gallery-lightbox:modal,.event-dialog:modal{overscroll-behavior:contain}
 .gallery-lightbox::backdrop,.event-dialog::backdrop{overflow:hidden;overscroll-behavior:contain}
