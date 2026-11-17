@@ -18,7 +18,7 @@ export default function StaffLayout() {
       if ([401, 403].includes(err.status)) navigate('/staff/login', { replace: true }); else setError(err.message);
     });
     return () => { active = false; };
-  }, [navigate]);
+  }, [navigate, pathname]);
   async function logout() {
     try { await staffApi.logout(); navigate('/staff/login', { replace: true }); }
     catch (err) { setError(err.message); }
