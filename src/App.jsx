@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import HelpChat from "./components/HelpChat";
 import PageLoadBoundary from "./components/PageLoadBoundary";
 const StaffFacilities = lazy(() => import("./pages/StaffFacilities"));
+const StaffUserRights = lazy(() => import("./pages/StaffUserRights"));
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 
 import { Helmet } from "react-helmet-async";
@@ -98,6 +99,7 @@ export default function App() {
           <Route path="/staff/profile" element={<StaffProfile />} />
           <Route path="/staff/guest-reservations" element={<StaffCustomers reservationMode />} />
           <Route path="/staff/facilities" element={<StaffFacilities />} />
+          <Route path="/staff/user-rights" element={<StaffUserRights />} />
           <Route path="/staff/admin" element={<AdminDashboard />} />
           <Route path="/staff/customers" element={<StaffCustomers />} />
           <Route path="/staff/dashboard" element={<StaffDashboard />} />

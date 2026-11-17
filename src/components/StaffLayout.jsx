@@ -26,11 +26,12 @@ export default function StaffLayout() {
   const permits = action => user.is_superuser || user.facilities?.some(f => f.actions?.includes(action));
   const destinations = [
     ['/staff/profile', 'My profile', Users, true],
-    ['/staff/events', 'Events & advertisements', CalendarDays, user.is_superuser],
+    ['/staff/events', 'Events & advertisements', CalendarDays, permits('view')],
     ['/staff/event-types', 'Event types', CalendarDays, user.is_superuser],
     ['/staff/contacts', 'Contact configuration', Users, user.is_superuser],
     ['/staff/guest-reservations', 'All guest reservations', BedDouble, permits('view')],
     ['/staff/facilities', 'Facilities', Building2, user.is_superuser],
+    ['/staff/user-rights', 'User rights', Users, user.is_superuser],
     ['/staff/admin', 'Administration', Users, user.is_superuser],
     ['/staff/dashboard', 'Overview', LayoutDashboard, true],
     ['/staff/reservations', 'Reservations', BedDouble, permits('view')],
@@ -38,12 +39,13 @@ export default function StaffLayout() {
     ['/staff/rooms', 'Room management', DoorOpen, permits('view')],
     ['/staff/airbnb', 'Airbnb reservations', Building2, permits('view')],
     ['/staff/airbnb/rooms', 'Airbnb room management', DoorOpen, permits('manage')],
-    ['/staff/packages', 'Conference packages', CalendarDays, permits('manage')],
+    ['/staff/packages', 'Conference packages', CalendarDays, permits('view')],
     ['/staff/reviews', 'Guest reviews', Star, permits('view')],
     ['/staff/customers', 'Booking inbox & invoices', Users, permits('view')],
     ['/staff/gallery', 'Photo library', Images, permits('manage')],
     ['/staff/reconciliation', 'Payment reconciliation', Wallet, permits('payments_manage')],
   ].filter(([, , , visible]) => visible);
+  const blocked = !destinations.some(([to]) => pathname === to);
   const current = destinations.find(([to]) => pathname === to)?.[1] || 'Workspace';
   const name = user.first_name || user.username;
   return <div className="staff-workspace"><aside className="staff-sidebar">
@@ -52,7 +54,7 @@ export default function StaffLayout() {
     <div className="staff-nav-heading">MANAGE YOUR DAY</div>
     <nav id="staff-navigation" className={open ? 'is-open' : ''} aria-label="Staff navigation">{destinations.map(([to, title, Icon]) => <NavLink end key={to} to={to} onClick={() => setOpen(false)}><Icon size={19} /><span>{title}</span></NavLink>)}</nav>
     <Link to="/" className="staff-visit-site">View guest website <ArrowUpRight size={16} /></Link>
-    <div className="staff-profile"><span className="staff-avatar" aria-hidden="true">{name.slice(0, 1).toUpperCase()}</span><div><strong>{name}</strong><small>{user.is_superuser ? 'Administrator' : 'Hotel team'}</small></div><button onClick={logout} aria-label="Sign out" title="Sign out"><LogOut size={18} /></button></div>
+    <div className="staff-profile"><span className="staff-avatar" aria-hidden="true">{name.slice(0, 1).toUpperCase()}</span><div><strong>{name}</strong><small>{user.is_superuser ? 'Administrator' : user.facilities?.map(f => `${f.name} · ${f.role}`).join(', ') || 'No facility assigned'}</small></div><button onClick={logout} aria-label="Sign out" title="Sign out"><LogOut size={18} /></button></div>
     {error && <p role="alert">{error}</p>}
-  </aside><div className="staff-main"><header className="staff-topbar"><div><span>Elparaiso</span><ChevronRight size={14} /><strong>{current}</strong></div><span className="staff-team-tag">Staff portal</span></header><div className="staff-content"><Outlet context={{ user }} /></div></div></div>;
+  </aside><div className="staff-main"><header className="staff-topbar"><div><span>Elparaiso</span><ChevronRight size={14} /><strong>{current}</strong></div><span className="staff-team-tag">Staff portal</span></header><div className="staff-content">{blocked ? <p role="alert">You do not have access to this page.</p> : <Outlet context={{ user }} />}</div></div></div>;
 }
