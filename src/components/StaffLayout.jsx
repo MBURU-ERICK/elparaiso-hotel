@@ -2,6 +2,8 @@ import '../styles/staff-refresh.css';
 import { useEffect, useState } from 'react';
 import { Link, NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { LayoutDashboard, BedDouble, DoorOpen, Building2, Images, Users, Wallet, LogOut, Menu, X, ArrowUpRight, ChevronRight, Star, CalendarDays } from 'lucide-react';
+import { permitsFacilityType } from '../utils/staffFacilities';
+import { Navigate } from 'react-router-dom';
 import { staffApi } from '../services/staffApi';
 export default function StaffLayout() {
   const [user, setUser] = useState(null);
@@ -24,6 +26,8 @@ export default function StaffLayout() {
   if (error && !user) return <main className="section"><p role="alert">{error}</p><button onClick={() => window.location.reload()}>Try again</button></main>;
   if (!user) return <main className="section"><p role="status">Loading your workspace…</p></main>;
   const permits = action => user.is_superuser || user.facilities?.some(f => f.actions?.includes(action));
+  const hotel = permitsFacilityType(user, ['hotel', 'mixed']);
+  const privateStays = permitsFacilityType(user, ['airbnb', 'mixed']);
   const destinations = [
     ['/staff/profile', 'My profile', Users, true],
     ['/staff/events', 'Events & advertisements', CalendarDays, permits('view')],
@@ -34,11 +38,11 @@ export default function StaffLayout() {
     ['/staff/user-rights', 'User rights', Users, user.is_superuser],
     ['/staff/admin', 'Administration', Users, user.is_superuser],
     ['/staff/dashboard', 'Overview', LayoutDashboard, true],
-    ['/staff/reservations', 'Reservations', BedDouble, permits('view')],
+    ['/staff/reservations', 'Hotel reservations', BedDouble, hotel],
     ['/staff/room-categories', 'Room categories & rates', BedDouble, user.is_superuser],
-    ['/staff/rooms', 'Room management', DoorOpen, permits('view')],
-    ['/staff/airbnb', 'Airbnb reservations', Building2, permits('view')],
-    ['/staff/airbnb/rooms', 'Airbnb room management', DoorOpen, permits('manage')],
+    ['/staff/rooms', 'Hotel room management', DoorOpen, hotel],
+    ['/staff/airbnb', 'Private-stay reservations', Building2, privateStays],
+    ['/staff/airbnb/rooms', 'Private-stay room management', DoorOpen, privateStays],
     ['/staff/packages', 'Conference packages', CalendarDays, permits('view')],
     ['/staff/reviews', 'Guest reviews', Star, permits('view')],
     ['/staff/customers', 'Booking inbox & invoices', Users, permits('view')],
@@ -56,5 +60,5 @@ export default function StaffLayout() {
     <Link to="/" className="staff-visit-site">View guest website <ArrowUpRight size={16} /></Link>
     <div className="staff-profile"><span className="staff-avatar" aria-hidden="true">{name.slice(0, 1).toUpperCase()}</span><div><strong>{name}</strong><small>{user.is_superuser ? 'Administrator' : user.facilities?.map(f => `${f.name} · ${f.role}`).join(', ') || 'No facility assigned'}</small></div><button onClick={logout} aria-label="Sign out" title="Sign out"><LogOut size={18} /></button></div>
     {error && <p role="alert">{error}</p>}
-  </aside><div className="staff-main"><header className="staff-topbar"><div><span>Elparaiso</span><ChevronRight size={14} /><strong>{current}</strong></div><span className="staff-team-tag">Staff portal</span></header><div className="staff-content">{blocked ? <p role="alert">You do not have access to this page.</p> : <Outlet context={{ user }} />}</div></div></div>;
+  </aside><div className="staff-main"><header className="staff-topbar"><div><span>Elparaiso</span><ChevronRight size={14} /><strong>{current}</strong></div><span className="staff-team-tag">Staff portal</span></header><div className="staff-content">{pathname === '/staff/rooms' && !hotel && privateStays ? <Navigate to="/staff/airbnb/rooms" replace /> : blocked ? <p role="alert">You do not have access to this page.</p> : <Outlet context={{ user }} />}</div></div></div>;
 }
